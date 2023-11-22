@@ -7,7 +7,7 @@ import './App.css';
 import NavBar from "./components/NavBar/NavBar";
 
 function App() {
-  const [count, setCount] = useState(0)
+  //const [count, setCount] = useState(0)
 
   return (
     <div className="App">
@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/" element={<NavBar />} />
       </Routes>
     </div>
   );

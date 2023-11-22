@@ -12,11 +12,7 @@ export default function NavBar(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// console.log(cartCount);
 
-	// console.log(parsedCart.map(item) => {item.quantity * 1});
-	// console.log(parsedCart);
-	// let count = ;
 
 	const route = location.pathname;
 
