@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import HomeAdmin from './HomeAdmin/HomeAdmin';
+// import React, { useState } from 'react';
+// import HomeAdmin from './HomeAdmin/HomeAdmin';
 
 
-function AdminDashboard() {
-    const [activeContent, setActiveContent] = useState('dashboard');
-    const [openSidebar, setOpenSidebar] = useState(false);
+// function AdminDashboard() {
+//     const [activeContent, setActiveContent] = useState('dashboard');
+//     const [openSidebar, setOpenSidebar] = useState(false);
 
-    const handleToggleSidebar = () => {
-        setOpenSidebar(!openSidebar);
-    };
+//     const handleToggleSidebar = () => {
+//         setOpenSidebar(!openSidebar);
+//     };
 
-    return (
-        <div>
+//     return (
+//         <div>
             
-            <HomeAdmin activeContent={activeContent} />
-        </div>
-    );
-}
+//             <HomeAdmin activeContent={activeContent} />
+//         </div>
+//     );
+// }
 
 
-export default AdminDashboard
+// export default AdminDashboard
