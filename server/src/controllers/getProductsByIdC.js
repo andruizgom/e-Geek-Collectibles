@@ -5,11 +5,15 @@ const getProductsByIdC = async (id) => {
         if (!isNaN(id)) {
             id = Number(id);
         }
-        const productById = await Products.findByPk(id);
+        const productById = await Products.findByPk(id, {
+            include: Review
+        });
 
-        if (!productById)throw new Error('No products were found');
+        if (!productById){
+            throw new Error('No products were found');
+        }
 
-        return productById
+        return productById;
 
     } catch (error) {
         throw new Error(error.message);
