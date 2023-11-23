@@ -1,7 +1,12 @@
-import React from "react";
+import axios from "axios";
 
-function Pagination() {
-  return <div>Pagination</div>;
-}
+const fetchProducts = async (page) => {
+  try {
+    const response = await axios.get(`http://localhost:3001/products?page=${page}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
-export default Pagination;
+export { fetchProducts };
