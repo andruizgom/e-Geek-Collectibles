@@ -1,11 +1,11 @@
-import axios from "axios";
-import { GET_PRODUCTS } from "../types";
+import { fetchProducts } from "../../components/Pagination/Pagination";
+import { GET_PRODUCTS_SUCCESS } from "../types";
 
-export function getProducts() {
+export function getProducts(page = 1) {
   return async function (dispatch) {
     try {
-      const response = await axios.get("http://localhost:3001/products");
-      return dispatch({ type: GET_PRODUCTS, payload: response.data });
+      const data = await fetchProducts(page);
+      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
     } catch (error) {
       console.log(error.message);
     }
