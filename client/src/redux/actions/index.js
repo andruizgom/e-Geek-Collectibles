@@ -1,4 +1,18 @@
-import { SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS } from '../types/index';
+import { SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH } from '../types/index';
+
+export const clearSearch = () => ({
+  type: CLEAR_SEARCH,
+});
+
+const fetchProductsRequest = () => ({
+  type: FETCH_PRODUCTS_REQUEST,
+});
+
+const fetchProductsFailure = (error) => ({
+  type: FETCH_PRODUCTS_FAILURE,
+  payload: error,
+});
+
 
 export const setSearchTerm = (searchTerm) => ({
   type: SET_SEARCH_TERM,
@@ -12,12 +26,21 @@ const fetchProductsSuccess = (products) => ({
 
 export const fetchProducts = (searchTerm) => {
   return async (dispatch) => {
+    dispatch(fetchProductsRequest());
     try {
       const response = await fetch(`http://localhost:3001/products/name?name=${searchTerm}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
-      dispatch(fetchProductsSuccess(data));
+      if (data.length === 0) {
+        
+        dispatch(fetchProductsFailure('No matches found'));
+      } else {
+        dispatch(fetchProductsSuccess(data));
+      }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      dispatch(fetchProductsFailure(error.message));
     }
   };
 };

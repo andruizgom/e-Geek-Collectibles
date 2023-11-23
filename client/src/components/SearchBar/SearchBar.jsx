@@ -1,35 +1,49 @@
-// SearchBar.jsx
+
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTerm, fetchProducts } from '../../redux/actions/index';
+import { setSearchTerm, fetchProducts, clearSearch } from '../../redux/actions/index';
+import styles from "./SearchBar.module.css"
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const searchTerm = useSelector((state) => state.searchTerm);
   const products = useSelector((state) => state.products);
+  const loading = useSelector((state) => state.loading);
+  const error = useSelector((state) => state.error);
 
   const onChange = (event) => {
-    dispatch(setSearchTerm(event.target.value));
+    const value = event.target.value;
+    dispatch(setSearchTerm(value));
+    if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
+      dispatch(fetchProducts(value));
+    }
   };
 
-  const onSearch = () => {
-    dispatch(fetchProducts(searchTerm));
+  const onSelectItem = (title) => {
+    dispatch(setSearchTerm(title));
+    dispatch(clearSearch());
+    
+    
   };
 
   return (
-    <div>
+    <div className={styles.searchBar}>
       <h1>SEARCHBAR</h1>
-      <div>
-        <input type="text" value={searchTerm} onChange={onChange} />
-        <button onClick={onSearch}>Search</button>
-      </div>
-      <div>
-        {products.slice(0, 1).map((item) => (
-          <div onClick={() => dispatch(setSearchTerm(item.title))} key={item.title}>
-            {item.title}
-          </div>
-        ))}
-      </div>
+      <input  className={styles.inputField}
+        type="text"
+        placeholder="Buscar..." value={searchTerm} onChange={onChange} />
+        <button className={styles.searchButton}>Buscar</button>
+      
+      {error && <p>Error: {error}</p>}
+      {products.length > 0 && (
+        <div>
+          {products.map((item) => (
+            <div key={item.title} onClick={() => onSelectItem(item.title)}>
+              {item.title}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -45,49 +59,3 @@ export default SearchBar;
 
 
 
-// import { useState } from "react"
-// import Data from "./Data.json"
-
-
-// export default function SearchBar(){
-//   const [value, setValue] = useState('')
-
-//   const onChange = (event) => {
-//     setValue(event.target.value)
-//   }
-
-//   const onSearch = (searchTerm) => {
-//     setValue(searchTerm)
-//     console.log("search ", searchTerm)
-//   }
-
-//   return(
-//     <div>
-//       <h1>SEARCHBAR</h1>
-//         <div>
-//           <div>
-//             <input type="text" value={value} onChange={onChange} />
-//             <button onClick={() => onSearch(value)}> Search</button>
-//           </div>
-//           <div>
-//             {Data.filter(item => {
-//               const searchTerm = value.toLowerCase()
-//               const tit =item.title.toLowerCase()
-
-//               return searchTerm && tit.startsWith(searchTerm) && tit !== searchTerm  
-
-//             })
-//             .slice(0,2)
-//             .map( (item) => (
-//             <div
-//             onClick={() => onSearch(item.title)}
-//             key={item.title}
-//             >
-//               {item.title}
-//             </div>
-//             ))}
-//           </div>
-//         </div>
-//     </div>
-//   )
-// }
