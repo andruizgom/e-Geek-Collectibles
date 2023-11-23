@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm, fetchProducts, clearSearch } from '../../redux/actions/index';
 import styles from "./SearchBar.module.css"
@@ -10,6 +10,25 @@ const SearchBar = () => {
   const products = useSelector((state) => state.products);
   const loading = useSelector((state) => state.loading);
   const error = useSelector((state) => state.error);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Función para llamar cuando se hace clic en el documento
+    const handleClickOutside = (event) => {
+      // Si se hace clic fuera de la lista desplegable, se limpia la búsqueda
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        dispatch(clearSearch());
+      }
+    };
+
+    // Añade el listener para el evento 'mousedown'
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Función de limpieza para eliminar el listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dispatch]);
 
   const onChange = (event) => {
     const value = event.target.value;
@@ -29,24 +48,28 @@ const SearchBar = () => {
   };
 
   return (
+   <div className={styles.searchContainer}>
     <div className={styles.searchBar}>
       
       <input  className={styles.inputField}
         type="text"
         placeholder="Buscar..." value={searchTerm} onChange={onChange} />
         <button className={styles.searchButton}>Buscar</button>
-      
+    </div> 
       {error && <p>Error: {error}</p>}
       {products.length > 0 && (
-        <div>
+        <div ref={dropdownRef} className={styles.dropdown}>
           {products.map((item) => (
-            <div key={item.title} onClick={() => onSelectItem(item.title)}>
+            <div key={item.title} onClick={() => onSelectItem(item.title)}
+            className={styles.dropdownItem}
+            >
               {item.title}
             </div>
           ))}
         </div>
       )}
-    </div>
+    
+    </div> 
   );
 };
 

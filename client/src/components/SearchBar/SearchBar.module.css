@@ -1,10 +1,17 @@
+.searchContainer {
+  position: relative;
+  width: 30%; /* Ajusta esto según el ancho que desees para tu barra de búsqueda */
+}
+
+
 .searchBar {
     display: flex;
     align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: #e60e0e;
+    border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 5px;
+    
   }
   
   .inputField {
@@ -15,8 +22,8 @@
   }
   
   .searchButton {
-    background-color: #007bff; /* Color del botón */
-    color: white;
+    background-color: #aa55db; /* Color del botón */
+    color: rgb(231, 221, 221);
     border: none;
     padding: 6px 10px;
     cursor: pointer;
@@ -25,7 +32,25 @@
   
     /* Estilos opcionales para el hover */
     &:hover {
-      background-color: #0056b3;
+      background-color: #4b4c4e;
     }
   }
+
+  .dropdown {
+    position: absolute;
+    top: 100%; /* Esto coloca la lista justo debajo del input */
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 300px; /* O el máximo que prefieras */
+    overflow-y: auto; /* Permite scroll dentro de la lista desplegable si es necesario */
+    z-index: 1000; /* Asegura que la lista desplegable esté por encima de otros elementos */
+    /* ... otros estilos */
+  }
   
+  .dropdownItem {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
