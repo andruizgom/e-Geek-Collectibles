@@ -1,15 +1,24 @@
-import { SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAILURE } from '../types';
+import { SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS } from '../types/index';
 
-export const searchRequest = () => ({
-  type: SEARCH_REQUEST,
+export const setSearchTerm = (searchTerm) => ({
+  type: SET_SEARCH_TERM,
+  payload: searchTerm,
 });
 
-export const searchSuccess = results => ({
-  type: SEARCH_SUCCESS,
-  payload: results,
+const fetchProductsSuccess = (products) => ({
+  type: FETCH_PRODUCTS_SUCCESS,
+  payload: products,
 });
 
-export const searchFailure = error => ({
-  type: SEARCH_FAILURE,
-  payload: error,
-});
+export const fetchProducts = (searchTerm) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`http://localhost:3001/products/name?name=${searchTerm}`);
+      const data = await response.json();
+      dispatch(fetchProductsSuccess(data));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+};
+

@@ -1,22 +1,19 @@
-import { SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAILURE } from '../types';
+import { SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS } from '../types/index';
 
 const initialState = {
-  loading: false,
-  results: [],
-  error: null,
+  searchTerm: '',
+  products: [],
 };
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-		case SEARCH_REQUEST:
-		  return { ...state, loading: true };
-		case SEARCH_SUCCESS:
-		  return { ...state, loading: false, results: action.payload };
-		case SEARCH_FAILURE:
-		  return { ...state, loading: false, error: action.payload };
-		default:
-		  return state;
-	  }
-	};
+  switch (action.type) {
+    case SET_SEARCH_TERM:
+      return { ...state, searchTerm: action.payload };
+    case FETCH_PRODUCTS_SUCCESS:
+      return { ...state, products: action.payload };
+    default:
+      return state;
+  }
+};
 
 export default reducer;
