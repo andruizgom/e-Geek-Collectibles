@@ -1,120 +1,46 @@
-import { useState } from 'react';
+import { useState } from "react"
+import Data from "./Data.json"
 
 
-import { useDispatch } from 'react-redux';
-import { searchProducts } from '../../redux/actions/index';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+export default function SearchBar(){
+  const [value, setValue] = useState('')
 
-export default function SearchBar() {
-	const [inputValue, setInputValue] = useState(''); // Estado local para el valor del input
-	const dispatch = useDispatch();
+  const onChange = (event) => {
+    setValue(event.target.value)
+  }
 
+  const onSearch = (searchTerm) => {
+    setValue(searchTerm)
+    console.log("search ", searchTerm)
+  }
 
+  return(
+    <div>
+      <h1>SEARCHBAR</h1>
+        <div>
+          <div>
+            <input type="text" value={value} onChange={onChange} />
+            <button onClick={() => onSearch(value)}> Search</button>
+          </div>
+          <div>
+            {Data.filter(item => {
+              const searchTerm = value.toLowerCase()
+              const tit =item.title.toLowerCase()
 
-	const navigate = useNavigate(); // Inicializa Navigate
+              return searchTerm && tit.startsWith(searchTerm) && tit !== searchTerm  
 
-	const handleInputChange = (e) => {
-		e.preventDefault();
-		setInputValue(e.target.value); // Actualiza el estado con el valor del input
-	};
-
-	const handleSearch = (event) => {
-		event.preventDefault();
-		dispatch(searchProducts(inputValue))
-		.then(() => {
-				//navigate('/productList'); // Redirige a la vista de productos después de la búsqueda exitosa
-				setInputValue('')
-			})
-			.catch((error) => {
-				console.error('Error en la búsqueda:', error);
-			});
-
-		console.log(products);
-	};
-
-	return (
-		<div>
-			<form
-				
-				onSubmit={handleSearch}>
-				<div>
-					<input
-						type="text"
-						name="brand"
-						
-						placeholder="Producto"
-						value={inputValue} // Asigna el valor del estado al input
-						onChange={handleInputChange} // Maneja el cambio en el input
-					/>
-					<button
-						type="submit"
-						value={'Search'}
-						>
-						
-					</button>
-				</div>
-			</form>
-		</div>
-	);
+            })
+            .slice(0,2)
+            .map( (item) => (
+            <div
+            onClick={() => onSearch(item.title)}
+            key={item.title}
+            >
+              {item.title}
+            </div>
+            ))}
+          </div>
+        </div>
+    </div>
+  )
 }
-
-
-// import { useState } from 'react';
-
-
-// import { useDispatch } from 'react-redux';
-// //import { searchProducts } from '../../redux/actions/index';
-// import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-
-// export default function SearchBar() {
-// 	const [inputValue, setInputValue] = useState(''); // Estado local para el valor del input
-// 	const dispatch = useDispatch();
-
-
-
-// 	const navigate = useNavigate(); // Inicializa Navigate
-
-// 	const handleInputChange = (e) => {
-// 		e.preventDefault();
-// 		setInputValue(e.target.value); // Actualiza el estado con el valor del input
-// 	};
-
-// 	const handleSearch = (event) => {
-// 		event.preventDefault();
-// 		// dispatch(searchProducts(inputValue))
-// 		// .then(() => {
-// 		// 		//navigate('/productList'); // Redirige a la vista de productos después de la búsqueda exitosa
-// 		// 		setInputValue('')
-// 			// })
-// 			// .catch((error) => {
-// 			// 	console.error('Error en la búsqueda:', error);
-// 			// });
-
-// 		console.log(products);
-// 	};
-
-// 	return (
-// 		<div>
-// 			<form
-				
-// 				onSubmit={handleSearch}>
-// 				<div>
-// 					<input
-// 						type="text"
-// 						name="brand"
-						
-// 						placeholder="Producto"
-// 						value={inputValue} // Asigna el valor del estado al input
-// 						onChange={handleInputChange} // Maneja el cambio en el input
-// 					/>
-// 					<button
-// 						type="submit"
-// 						value={'Search'}
-// 						>
-						
-// 					</button>
-// 				</div>
-// 			</form>
-// 		</div>
-// 	);
-// }

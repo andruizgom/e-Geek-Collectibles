@@ -1,32 +1,22 @@
-import {SEARCH_PRODUCTS_SUCCESS,
-	SEARCH_PRODUCTS_FAILURE,} from '../types/index';
+import { SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAILURE } from '../types';
 
 const initialState = {
-  allProducts: [],
-  products: [],
-	productsAux: [],
+  loading: false,
+  results: [],
+  error: null,
 };
 
-const reducer = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case SEARCH_PRODUCTS_SUCCESS:
-			return {
-				...state,
-				products: action.payload,
-				productsAux: action.payload,
-				error: null,
-			};
-
-		case SEARCH_PRODUCTS_FAILURE:
-			return {
-				...state,
-				products: [],
-				productsAux: [],
-				error: action.payload,
-			};
-    default:
-      return state;
-  }
-};
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+		case SEARCH_REQUEST:
+		  return { ...state, loading: true };
+		case SEARCH_SUCCESS:
+		  return { ...state, loading: false, results: action.payload };
+		case SEARCH_FAILURE:
+		  return { ...state, loading: false, error: action.payload };
+		default:
+		  return state;
+	  }
+	};
 
 export default reducer;
