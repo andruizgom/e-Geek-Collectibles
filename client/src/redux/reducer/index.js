@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
     case FETCH_PRODUCTS_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case CLEAR_SEARCH:
-      return { ...state, searchTerm: '', products: [] };
+      return { ...state, searchTerm: '', products: [], error: null };
     default:
       return state;
   }

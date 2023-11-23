@@ -16,6 +16,8 @@ const SearchBar = () => {
     dispatch(setSearchTerm(value));
     if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
       dispatch(fetchProducts(value));
+    } else if (value.length === 0) {
+      dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
     }
   };
 
@@ -28,7 +30,7 @@ const SearchBar = () => {
 
   return (
     <div className={styles.searchBar}>
-      <h1>SEARCHBAR</h1>
+      
       <input  className={styles.inputField}
         type="text"
         placeholder="Buscar..." value={searchTerm} onChange={onChange} />
