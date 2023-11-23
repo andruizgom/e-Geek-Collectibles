@@ -3,6 +3,7 @@ const { getAllProductsH } = require("../handlers/getAllProductsH");
 const { getProductsByNameH } = require("../handlers/getProductsByNameH");
 const { getProductsByIdH } = require("../handlers/getProductsByIdH");
 const { postCreateProductH } = require("../handlers/postCreateProductH");
+const { putUpdateProductH } = require("../handlers/putUpdateProductH");
 
 const router = Router();
 
@@ -15,5 +16,9 @@ router.get('/products/name/', getProductsByNameH)
 router.get('/products/:id', getProductsByIdH)
 
 router.post('/products', postCreateProductH)
+
+router.put("/product/:id",putUpdateProductH)
+
+
 
 module.exports = router;
