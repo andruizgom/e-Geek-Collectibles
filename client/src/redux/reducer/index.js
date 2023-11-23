@@ -1,12 +1,14 @@
-import {} from "../actions/index";
+import {} from "../types/index";
 
-let initialState = {};
+const initialState = {
+  allProducts: [],
+};
 
-function rootReducer(state = initialState, action) {
-  switch (action.payload) {
+const reducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     default:
       return state;
   }
-}
+};
 
-export default rootReducer;
+export default reducer;
