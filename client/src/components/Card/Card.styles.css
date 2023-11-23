@@ -1,18 +1,15 @@
-.link{
+.card {
   text-decoration: none;
   color: black;
-}
-.link:visited{
-  color: inherit
-}
-
-.card {
   position: relative;
   width: 320px;
   height: 500px;
   background: #780000;
   border-radius: 20px;
   overflow: hidden;
+}
+.card:visited{
+  color: inherit
 }
 
 .card::before {
@@ -63,6 +60,7 @@
 
 .contentBox h2 {
   font-size: 16px;
+  text-align: center;
   color: white;
   font-weight: 500;
   text-transform: uppercase;

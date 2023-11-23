@@ -10,7 +10,7 @@ function Card({ title, id, img, price }) {
         <div className="imgBox">
           <img src={img} className="mouse" />
         </div>
-        <p>{price}</p>
+        <p>${price}</p>
         <a href="#" className="buy">
           Comprar
         </a>
