@@ -3,35 +3,6 @@
   width: 30%; /* Ajusta esto según el ancho que desees para tu barra de búsqueda */
 }
 
-.resultsContainer {
-  position: absolute;
-  top: 100%; /* O la altura de tu barra de búsqueda */
-  left: 0;
-  right: 0;
-  z-index: 2; /* Asegúrate de que se superponga a otros elementos si es necesario */
-  background-color: white;
-  /* ...otros estilos necesarios para tu lista de resultados */
-}
-
-.errorMessage {
-  color: red;
-  padding: 10px;
-  margin: 0;
-}
-
-.resultsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  /* ...otros estilos para tu lista */
-}
-
-.resultsList li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  /* ...otros estilos para tus items */
-}
 
 
 .searchBar {
