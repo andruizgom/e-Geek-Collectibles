@@ -42,7 +42,7 @@ const fetchProductsSuccess = (products) => ({
   payload: products,
 });
 
-export const fetchProducts = (searchTerm) => {
+export const searchProducts = (searchTerm) => {
   return async (dispatch) => {
     dispatch(fetchProductsRequest());
     try {
