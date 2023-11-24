@@ -1,4 +1,17 @@
-import { SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH } from '../types';
+import { fetchProducts} from "../../components/Pagination/Pagination.jsx"
+import { GET_PRODUCTS_SUCCESS, SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH } from '../types';
+
+
+export function getProducts(page = 1) {
+  return async function (dispatch) {
+    try {
+      const data = await fetchProducts(page);
+      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: data });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
 
 export const clearSearch = () => ({
   type: CLEAR_SEARCH,
