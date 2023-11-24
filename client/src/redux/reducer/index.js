@@ -1,6 +1,5 @@
 import { GET_PRODUCTS_SUCCESS, SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH  } from '../types/index';
 
-
 const initialState = {
   allProducts: [],
   currentPage: 1,
@@ -9,8 +8,8 @@ const initialState = {
   products: [],
 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
+const reducer = (state = initialState, { type, payload }) => {
+  switch (type) {
     case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
@@ -19,13 +18,13 @@ const reducer = (state = initialState, action) => {
         loading: false,
       };
     case SET_SEARCH_TERM:
-      return { ...state, searchTerm: action.payload };
+      return { ...state, searchTerm: payload };
     case FETCH_PRODUCTS_SUCCESS:
-      return { ...state, products: action.payload };
+      return { ...state, products: payload };
     case FETCH_PRODUCTS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_PRODUCTS_FAILURE:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: payload };
     case CLEAR_SEARCH:
       return { ...state, searchTerm: '', products: [], error: null };
     default:
@@ -34,3 +33,4 @@ const reducer = (state = initialState, action) => {
 };
 
 export default reducer;
+

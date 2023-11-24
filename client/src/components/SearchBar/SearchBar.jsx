@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm, fetchProducts, clearSearch } from '../../redux/actions/index';
@@ -74,13 +73,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,6 @@
 import { fetchProducts} from "../../components/Pagination/Pagination.jsx"
 import { GET_PRODUCTS_SUCCESS, SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH } from '../types';
 
-
 export function getProducts(page = 1) {
   return async function (dispatch) {
     try {
@@ -57,4 +56,3 @@ export const fetchProducts = (searchTerm) => {
     }
   };
 };
-
