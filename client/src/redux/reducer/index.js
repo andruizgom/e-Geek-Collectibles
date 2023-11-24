@@ -1,18 +1,21 @@
-import { GET_PRODUCTS } from "../types/index";
+import { GET_PRODUCTS_SUCCESS } from "../types";
 
 const initialState = {
   allProducts: [],
-  allProductsCopy: [],
+  currentPage: 1,
+  loading: false,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case GET_PRODUCTS:
+    case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
-        allProducts: payload,
-        allProductsCopy: payload,
+        allProducts: [...state.allProducts, ...payload],
+        currentPage: state.currentPage + 1,
+        loading: false,
       };
+    // Otros casos y acciones aquí
     default:
       return state;
   }
