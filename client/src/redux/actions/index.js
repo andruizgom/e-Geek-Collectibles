@@ -1,5 +1,12 @@
-import { fetchProducts} from "../../components/Pagination/Pagination.jsx"
-import { GET_PRODUCTS_SUCCESS, SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH } from '../types';
+import { fetchProducts } from '../../components/Pagination/Pagination.jsx';
+import {
+  GET_PRODUCTS_SUCCESS,
+  SET_SEARCH_TERM,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_REQUEST,
+  FETCH_PRODUCTS_FAILURE,
+  CLEAR_SEARCH,
+} from '../types';
 
 export function getProducts(page = 1) {
   return async function (dispatch) {
@@ -25,7 +32,6 @@ const fetchProductsFailure = (error) => ({
   payload: error,
 });
 
-
 export const setSearchTerm = (searchTerm) => ({
   type: SET_SEARCH_TERM,
   payload: searchTerm,
@@ -40,13 +46,14 @@ export const fetchProducts = (searchTerm) => {
   return async (dispatch) => {
     dispatch(fetchProductsRequest());
     try {
-      const response = await fetch(`http://localhost:3001/products/name?name=${searchTerm}`);
+      const response = await fetch(
+        `http://localhost:3001/products/name?name=${searchTerm}`
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       if (data.length === 0) {
-        
         dispatch(fetchProductsFailure('No matches found'));
       } else {
         dispatch(fetchProductsSuccess(data));

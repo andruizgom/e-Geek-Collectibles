@@ -1,4 +1,11 @@
-import { GET_PRODUCTS_SUCCESS, SET_SEARCH_TERM, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_REQUEST, FETCH_PRODUCTS_FAILURE, CLEAR_SEARCH  } from '../types/index';
+import {
+  GET_PRODUCTS_SUCCESS,
+  SET_SEARCH_TERM,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_REQUEST,
+  FETCH_PRODUCTS_FAILURE,
+  CLEAR_SEARCH,
+} from '../types/index';
 
 const initialState = {
   allProducts: [],
@@ -33,4 +40,3 @@ const reducer = (state = initialState, { type, payload }) => {
 };
 
 export default reducer;
-
