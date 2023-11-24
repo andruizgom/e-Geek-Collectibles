@@ -56,18 +56,25 @@ const SearchBar = () => {
         placeholder="Buscar..." value={searchTerm} onChange={onChange} />
         <button className={styles.searchButton}>Buscar</button>
     </div> 
-      {error && <p>Error: {error}</p>}
+      {/* //{error && <p>Error: {error}</p>} */}
       {products.length > 0 && (
-        <div ref={dropdownRef} className={styles.dropdown}>
-          {products.map((item) => (
-            <div key={item.title} onClick={() => onSelectItem(item.title)}
-            className={styles.dropdownItem}
-            >
-              {item.title}
-            </div>
-          ))}
+  <div ref={dropdownRef} className={styles.dropdown}>
+    {products?.map((item) => (
+      item.title ? (
+        <div key={item.title} onClick={() => onSelectItem(item.title)}
+          className={styles.dropdownItem}
+        >
+          {item.title}
         </div>
-      )}
+      ) : (
+        <div key={item.error} className={styles.dropdownItem}>
+          <p>error</p>
+        </div>
+      )
+    ))}
+  </div>
+)}
+
     
     </div> 
   );
