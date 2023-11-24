@@ -1,4 +1,4 @@
-import { GET_PRODUCTS_SUCCESS } from "../types";
+import { GET_PRODUCTS_SUCCESS } from '../types';
 
 const initialState = {
   allProducts: [],
