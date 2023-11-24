@@ -1,3 +1,4 @@
+
 import { GET_PRODUCTS_SUCCESS } from "../types";
 
 const initialState = {
@@ -22,3 +23,4 @@ const reducer = (state = initialState, { type, payload }) => {
 };
 
 export default reducer;
+

@@ -1,3 +1,4 @@
+
 import { fetchProducts } from "../../components/Pagination/Pagination";
 import { GET_PRODUCTS_SUCCESS } from "../types";
 
@@ -11,3 +12,4 @@ export function getProducts(page = 1) {
     }
   };
 }
+
