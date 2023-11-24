@@ -8,8 +8,12 @@ const {
 } = process.env;
 
 const sequelize = new Sequelize(DB_DEPLOY, {
-  logging: false, 
-  native: false, 
+  dialect: "postgres",
+  // ! Connecting with CloudDatabase
+  dialectOptions: {
+    ssl: false,
+  },
+  logging: false,
 });
 const basename = path.basename(__filename);
 
