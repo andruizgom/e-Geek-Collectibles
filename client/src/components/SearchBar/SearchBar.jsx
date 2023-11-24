@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTerm, fetchProducts, clearSearch } from '../../redux/actions/index';
+import { setSearchTerm, searchProducts, clearSearch } from '../../redux/actions/index';
 import styles from "./SearchBar.module.css"
 
 const SearchBar = () => {
@@ -33,7 +33,7 @@ const SearchBar = () => {
     const value = event.target.value;
     dispatch(setSearchTerm(value));
     if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
-      dispatch(fetchProducts(value));
+      dispatch(searchProducts(value));
     } else if (value.length === 0) {
       dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
     }
