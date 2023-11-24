@@ -21,7 +21,7 @@ const Home = () => {
       dispatch({ type: "LOADING_FALSE" }); // Puedes manejar este tipo de acción según tu implementación
       dispatch({ type: "GET_PRODUCTS_SUCCESS", payload: data }); // Puedes manejar este tipo de acción según tu implementación
     } catch (error) {
-      console.error('Error al cargar más productos:', error.message);
+      console.error("Error al cargar más productos:", error.message);
       dispatch({ type: "LOADING_FALSE" }); // Puedes manejar este tipo de acción según tu implementación
     }
   };

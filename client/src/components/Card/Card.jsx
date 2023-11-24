@@ -5,17 +5,15 @@ import "./Card.styles.css";
 function Card({ title, id, img, price }) {
   return (
     <div className="card">
-      <Link to={`/detail/${id}`} className="link">
-        <div className="contentBox">
-          <h2>{title}</h2>
-          <div className="imgBox">
-            <img src={img} className="mouse" />
-          </div>
-          <p>${price}</p>
-          <a href="#" className="buy">
-            Comprar
-          </a>
+      <Link to={`/detail/${id}`} className="contentBox">
+        <h2>{title}</h2>
+        <div className="imgBox">
+          <img src={img} className="mouse" />
         </div>
+        <p>${price}</p>
+        <a href="#" className="buy">
+          Comprar
+        </a>
       </Link>
     </div>
   );

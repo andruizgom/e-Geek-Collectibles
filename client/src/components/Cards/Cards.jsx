@@ -3,6 +3,8 @@ import Card from "../Card/Card";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import "./Cards.styles.css";
 
+import "./Cards.styles.css";
+
 function Cards({ allProducts }) {
   return (
     <div className="container">
