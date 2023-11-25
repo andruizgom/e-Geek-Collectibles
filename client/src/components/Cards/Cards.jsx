@@ -16,6 +16,7 @@ function Cards({ allProducts }) {
               title={prod.title}
               img={prod.image}
               price={prod.price}
+              id={prod.id}
             />
           );
         })
