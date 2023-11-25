@@ -15,10 +15,6 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     email: {
         type: DataTypes.STRING,
         allowNull: false
@@ -29,7 +25,7 @@ module.exports = (sequelize) => {
     },
     isBanned: {
         type: DataTypes.BOOLEAN,
-        default: false
+        defaultValue: false
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,
