@@ -5,6 +5,7 @@ import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_FAILURE,
   CLEAR_SEARCH,
+  GET_PRODUCT_BY_ID,
 } from '../types/index';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   loading: false,
   searchTerm: '',
   products: [],
+  productsDetail: [],
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -34,6 +36,12 @@ const reducer = (state = initialState, { type, payload }) => {
       return { ...state, loading: false, error: payload };
     case CLEAR_SEARCH:
       return { ...state, searchTerm: '', products: [], error: null };
+    case GET_PRODUCT_BY_ID:
+      return {
+        ...state,
+        productsDetail: payload,
+      };
+
     default:
       return state;
   }
