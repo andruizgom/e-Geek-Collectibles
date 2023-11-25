@@ -25,19 +25,18 @@ const SearchBar = () => {
     };
 
     // Añade el listener para el evento 'mousedown'
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
     // Función de limpieza para eliminar el listener
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [dispatch]);
 
   const onChange = (event) => {
     const value = event.target.value;
     dispatch(setSearchTerm(value));
-    if (value.length > 2) {
-      // Buscar cuando haya al menos 3 caracteres
+    if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
       dispatch(searchProducts(value));
     } else if (value.length === 0) {
       dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
@@ -47,36 +46,34 @@ const SearchBar = () => {
   const onSelectItem = (title) => {
     dispatch(setSearchTerm(title));
     dispatch(clearSearch());
+    
+    
   };
 
   return (
     <div className={styles.searchContainer}>
-      <div className={styles.searchBar}>
-        <input
-          className={styles.inputField}
-          type="text"
-          placeholder="Buscar..."
-          value={searchTerm}
-          onChange={onChange}
-        />
-        <button className={styles.searchButton}>Buscar</button>
-      </div>
-      {error && <p>Error: {error}</p>}
-      {products.length > 0 && (
-        <div ref={dropdownRef} className={styles.dropdown}>
-          {products.map((item) => (
-            <div
-              key={item.title}
-              onClick={() => onSelectItem(item.title)}
-              className={styles.dropdownItem}
-            >
-              {item.title}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+     <div className={styles.searchBar}>
+       
+       <input  className={styles.inputField}
+         type="text"
+         placeholder="Buscar..." value={searchTerm} onChange={onChange} />
+         <button className={styles.searchButton}>Buscar</button>
+     </div> 
+       {error && <p>Error: {error}</p>}
+       {products.length > 0 && (
+         <div ref={dropdownRef} className={styles.dropdown}>
+           {products.map((item) => (
+             <div key={item.title} onClick={() => onSelectItem(item.title)}
+             className={styles.dropdownItem}
+             >
+               {item.title}
+             </div>
+           ))}
+         </div>
+       )}
+     
+     </div> 
+   );
 };
 
 export default SearchBar;

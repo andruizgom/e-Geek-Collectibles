@@ -9,7 +9,6 @@ import {
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
 } from "../types";
-
 import axios from "axios";
 
 export function getProducts(page = 1) {
@@ -54,11 +53,11 @@ export const searchProducts = (searchTerm) => {
         `http://localhost:3001/products/name?name=${searchTerm}`
       );
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
       const data = await response.json();
       if (data.length === 0) {
-        dispatch(fetchProductsFailure("No matches found"));
+        dispatch(fetchProductsFailure('No matches found'));
       } else {
         dispatch(fetchProductsSuccess(data));
       }
@@ -80,7 +79,6 @@ export const getProductById = (id) => {
     }
   };
 };
-
 export const resetProductDetail = () => {
   return { type: RESET_PRODUCT_DETAIL };
 };
