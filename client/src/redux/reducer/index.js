@@ -13,6 +13,9 @@ const initialState = {
   allProducts: [],
   currentPage: 1,
   loading: false,
+  searchTerm: "",
+  products: [],
+  productsDetail: {},
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -42,7 +45,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case RESET_PRODUCT_DETAIL:
       return {
         ...state,
-        productsDetail: [],
+        productsDetail: {},
       };
     default:
       return state;

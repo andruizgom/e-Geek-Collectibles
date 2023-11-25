@@ -1,4 +1,4 @@
-import { fetchProducts } from '../../components/Pagination/Pagination.jsx';
+import { fetchProducts } from "../../components/Pagination/Pagination.jsx";
 import {
   GET_PRODUCTS_SUCCESS,
   SET_SEARCH_TERM,
@@ -7,10 +7,10 @@ import {
   FETCH_PRODUCTS_FAILURE,
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
-  RESET_PRODUCT_DETAIL
-} from '../types';
+  RESET_PRODUCT_DETAIL,
+} from "../types";
 
-import axios from 'axios';
+import axios from "axios";
 
 export function getProducts(page = 1) {
   return async function (dispatch) {
@@ -54,11 +54,11 @@ export const searchProducts = (searchTerm) => {
         `http://localhost:3001/products/name?name=${searchTerm}`
       );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
       if (data.length === 0) {
-        dispatch(fetchProductsFailure('No matches found'));
+        dispatch(fetchProductsFailure("No matches found"));
       } else {
         dispatch(fetchProductsSuccess(data));
       }
@@ -71,10 +71,9 @@ export const getProductById = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios(`http://localhost:3001/products/${id}`);
-      console.log("ACTION",data)
       await dispatch({
         type: GET_PRODUCT_BY_ID,
-        payload: data
+        payload: data,
       });
     } catch (error) {
       throw new Error("No llegó un producto a la acción");
@@ -85,5 +84,3 @@ export const getProductById = (id) => {
 export const resetProductDetail = () => {
   return { type: RESET_PRODUCT_DETAIL };
 };
-
-

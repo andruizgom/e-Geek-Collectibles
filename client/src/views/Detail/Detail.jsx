@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
-import {useParams} from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById, resetProductDetail } from "../../redux/actions";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import "./detail.css";
 
-import "./detail.css"
-
-
-export default function Detail(){
-  const useProducts= () => {
+export default function Detail() {
+  const useProducts = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const productsDetail = useSelector((state) => state.productsDetail);
-    
+
     useEffect(() => {
       if (id) {
         dispatch(getProductById(id, false))
@@ -26,17 +24,19 @@ export default function Detail(){
       };
     }, [dispatch, id]);
 
-    return productsDetail  
-  }
-  
+    return productsDetail;
+  };
 
-  const productDetail=useProducts();
+  const productDetail = useProducts();
 
-  return(
+  return (
+    <div>
+      <Link to="/Home">
+        <button className="btn-back">🔙</button>
+      </Link>
       <div className="containerDetail">
-          <Link to="/Home"><button className="btn-back">🔙</button></Link>
-          <img src={productDetail.image} className="image"/>
-          <div className="titles">
+        <img src={productDetail.image} className="image" />
+        <div className="titles">
           <h2>{productDetail.title}</h2>
           <h3>Fabricante: {productDetail.manufacturer}</h3>
           <h3>Creador: {productDetail.author}</h3>
@@ -44,9 +44,15 @@ export default function Detail(){
           <h3>${productDetail.price}</h3>
           <h3>Categoria: {productDetail.category}</h3>
           <h4>{productDetail.description}</h4>
-          </div>
+        </div>
       </div>
-  )
+      <div className="reviews">
+        {productDetail.Reviews && productDetail.Reviews.length > 0 ? (
+          productDetail.Reviews.map((r) => <p key={r.id}>{r.content}</p>)
+        ) : (
+          <p>No hay reviews de este producto todavía!</p>
+        )}
+      </div>
+    </div>
+  );
 }
-
-
