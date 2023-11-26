@@ -1,9 +1,16 @@
 import React from 'react';
+import Banner from '../../components/Banner/Banner';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import Categories from '../../components/Categories/Categories';
+import Footer from '../../components/Footer/Footer';
 
 const Landing = () => {
   return (
     <div>
-      <h1>Landing Page</h1>
+      <Banner />
+      <SearchBar />
+      <Categories />
+      <Footer/>
     </div>
   );
 };
