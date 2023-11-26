@@ -6,15 +6,16 @@ import {
   FETCH_PRODUCTS_FAILURE,
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
-} from '../types/index';
+  RESET_PRODUCT_DETAIL,
+} from "../types/index";
 
 const initialState = {
   allProducts: [],
   currentPage: 1,
   loading: false,
-  searchTerm: '',
+  searchTerm: "",
   products: [],
-  productsDetail: [],
+  productsDetail: {},
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -35,13 +36,17 @@ const reducer = (state = initialState, { type, payload }) => {
     case FETCH_PRODUCTS_FAILURE:
       return { ...state, loading: false, error: payload };
     case CLEAR_SEARCH:
-      return { ...state, searchTerm: '', products: [], error: null };
+      return { ...state, searchTerm: "", products: [], error: null };
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
         productsDetail: payload,
       };
-
+    case RESET_PRODUCT_DETAIL:
+      return {
+        ...state,
+        productsDetail: {},
+      };
     default:
       return state;
   }
