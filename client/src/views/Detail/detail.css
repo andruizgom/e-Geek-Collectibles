@@ -1,0 +1,38 @@
+.containerDetail{
+    display:flex ;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    border-color: 10px blue ;
+    background: linear-gradient(to bottom, #780000 0%, #003049 100%);
+    min-height: 100vh;
+    overflow: hidden; 
+}
+
+.image{
+    margin-top: 50px;
+    width: 500px;
+    height: 600px;
+}
+
+.titles{
+    color: aliceblue;
+    width: 600px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+}
+
+.btn-back{
+    position: absolute;
+    top: 10px; /* Ajusta según tu preferencia */
+    right: 10px; /* Ajusta según tu preferencia */
+    background-color: #dee8de;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+

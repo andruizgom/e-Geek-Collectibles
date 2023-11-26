@@ -6,7 +6,10 @@ import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_FAILURE,
   CLEAR_SEARCH,
+  GET_PRODUCT_BY_ID
 } from '../types';
+
+import axios from 'axios';
 
 export function getProducts(page = 1) {
   return async function (dispatch) {
@@ -63,3 +66,20 @@ export const searchProducts = (searchTerm) => {
     }
   };
 };
+export const getProductById = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios(`http://localhost:3001/products/${id}`);
+      console.log("ACTION",data)
+      await dispatch({
+        type: GET_PRODUCT_BY_ID,
+        payload: data
+      });
+    } catch (error) {
+      throw new Error("No llegó un producto a la acción");
+    }
+  };
+};
+
+
+
