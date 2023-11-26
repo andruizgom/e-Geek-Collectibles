@@ -1,7 +1,11 @@
-import React, {useEffect, useRef} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTerm, searchProducts, clearSearch } from '../../redux/actions/index';
-import styles from "./SearchBar.module.css"
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setSearchTerm,
+  searchProducts,
+  clearSearch,
+} from "../../redux/actions/index";
+import styles from "./SearchBar.module.css";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
