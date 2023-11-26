@@ -1,11 +1,16 @@
+
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #780000 0%, #003049 100%);
+  min-height: 100vh;
+}
 .containerDetail{
     display:flex ;
     align-items: center;
     justify-content: center;
     margin: auto;
     border-color: 10px blue ;
-    background: linear-gradient(to bottom, #780000 0%, #003049 100%);
-    min-height: 100vh;
+    height: 80vh;
     overflow: hidden; 
 }
 
@@ -33,6 +38,16 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+.reviews {
+  display: flex;
+  justify-content: center;
+  color: white;
 }
 
 
