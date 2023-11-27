@@ -1,18 +1,15 @@
-import React from 'react';
-import Banner from '../../components/Banner/Banner';
-import SearchBar from '../../components/SearchBar/SearchBar';
-import Categories from '../../components/Categories/Categories';
-import Footer from '../../components/Footer/Footer';
+import Banner from "../../components/Banner/Banner";
+import Footer from "../../components/Footer/Footer";
+import Slide from "../../components/Slide/Slide";
+import Welcome from "../../components/Welcome/Welcome";
 
-const Landing = () => {
+export default function Landing() {
   return (
     <div>
       <Banner />
-      <SearchBar />
-      <Categories />
-      <Footer/>
+      <Welcome />
+      <Slide />
+      <Footer />
     </div>
   );
-};
-
-export default Landing;
+}

@@ -1,14 +1,11 @@
-import React from 'react';
+import React from "react";
 
-
-const Footer = () => {
+export default function Footer() {
   return (
-    <div className="flex items-center justify-center h-18  p-4 bg-red-600 mt-40">
-      <div className="ml-2">
-        <h6 className="text-xl font-semibold font-sans">e-Geek Store</h6>
+    <footer className="mt-6 bg-red-700 text-center lg:text-left">
+      <div className="p-4 text-center text-white">
+        © 2023 Copyright: e-Geek Store
       </div>
-    </div>
+    </footer>
   );
-};
-
-export default Footer;
+}
