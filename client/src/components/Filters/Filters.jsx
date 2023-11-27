@@ -1,84 +1,79 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import Card from '../Card/Card';
+import { useDispatch } from 'react-redux';
+import { filteredProducts } from "../../redux/actions";
 
 const Filters = () => {
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [sortOrder, setSortOrder] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const dispatch = useDispatch();
 
-  const fetchFilteredProducts = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:3001/filter', {
-        params: {
-          title,
-          price,
-          category,
-          sortOrder
-        }
-      });
+  const [filters, setFilters] = useState({
+    title: '',
+    price: '',
+    category: '',
+    sortOrder: '',
+    nameOrder: '',
+  });
 
-      setFilteredProducts(response.data)
-    } catch (error) {
-      console.error('Error fetching filtered products:', error);
-    }
+  const categories = ["Games", "Statues", "Comics", "Figures", "Outfit and Accessories"];
+
+  const handleFilterChange = (filterName, value) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+  }
+
+  const handleFilter = () => {
+    dispatch(filteredProducts(filters));
   }
 
   useEffect(() => {
-    // Call the fetchFilteredProducts function here or use it directly in the onClick
-  }, [title, price, category, sortOrder]);
+    // Lógica para manejar el cambio en sortOrder y nameOrder
+    // Por ejemplo, puedes restablecer esos filtros si se selecciona "None"
+    if (filters.sortOrder === 'None') {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        sortOrder: '',
+      }));
+    }
 
-  const handleFilter = () => {
-    fetchFilteredProducts();
-  }
+    if (filters.nameOrder === 'None') {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        nameOrder: '',
+      }));
+    }
+  }, [filters.sortOrder, filters.nameOrder]);
 
   return (
     <div>
       <div>
-        <label>Title:</label>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-      </div>
-      <div>
-        <label>Price:</label>
-        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
-      </div>
-      <div>
         <label>Category:</label>
-        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
+        <select value={filters.category} onChange={(e) => handleFilterChange('category', e.target.value)}>
+          <option value="">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
       </div>
       <div>
-        <label>Sort Order:</label>
-        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-          <option value="">None</option>
+        <label>Price Order:</label>
+        <select value={filters.sortOrder} onChange={(e) => handleFilterChange('sortOrder', e.target.value)}>
+          <option value="None">None</option>
           <option value="priceAsc">Price Ascending</option>
           <option value="priceDesc">Price Descending</option>
         </select>
       </div>
-      <button onClick={handleFilter}>Apply Filters</button>
-
       <div>
-        {/* Display filtered products here */}
-        {filteredProducts ? (
-          filteredProducts.map((prod) => {
-            return (
-              <Card
-              key={prod.id}
-              title={prod.title}
-              img={prod.image}
-              price={prod.price}
-              />
-            )
-          })
-        ) : (
-          'asd'
-        )}
+        <label>Name Order:</label>
+        <select value={filters.nameOrder} onChange={(e) => handleFilterChange('nameOrder', e.target.value)}>
+          <option value="None">None</option>
+          <option value="nameAsc">A-Z</option>
+          <option value="nameDesc">Z-A</option>
+        </select>
       </div>
+      <button onClick={handleFilter}>Apply Filters</button>
     </div>
   );
 };
-
-
 
 export default Filters;
