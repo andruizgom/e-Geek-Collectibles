@@ -13,6 +13,7 @@ const Home = () => {
   const allProducts = useSelector((state) => state.allProducts);
   const currentPage = useSelector((state) => state.currentPage);
   const loading = useSelector((state) => state.loading);
+  const filtered = useSelector((state) => state.productsFiltered);
 
   const loadMoreProducts = async () => {
     try {
@@ -41,7 +42,8 @@ const Home = () => {
         hasMore={!loading}
         loader={<Loading />}
       >
-        <Cards allProducts={allProducts} />
+        {filtered.length > 0 ? <Cards allProducts={filtered} /> : <Cards allProducts={allProducts} />}
+        
       </InfiniteScroll>
 
       {loading && <p>Cargando...</p>}
