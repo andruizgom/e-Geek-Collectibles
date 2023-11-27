@@ -87,7 +87,8 @@ export const resetProductDetail = () => {
 export const filteredProducts = (filters) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get('http://localhost:3001/products', {
+
+      const response = await axios.get('http://localhost:3001/products?page=all', {
         params: filters,
       });
       await dispatch({
