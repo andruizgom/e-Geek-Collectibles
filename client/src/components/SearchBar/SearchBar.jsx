@@ -5,6 +5,7 @@ import {
   searchProducts,
   clearSearch,
 } from "../../redux/actions/index";
+import { Link } from "react-router-dom";
 import styles from "./SearchBar.module.css";
 
 const SearchBar = () => {
@@ -45,11 +46,8 @@ const SearchBar = () => {
     }
   };
 
-  const onSelectItem = (title) => {
-    dispatch(setSearchTerm(title));
+  const onSelectItem = () => {
     dispatch(clearSearch());
-    
-    
   };
 
   return (
@@ -70,7 +68,7 @@ const SearchBar = () => {
             <div key={item.title} onClick={() => onSelectItem(item.title)}
             className={styles.dropdownItem}
             >
-              {item.title}
+              <Link to={`/detail/${item.id}`}>{item.title}</Link>
             </div>
           ))}
         </div>
