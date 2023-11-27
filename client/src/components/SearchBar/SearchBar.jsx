@@ -18,18 +18,13 @@ const SearchBar = () => {
   const [inputClicked, setInputClicked] = useState(false);
 
   useEffect(() => {
-    // Función para llamar cuando se hace clic en el documento
     const handleClickOutside = (event) => {
-      // Si se hace clic fuera de la lista desplegable, se limpia la búsqueda
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         dispatch(clearSearch());
       }
     };
-
-    // Añade el listener para el evento 'mousedown'
     document.addEventListener('mousedown', handleClickOutside);
 
-    // Función de limpieza para eliminar el listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -39,10 +34,10 @@ const SearchBar = () => {
     const value = event.target.value;
     setInputClicked(true);
     dispatch(setSearchTerm(value));
-    if (value.length >= 3) { // Buscar cuando haya al menos 3 caracteres
+    if (value.length >= 3) {
       dispatch(searchProducts(value));
     } else if (value.length === 0) {
-      dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
+      dispatch(clearSearch());
     }
   };
 
