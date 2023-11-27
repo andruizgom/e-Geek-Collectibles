@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSearchTerm,
@@ -14,6 +14,7 @@ const SearchBar = () => {
   const loading = useSelector((state) => state.loading);
   const error = useSelector((state) => state.error);
   const dropdownRef = useRef(null);
+  const [inputClicked, setInputClicked] = useState(false);
 
   useEffect(() => {
     // Función para llamar cuando se hace clic en el documento
@@ -35,8 +36,9 @@ const SearchBar = () => {
 
   const onChange = (event) => {
     const value = event.target.value;
+    setInputClicked(true);
     dispatch(setSearchTerm(value));
-    if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
+    if (value.length >= 3) { // Buscar cuando haya al menos 3 caracteres
       dispatch(searchProducts(value));
     } else if (value.length === 0) {
       dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
@@ -56,10 +58,12 @@ const SearchBar = () => {
       
       <input  className={styles.inputField}
         type="text"
-        placeholder="Buscar..." value={searchTerm} onChange={onChange} />
+        placeholder="Buscar..." value={searchTerm} onChange={onChange} onClick={() => setInputClicked(true)} />
         <button className={styles.searchButton}>Buscar</button>
     </div> 
-      {error && <p>Error: {error}</p>}
+      {inputClicked && error && products.length === 0 && searchTerm.length >= 3 && (
+        <p className={styles.dropdown}>Error: {error}</p>
+      )}
       {products.length > 0 && (
         <div ref={dropdownRef} className={styles.dropdown}>
           {products.map((item) => (
@@ -71,7 +75,6 @@ const SearchBar = () => {
           ))}
         </div>
       )}
-    
     </div> 
   );
 };
