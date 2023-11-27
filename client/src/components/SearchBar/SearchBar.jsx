@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSearchTerm,
   searchProducts,
   clearSearch,
 } from "../../redux/actions/index";
+import { Link } from "react-router-dom";
 import styles from "./SearchBar.module.css";
 
 const SearchBar = () => {
@@ -14,20 +15,16 @@ const SearchBar = () => {
   const loading = useSelector((state) => state.loading);
   const error = useSelector((state) => state.error);
   const dropdownRef = useRef(null);
+  const [inputClicked, setInputClicked] = useState(false);
 
   useEffect(() => {
-    // Función para llamar cuando se hace clic en el documento
     const handleClickOutside = (event) => {
-      // Si se hace clic fuera de la lista desplegable, se limpia la búsqueda
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         dispatch(clearSearch());
       }
     };
-
-    // Añade el listener para el evento 'mousedown'
     document.addEventListener('mousedown', handleClickOutside);
 
-    // Función de limpieza para eliminar el listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -35,19 +32,17 @@ const SearchBar = () => {
 
   const onChange = (event) => {
     const value = event.target.value;
+    setInputClicked(true);
     dispatch(setSearchTerm(value));
-    if (value.length > 2) { // Buscar cuando haya al menos 3 caracteres
+    if (value.length >= 3) {
       dispatch(searchProducts(value));
     } else if (value.length === 0) {
-      dispatch(clearSearch()); // Limpia la barra y los resultados si el valor es una cadena vacía
+      dispatch(clearSearch());
     }
   };
 
-  const onSelectItem = (title) => {
-    dispatch(setSearchTerm(title));
+  const onSelectItem = () => {
     dispatch(clearSearch());
-    
-    
   };
 
   return (
@@ -56,22 +51,23 @@ const SearchBar = () => {
       
       <input  className={styles.inputField}
         type="text"
-        placeholder="Buscar..." value={searchTerm} onChange={onChange} />
+        placeholder="Buscar..." value={searchTerm} onChange={onChange} onClick={() => setInputClicked(true)} />
         <button className={styles.searchButton}>Buscar</button>
     </div> 
-      {error && <p>Error: {error}</p>}
+      {inputClicked && error && products.length === 0 && searchTerm.length >= 3 && (
+        <p className={styles.dropdown}>Error: {error}</p>
+      )}
       {products.length > 0 && (
         <div ref={dropdownRef} className={styles.dropdown}>
           {products.map((item) => (
             <div key={item.title} onClick={() => onSelectItem(item.title)}
             className={styles.dropdownItem}
             >
-              {item.title}
+              <Link to={`/detail/${item.id}`}>{item.title}</Link>
             </div>
           ))}
         </div>
       )}
-    
     </div> 
   );
 };

@@ -8,6 +8,8 @@ import {
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
+  GET_FILTERS,
+  CREATE_PRODUCT
 } from "../types";
 import axios from "axios";
 
@@ -82,3 +84,47 @@ export const getProductById = (id) => {
 export const resetProductDetail = () => {
   return { type: RESET_PRODUCT_DETAIL };
 };
+
+export const filteredProducts = (filters) => {
+  return async (dispatch) => {
+    try {
+
+      const response = await axios.get('http://localhost:3001/products?page=all', {
+        params: filters,
+      });
+      await dispatch({
+        type: GET_FILTERS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error('Error fetching filtered products:', error);
+    }
+  };
+};
+
+export const createProduct = ({category,description,available,price,stock,author,manufacturer,title,image}) => {
+  return async (dispatch) => {
+     try {
+  const product = {
+  title,
+  manufacturer,
+  author,
+  stock,
+  price,
+  image,
+  available,
+  description,
+  category
+}
+    const endPoint = "http://localhost:3001/products"
+    const { data } = await axios.post(endPoint,product);
+    dispatch({
+         type: CREATE_PRODUCT,
+         payload: data
+    })
+    console.log(data);
+  } catch (error) {
+    throw new Error(error)
+  }
+  }
+}

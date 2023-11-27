@@ -7,6 +7,8 @@ import {
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
+  GET_FILTERS,
+  CREATE_PRODUCT
 } from "../types/index";
 
 const initialState = {
@@ -16,6 +18,8 @@ const initialState = {
   searchTerm: "",
   products: [],
   productsDetail: {},
+  productsFiltered: [],
+  product:{}
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -47,6 +51,12 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         productsDetail: {},
       };
+    case GET_FILTERS:
+      return {
+        ...state,
+        productsFiltered: payload
+      }
+    case CREATE_PRODUCT: return {...state, product: payload }
     default:
       return state;
   }
