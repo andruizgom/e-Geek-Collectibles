@@ -52,28 +52,28 @@ const SearchBar = () => {
 
   return (
     <div className={styles.searchContainer}>
-     <div className={styles.searchBar}>
-       
-       <input  className={styles.inputField}
-         type="text"
-         placeholder="Buscar..." value={searchTerm} onChange={onChange} />
-         <button className={styles.searchButton}>Buscar</button>
-     </div> 
-       {error && <p>Error: {error}</p>}
-       {products.length > 0 && (
-         <div ref={dropdownRef} className={styles.dropdown}>
-           {products.map((item) => (
-             <div key={item.title} onClick={() => onSelectItem(item.title)}
-             className={styles.dropdownItem}
-             >
-               {item.title}
-             </div>
-           ))}
-         </div>
-       )}
-     
-     </div> 
-   );
+    <div className={styles.searchBar}>
+      
+      <input  className={styles.inputField}
+        type="text"
+        placeholder="Buscar..." value={searchTerm} onChange={onChange} />
+        <button className={styles.searchButton}>Buscar</button>
+    </div> 
+      {error && <p>Error: {error}</p>}
+      {products.length > 0 && (
+        <div ref={dropdownRef} className={styles.dropdown}>
+          {products.map((item) => (
+            <div key={item.title} onClick={() => onSelectItem(item.title)}
+            className={styles.dropdownItem}
+            >
+              {item.title}
+            </div>
+          ))}
+        </div>
+      )}
+    
+    </div> 
+  );
 };
 
 export default SearchBar;
