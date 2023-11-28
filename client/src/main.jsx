@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store/index.js";
 import "./main.css";
 import App from "./App.jsx";
 import { Auth0Provider } from '@auth0/auth0-react';
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3001/";
+//axios.defaults.baseURL = "";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Auth0Provider
