@@ -8,7 +8,10 @@ import {
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
-  CREATE_PRODUCT
+  CREATE_PRODUCT,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_FAVORITES
 } from "../types/index";
 
 const initialState = {
@@ -19,7 +22,7 @@ const initialState = {
   products: [],
   productsDetail: {},
   productsFiltered: [],
-  product:{}
+  product: {}
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -55,11 +58,29 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         productsFiltered: payload
-      }
-    case CREATE_PRODUCT: return {...state, product: payload }
+      };
+    case CREATE_PRODUCT:
+      return { ...state, product: payload };
+
+    case ADD_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case REMOVE_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case GET_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
     default:
       return state;
   }
+
 };
 
 export default reducer;
