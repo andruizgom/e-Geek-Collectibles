@@ -8,13 +8,11 @@ const postFavoritesC = async (req) => {
 
         if (!email || !id) throw new Error('Incomplete data');
 
-        const user = await Users.findOne({
-			where: {
-				email: email,
-			},
-		});
-
-        if (!user) throw new Error('User not found');
+        const [user, created] = await Users.findOrCreate({
+            where: {
+                email: email,
+            },
+        });
 
         await user.addProducts(id);
         

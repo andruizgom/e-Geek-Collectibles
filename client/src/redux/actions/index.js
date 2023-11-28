@@ -9,7 +9,10 @@ import {
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
-  CREATE_PRODUCT
+  CREATE_PRODUCT,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_FAVORITES
 } from "../types";
 import axios from "axios";
 
@@ -128,3 +131,70 @@ export const createProduct = ({category,description,available,price,stock,author
   }
   }
 }
+
+export const postFavorite = (favorite) => {
+  const endpoint = 'http://localhost:3001/favorites';
+  return async (dispatch) => {
+      try {
+
+          const {data} = await axios.post(endpoint, favorite);
+
+          if (!data) throw new Error('There was no data');
+
+          return dispatch({
+              type: ADD_FAVORITES,
+              payload: data.Products,
+          });
+
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+
+export const removeFavorite = (favorite) => {
+  const endpoint = 'http://localhost:3001/favorites';
+  return async (dispatch) => {
+      try {
+
+          const {data} = await axios.put(endpoint, favorite);
+
+          if (!data) throw new Error('There was no data');
+
+          return dispatch({
+              type: REMOVE_FAVORITES,
+              payload: data.Products,
+          });
+
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+
+export const getFavorites = (email) => {
+  const endpoint = `http://localhost:3001/favorites/email?email=${email}`;
+  
+  return async (dispatch) => {
+    try {
+      const response = await fetch(endpoint);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      if (!data) {
+        throw new Error('There was no data');
+      }
+
+      return dispatch({
+        type: GET_FAVORITES,
+        payload: data.Products,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+};
