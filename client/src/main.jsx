@@ -10,11 +10,6 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:3001/";
 // axios.defaults.baseURL = "http://e-geek-collectibles-production.up.railway.app";
-import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:3001/";
-// axios.defaults.baseURL = "http://e-geek-collectibles-production.up.railway.app";
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Auth0Provider
