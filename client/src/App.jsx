@@ -5,8 +5,11 @@ import Home from './views/Home/Home';
 import Detail from './views/Detail/Detail';
 import './App.css';
 import Form from './components/Form/Form';
+import User from './views/User/User';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
+  const {  isAuthenticated } = useAuth0();
   return (
     <div className="App">
       <Routes>
@@ -14,6 +17,7 @@ function App() {
         <Route exact path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
+        {isAuthenticated && <Route path="/user" element={<User />} />}
       </Routes>
     </div>
   );
