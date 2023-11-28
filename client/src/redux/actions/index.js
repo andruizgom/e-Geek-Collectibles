@@ -8,7 +8,11 @@ import {
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
-  GET_FILTERS
+  GET_FILTERS,
+  CREATE_PRODUCT,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_FAVORITES
 } from "../types";
 import axios from "axios";
 
@@ -97,6 +101,100 @@ export const filteredProducts = (filters) => {
       });
     } catch (error) {
       console.error('Error fetching filtered products:', error);
+    }
+  };
+};
+
+export const createProduct = ({category,description,available,price,stock,author,manufacturer,title,image}) => {
+  return async (dispatch) => {
+     try {
+  const product = {
+  title,
+  manufacturer,
+  author,
+  stock,
+  price,
+  image,
+  available,
+  description,
+  category
+}
+    const endPoint = "http://localhost:3001/products"
+    const { data } = await axios.post(endPoint,product);
+    dispatch({
+         type: CREATE_PRODUCT,
+         payload: data
+    })
+    console.log(data);
+  } catch (error) {
+    throw new Error(error)
+  }
+  }
+}
+
+export const postFavorite = (favorite) => {
+  const endpoint = 'http://localhost:3001/favorites';
+  return async (dispatch) => {
+      try {
+
+          const {data} = await axios.post(endpoint, favorite);
+
+          if (!data) throw new Error('There was no data');
+
+          return dispatch({
+              type: ADD_FAVORITES,
+              payload: data.Products,
+          });
+
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+
+export const removeFavorite = (favorite) => {
+  const endpoint = 'http://localhost:3001/favorites';
+  return async (dispatch) => {
+      try {
+
+          const {data} = await axios.put(endpoint, favorite);
+
+          if (!data) throw new Error('There was no data');
+
+          return dispatch({
+              type: REMOVE_FAVORITES,
+              payload: data.Products,
+          });
+
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+
+export const getFavorites = (email) => {
+  const endpoint = `http://localhost:3001/favorites/email?email=${email}`;
+  
+  return async (dispatch) => {
+    try {
+      const response = await fetch(endpoint);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      if (!data) {
+        throw new Error('There was no data');
+      }
+
+      return dispatch({
+        type: GET_FAVORITES,
+        payload: data.Products,
+      });
+    } catch (error) {
+      throw new Error(error.message);
     }
   };
 };

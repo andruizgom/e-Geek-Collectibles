@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductById, resetProductDetail } from "../../redux/actions";
 import { Link } from "react-router-dom";
 import "./detail.css";
+import FavButton from '../../components/FavButton/FavButton';
 
 export default function Detail() {
   const useProducts = () => {
@@ -44,6 +45,7 @@ export default function Detail() {
           <h3>${productDetail.price}</h3>
           <h3>Categoria: {productDetail.category}</h3>
           <h4>{productDetail.description}</h4>
+          <FavButton/>
         </div>
       </div>
       <div className="reviews">

@@ -7,7 +7,11 @@ import {
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
-  GET_FILTERS
+  GET_FILTERS,
+  CREATE_PRODUCT,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_FAVORITES
 } from "../types/index";
 
 const initialState = {
@@ -17,7 +21,8 @@ const initialState = {
   searchTerm: "",
   products: [],
   productsDetail: {},
-  productsFiltered: []
+  productsFiltered: [],
+  product: {}
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -53,10 +58,29 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         productsFiltered: payload
-      }
+      };
+    case CREATE_PRODUCT:
+      return { ...state, product: payload };
+
+    case ADD_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case REMOVE_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case GET_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
     default:
       return state;
   }
+
 };
 
 export default reducer;
