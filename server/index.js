@@ -12,3 +12,11 @@ conn
     });
   })
   .catch((error) => console.error(error));
+conn
+  .sync({ force: false })
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  })
+  .catch((error) => console.error(error));
