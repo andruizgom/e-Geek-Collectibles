@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail } from "../../redux/actions";
+import { getProductById, resetProductDetail,buyProduct } from "../../redux/actions";
 import { Link } from "react-router-dom";
 import "./detail.css";
 import FavButton from '../../components/FavButton/FavButton';
 
 export default function Detail() {
+  const dispatch = useDispatch()
+
+  const [quantity, setQuantity] = useState(1); 
+  const { id } = useParams(); //modifique 
   const useProducts = () => {
-    const { id } = useParams();
-    const dispatch = useDispatch();
+    
+    
+    
     const productsDetail = useSelector((state) => state.productsDetail);
 
     useEffect(() => {
@@ -29,6 +34,28 @@ export default function Detail() {
   };
 
   const productDetail = useProducts();
+  
+const Buy = () => {
+    
+    console.log(id)
+    
+    for (let i = 0; i < quantity; i++) {
+      dispatch(buyProduct(id));
+      
+    }
+  };
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+  
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+
 
   return (
     <div>
@@ -46,6 +73,18 @@ export default function Detail() {
           <h3>Categoria: {productDetail.category}</h3>
           <h4>{productDetail.description}</h4>
           <FavButton/>
+
+          <button className="bg-black"onClick={Buy}>COMPRAR PRODUCTO</button>
+          
+          <div>
+           <button onClick={handleDecrement}>-</button>
+              <span>{quantity}</span>
+           <button onClick={handleIncrement}>+</button>
+          </div>
+          <Link to="/car">
+              <button className="mt-20">IR AL CARRITO DE COMPRAS</button>
+
+          </Link>
         </div>
       </div>
       <div className="reviews">
