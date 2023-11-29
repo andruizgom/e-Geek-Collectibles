@@ -11,7 +11,10 @@ import {
   CREATE_PRODUCT,
   ADD_FAVORITES,
   REMOVE_FAVORITES,
-  GET_FAVORITES
+  GET_FAVORITES,
+  BUY_PRODUCT,
+  DELETE_BUY_PRODUCT,
+  
 } from "../types/index";
 
 const initialState = {
@@ -22,7 +25,9 @@ const initialState = {
   products: [],
   productsDetail: {},
   productsFiltered: [],
-  product: {}
+  product: {},
+  idCarProduct: [], //modifique
+  carrito:[]
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -77,6 +82,23 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         favorites: payload,
       };
+
+      case BUY_PRODUCT:
+        let listaIdBuy = [...state.idCarProduct, payload];
+        return {
+          ...state,
+          idCarProduct: listaIdBuy
+        };
+
+    case DELETE_BUY_PRODUCT:
+      const updatedCar = idCarProduct.filter((elemento) => elemento !== action.payload);
+      return{
+        ...state,
+        idCarProduct:updatedCar
+      }
+
+
+  
     default:
       return state;
   }

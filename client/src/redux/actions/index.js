@@ -12,7 +12,8 @@ import {
   CREATE_PRODUCT,
   ADD_FAVORITES,
   REMOVE_FAVORITES,
-  GET_FAVORITES
+  GET_FAVORITES,
+  BUY_PRODUCT,
 } from "../types";
 import axios from "axios";
 
@@ -177,3 +178,19 @@ export const getFavorites = (email) => {
     }
   };
 };
+
+export const buyProduct=(id)=>{ //MODIFIQUE
+  return{
+    type: BUY_PRODUCT,
+    payload:id,
+  }
+
+}
+
+export const deleteProductCar=()=>{
+  return{
+    type:DELETE_BUY_PRODUCT,
+    payload:id
+  }
+}
+
