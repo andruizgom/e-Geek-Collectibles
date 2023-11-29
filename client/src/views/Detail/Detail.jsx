@@ -29,7 +29,6 @@ export default function Detail() {
         dispatch(resetProductDetail());
       };
     }, [dispatch, id]);
-
     return productsDetail;
   };
 
@@ -59,7 +58,7 @@ const Buy = () => {
 
   return (
     <div>
-      <Link to="/Home">
+      <Link to="/home">
         <button className="btn-back">🔙</button>
       </Link>
       <div className="containerDetail">
