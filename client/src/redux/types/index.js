@@ -14,3 +14,4 @@ export const GET_FAVORITES = "GET_FAVORITES";
 export const BUY_PRODUCT ="BUY_PRODUCT"; //modifique
 export const DELETE_BUY_PRODUCT="DELETE_BUY_PRODUCT";
 export const PUSH_PRODUCT_CAR="PUSH_PRODUCT_CAR"
+

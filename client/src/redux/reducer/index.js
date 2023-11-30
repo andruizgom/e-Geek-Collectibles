@@ -96,9 +96,6 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         idCarProduct:updatedCar
       }
-
-
-  
     default:
       return state;
   }
