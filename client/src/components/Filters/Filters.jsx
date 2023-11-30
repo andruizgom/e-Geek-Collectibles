@@ -9,11 +9,13 @@ const Filters = () => {
     title: '',
     price: '',
     category: '',
+    manufacturer: '',  // Agregado el filtro de manufacturer
     sortOrder: '',
     nameOrder: '',
   });
 
   const categories = ["Games", "Statues", "Comics", "Figures", "Outfit and Accessories"];
+  const manufacturer = ["Marvel", "DC", "Netflix", "Saban", "Lucasfilm", "20th Century-Fox", "Toei Animation", "Warner Bros", "Universal Pictures", "Golden Harvest Limelight Entertainment", "Disney", "Capcom", "Amblin Entertainment", "Naughty Dog", "New Line Cinema", "Nickelodeon", "Metro Goldwyn Mayer", "Nintendo", "Hanna-Barbera", "Columbia Pictures"];
 
   const handleFilterChange = (filterName, value) => {
     setFilters(prevFilters => ({
@@ -23,12 +25,11 @@ const Filters = () => {
   }
 
   const handleFilter = () => {
+    console.log(filters)
     dispatch(filteredProducts(filters));
   }
 
   useEffect(() => {
-    // Lógica para manejar el cambio en sortOrder y nameOrder
-    // Por ejemplo, puedes restablecer esos filtros si se selecciona "None"
     if (filters.sortOrder === 'None') {
       setFilters(prevFilters => ({
         ...prevFilters,
@@ -52,6 +53,15 @@ const Filters = () => {
           <option value="">All Categories</option>
           {categories.map((cat) => (
             <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label>Manufacturer:</label>
+        <select value={filters.manufacturer} onChange={(e) => handleFilterChange('manufacturer', e.target.value)}>
+          <option value="">All Manufacturers</option>
+          {manufacturer.map((manu) => (
+            <option key={manu} value={manu}>{manu}</option>
           ))}
         </select>
       </div>
