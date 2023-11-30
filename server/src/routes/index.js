@@ -4,6 +4,7 @@ const { getProductsByNameH } = require("../handlers/getProductsByNameH");
 const { getProductsByIdH } = require("../handlers/getProductsByIdH");
 const { postCreateProductH } = require("../handlers/postCreateProductH");
 const { postReviewH } = require("../handlers/postReviewH");
+const { getReviewH } = require("../handlers/getReviewH");
 const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
@@ -22,6 +23,7 @@ router.get("/products/:id", getProductsByIdH);
 router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
+router.get("/reviews/", getReviewH);
 
 router.post("/users", postUserH);
 
@@ -32,3 +34,12 @@ router.post("/favorites", postFavoritesH);
 router.put("/favorites", deleteFavoritesH);
 
 module.exports = router;
+
+
+
+
+
+
+
+
+

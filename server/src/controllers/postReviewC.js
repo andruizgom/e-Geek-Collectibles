@@ -1,22 +1,20 @@
-const { Review, Products } = require('../db');
+const axios = require("axios");
+const { Products, Review } = require("../db");
 
-const postReviewC = async (req) => {
+const postReviewC = async (content, score, productId) => {
 
-    try {
-        const { content, score, id } = req.body;
+    const newReview = await Review.create({ content, score, productId });
 
-        if (!content || !score || !id) throw new Error('Incomplete data for review');
+    const product = await Products.findByPk(productId);
 
-        const newReview = await Review.create({ content, score });
+    await newReview.setProduct(product);
 
-        await newReview.addProducts(id);
-        
-        return newReview;
-
-    } catch (error) {
-        throw new Error(error.message);
-    }
+    return newReview;
 };
+
+
+
+
 
 module.exports = {
     postReviewC
