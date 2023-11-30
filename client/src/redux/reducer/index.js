@@ -14,6 +14,10 @@ import {
   GET_FAVORITES,
   BUY_PRODUCT,
   DELETE_BUY_PRODUCT,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_ERROR,
+  GET_PRODUCT_REVIEWS_ERROR,
+  GET_PRODUCT_REVIEWS_SUCCESS
   
 } from "../types/index";
 
@@ -27,7 +31,10 @@ const initialState = {
   productsFiltered: [],
   product: {},
   idCarProduct: [], //modifique
-  carrito:[]
+  carrito:[],
+  reviews: [],
+  createReviewError: null,
+  getProductReviewsError: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -96,6 +103,34 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         idCarProduct:updatedCar
       }
+
+      case CREATE_REVIEW_SUCCESS:
+        return {
+            ...state,
+            reviews: [...state.reviews, payload],
+            createReviewError: null,
+        };
+
+    case CREATE_REVIEW_ERROR:
+        return {
+            ...state,
+            reviews: null,
+            createReviewError: payload,
+        };
+
+    case GET_PRODUCT_REVIEWS_SUCCESS:
+        return {
+            ...state,
+            reviews: payload,
+            getProductReviewsError: null,
+        };
+
+    case GET_PRODUCT_REVIEWS_ERROR:
+        return {
+            ...state,
+            reviews: null,
+            getProductReviewsError: payload,
+        };  
 
 
   

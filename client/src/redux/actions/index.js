@@ -14,6 +14,10 @@ import {
   REMOVE_FAVORITES,
   GET_FAVORITES,
   BUY_PRODUCT,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_ERROR,
+  GET_PRODUCT_REVIEWS_ERROR,
+  GET_PRODUCT_REVIEWS_SUCCESS
 } from "../types";
 import axios from "axios";
 
@@ -193,4 +197,48 @@ export const deleteProductCar=()=>{
     payload:id
   }
 }
+
+export const createReview = (reviewData) => {
+  return async (dispatch) => {
+      try {
+          // Hago la solicitud POST al servidor para crear la review
+          const response = await axios.post('/review', reviewData);
+
+          // Despachar una acción de éxito, con los datos si la solicitud es exitosa
+          dispatch({
+              type: CREATE_REVIEW_SUCCESS,
+              payload: response.data, 
+          });
+      } catch (error) {
+          // Despachar una acción de error si la solicitud falla
+          dispatch({
+              type: CREATE_REVIEW_ERROR,
+              payload: error.message,
+          });
+      }
+  };
+};
+
+export const getProductReviews = (productId) => {
+  return async (dispatch) => {
+      try {
+          // Hago la solicitud GET al servidor para obtener las revisiones/reviews del producto
+          const response = await axios.get(`/product/${productId}`);
+
+          // Despachar una acción con las revisiones obtenidas, con los datos
+          dispatch({
+              type: GET_PRODUCT_REVIEWS_SUCCESS,
+              payload: response.data,
+          });
+      } catch (error) {
+          // Despachar una acción de error si la solicitud falla
+          dispatch({
+              type: GET_PRODUCT_REVIEWS_ERROR,
+              payload: error.message,
+          });
+      }
+  };
+};
+
+
 

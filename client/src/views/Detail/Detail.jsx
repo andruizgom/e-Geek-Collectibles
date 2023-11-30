@@ -5,6 +5,8 @@ import { getProductById, resetProductDetail,buyProduct } from "../../redux/actio
 import { Link } from "react-router-dom";
 import "./detail.css";
 import FavButton from '../../components/FavButton/FavButton';
+import Reviews from '../../components/Review/Review';
+import { createReview, getProductReviews } from '../../redux/actions/';
 
 export default function Detail() {
   const dispatch = useDispatch()
@@ -54,7 +56,14 @@ const Buy = () => {
     }
   };
 
-
+  const [productId, setProductId] = useState(null);
+  useEffect(() => {
+    if (productDetail.length > 0) {
+      const currentProductId = productDetail[0]?.id;
+      setProductId(currentProductId);
+      dispatch(getProductReviews(currentProductId));
+    }
+  }, [dispatch, productDetail]);
 
   return (
     <div>
@@ -90,7 +99,7 @@ const Buy = () => {
         {productDetail.Reviews && productDetail.Reviews.length > 0 ? (
           productDetail.Reviews.map((r) => <p key={r.id}>{r.content}</p>)
         ) : (
-          <p>No hay reviews de este producto todavía!</p>
+          <Reviews productId={productId} />
         )}
       </div>
     </div>
