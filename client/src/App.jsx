@@ -8,19 +8,22 @@ import './App.css';
 import Form from './components/Form/Form';
 import User from './views/User/User';
 import { useAuth0 } from '@auth0/auth0-react';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   const {  isAuthenticated } = useAuth0();
-  return (
+    return (
     <div className="App">
-      <Routes>
-        <Route path='/create' element={<Form/>} />
-        <Route exact path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/Car" element={<Car/>} /> 
-        {isAuthenticated && <Route path="/user" element={<User />} />}
-      </Routes>
+      <CartProvider>
+        <Routes>
+          <Route path='/create' element={<Form/>} />
+          <Route exact path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/Car" element={<Car/>} /> 
+          {isAuthenticated && <Route path="/user" element={<User />} />}
+        </Routes>
+      </CartProvider>
     </div>
   );
 }
