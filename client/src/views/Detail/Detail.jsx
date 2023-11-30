@@ -1,22 +1,22 @@
-import React, { useEffect , useState} from "react";
+import React, { useContext, useEffect , useState} from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById, resetProductDetail,buyProduct } from "../../redux/actions";
 import { Link } from "react-router-dom";
 import "./detail.css";
 import FavButton from '../../components/FavButton/FavButton';
+import { CartContext } from "../../context/CartContext";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function Detail() {
   const dispatch = useDispatch()
-
-  const [quantity, setQuantity] = useState(1); 
   const { id } = useParams(); //modifique 
-  const useProducts = () => {
-    
-    
-    
-    const productsDetail = useSelector((state) => state.productsDetail);
+  const [quantity, setQuantity] = useState(1); 
+  const {carrito, agregarAlCarrito} = useContext(CartContext);
+  console.log(carrito)
 
+  const useProducts = () => {
+    const productsDetail = useSelector((state) => state.productsDetail);
     useEffect(() => {
       if (id) {
         dispatch(getProductById(id, false))
@@ -33,31 +33,18 @@ export default function Detail() {
   };
 
   const productDetail = useProducts();
-  
-const Buy = () => {
-    
-    console.log(id)
-    
-    for (let i = 0; i < quantity; i++) {
-      dispatch(buyProduct(id));
-      
-    }
-  };
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    quantity < productDetail.stock && setQuantity(quantity + 1)
   };
   
   const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    quantity > 1 && setQuantity(quantity - 1)
     }
-  };
-
-
 
   return (
     <div>
+      <NavBar/>
       <Link to="/home">
         <button className="btn-back">🔙</button>
       </Link>
@@ -73,15 +60,15 @@ const Buy = () => {
           <h4>{productDetail.description}</h4>
           <FavButton/>
 
-          <button className="bg-black"onClick={Buy}>COMPRAR PRODUCTO</button>
+          <button className="bg-black"onClick={() => {agregarAlCarrito(productDetail, quantity)}}>Agregar al Carrito</button>
           
           <div>
-           <button onClick={handleDecrement}>-</button>
+            <button onClick={handleDecrement}>-</button>
               <span>{quantity}</span>
-           <button onClick={handleIncrement}>+</button>
+            <button onClick={handleIncrement}>+</button>
           </div>
           <Link to="/car">
-              <button className="mt-20">IR AL CARRITO DE COMPRAS</button>
+              <button className="mt-20">Ir al Carrito</button>
 
           </Link>
         </div>
