@@ -9,4 +9,16 @@
     cursor: pointer;
     font-size: 25px;
   }
+
+  .reviews-textarea {
+    width: 100%; /* Ajusta al ancho del contenedor */
+    height: 100px; /* Altura suficiente para escribir comentarios */
+    padding: 10px; /* Espaciado interno para el texto */
+    margin-top: 10px; /* Espacio encima del área de texto */
+    border: 1px solid #ccc; /* Borde sutil */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente legible */
+    color: #333; /* Color del texto oscuro para contraste */
+    background-color: #fff; /* Fondo claro */
+  }
   

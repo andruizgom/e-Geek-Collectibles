@@ -39,7 +39,7 @@ const Reviews = ({ productId }) => {
 
     await dispatch(createReview(reviewData));
 
-    // Después de enviar la reseña, actualiza las reviews del producto
+    // Aqui envio la reseña y actualizo las reviews
     dispatch(getProductReviews(productId));
 
     alert('Reseña enviada con éxito');

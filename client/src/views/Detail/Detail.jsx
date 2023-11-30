@@ -58,10 +58,9 @@ const Buy = () => {
 
   const [productId, setProductId] = useState(null);
   useEffect(() => {
-    if (productDetail.length > 0) {
-      const currentProductId = productDetail[0]?.id;
-      setProductId(currentProductId);
-      dispatch(getProductReviews(currentProductId));
+    if (productDetail?.id) {
+      setProductId(productDetail.id);
+      dispatch(getProductReviews(productDetail.id));
     }
   }, [dispatch, productDetail]);
 
