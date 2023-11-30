@@ -7,7 +7,14 @@ import {
   CLEAR_SEARCH,
   GET_PRODUCT_BY_ID,
   RESET_PRODUCT_DETAIL,
-  GET_FILTERS
+  GET_FILTERS,
+  CREATE_PRODUCT,
+  ADD_FAVORITES,
+  REMOVE_FAVORITES,
+  GET_FAVORITES,
+  BUY_PRODUCT,
+  DELETE_BUY_PRODUCT,
+  
 } from "../types/index";
 
 const initialState = {
@@ -17,7 +24,10 @@ const initialState = {
   searchTerm: "",
   products: [],
   productsDetail: {},
-  productsFiltered: []
+  productsFiltered: [],
+  product: {},
+  idCarProduct: [], //modifique
+  carrito:[]
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -53,10 +63,43 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         productsFiltered: payload
+      };
+    case CREATE_PRODUCT:
+      return { ...state, product: payload };
+
+    case ADD_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case REMOVE_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+    case GET_FAVORITES:
+      return {
+        ...state,
+        favorites: payload,
+      };
+
+      case BUY_PRODUCT:
+        let listaIdBuy = [...state.idCarProduct, payload];
+        return {
+          ...state,
+          idCarProduct: listaIdBuy
+        };
+
+    case DELETE_BUY_PRODUCT:
+      const updatedCar = idCarProduct.filter((elemento) => elemento !== action.payload);
+      return{
+        ...state,
+        idCarProduct:updatedCar
       }
     default:
       return state;
   }
+
 };
 
 export default reducer;

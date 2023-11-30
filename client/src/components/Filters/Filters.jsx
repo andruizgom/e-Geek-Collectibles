@@ -9,7 +9,7 @@ const Filters = () => {
     title: '',
     price: '',
     category: '',
-    manufacturer: '',  // Agregado el filtro de manufacturer
+    manufacturer: '',  
     sortOrder: '',
     nameOrder: '',
   });
@@ -25,7 +25,6 @@ const Filters = () => {
   }
 
   const handleFilter = () => {
-    console.log(filters)
     dispatch(filteredProducts(filters));
   }
 
@@ -55,6 +54,7 @@ const Filters = () => {
             <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
+
       </div>
       <div>
         <label>Manufacturer:</label>

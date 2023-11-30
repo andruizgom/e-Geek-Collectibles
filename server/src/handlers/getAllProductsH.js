@@ -1,5 +1,5 @@
-const { getAllProductsC } = require('../controllers/getAllProductsC')
-const { filterProducts } = require('../controllers/Filters/allFilters');
+const { getAllProductsC } = require("../controllers/getAllProductsC");
+const { filterProducts } = require("../controllers/Filters/allFilters");
 
 const getAllProductsH = async (req, res) => {
   const {
@@ -30,6 +30,5 @@ const getAllProductsH = async (req, res) => {
 };
 
 module.exports = {
-    getAllProductsH,
+  getAllProductsH,
 };
- 

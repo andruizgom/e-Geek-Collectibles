@@ -5,6 +5,7 @@ import "./Card.styles.css";
 function Card({ title, id, img, price }) {
 
   
+  
   return (
     <div className="card">
       <Link to={`/detail/${id}`} className="contentBox">
@@ -13,7 +14,7 @@ function Card({ title, id, img, price }) {
           <img src={img} className="mouse" />
         </div>
         <p>${price}</p>
-        <a href="#" className="buy">
+        <a  href="#" className="buy">
           Comprar
         </a>
       </Link>
