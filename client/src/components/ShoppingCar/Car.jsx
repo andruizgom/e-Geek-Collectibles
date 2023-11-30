@@ -8,6 +8,7 @@ export const Car = () => {
   const handleVaciar = () => {
     vaciarCarrito()
   }
+
   return (
     <div>
     <NavBar/>

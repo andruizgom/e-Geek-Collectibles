@@ -1,10 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 
-
 export const CartContext = createContext();
 
 const carritoInicial = JSON.parse(localStorage.getItem("carrito")) || [];
-console.log(carritoInicial)
 
 export const CartProvider = ({children}) => {
   const [carrito, setCarrito] = useState(carritoInicial)
@@ -20,7 +18,7 @@ export const CartProvider = ({children}) => {
     }
     setCarrito(nuevoCarrito)
   };
-
+  
   const cantidadEnElCarrito = () => {
     return carrito.reduce((acc, prod) => acc + prod.quantity, 0);
   }
