@@ -12,15 +12,13 @@ export default function Detail() {
   const dispatch = useDispatch()
   const { id } = useParams(); //modifique 
   const [quantity, setQuantity] = useState(1); 
-  const {carrito, agregarAlCarrito} = useContext(CartContext);
-  console.log(carrito)
+  const {agregarAlCarrito} = useContext(CartContext);
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
     useEffect(() => {
       if (id) {
         dispatch(getProductById(id, false))
-          .then(() => console.log("Éxito"))
           .catch((err) => {
             throw new Error("Error en la acción:", err);
           });
@@ -59,9 +57,7 @@ export default function Detail() {
           <h3>Categoria: {productDetail.category}</h3>
           <h4>{productDetail.description}</h4>
           <FavButton/>
-
           <button className="bg-black"onClick={() => {agregarAlCarrito(productDetail, quantity)}}>Agregar al Carrito</button>
-          
           <div>
             <button onClick={handleDecrement}>-</button>
               <span>{quantity}</span>
@@ -69,7 +65,6 @@ export default function Detail() {
           </div>
           <Link to="/car">
               <button className="mt-20">Ir al Carrito</button>
-
           </Link>
         </div>
       </div>
