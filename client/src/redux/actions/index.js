@@ -12,7 +12,9 @@ import {
   CREATE_PRODUCT,
   ADD_FAVORITES,
   REMOVE_FAVORITES,
-  GET_FAVORITES
+  GET_FAVORITES,
+  BUY_PRODUCT,
+  CREATE_USER
 } from "../types";
 import axios from "axios";
 
@@ -198,3 +200,37 @@ export const getFavorites = (email) => {
     }
   };
 };
+
+export const buyProduct=(id)=>{ //MODIFIQUE
+  return{
+    type: BUY_PRODUCT,
+    payload:id,
+  }
+
+}
+
+export const deleteProductCar=()=>{
+  return{
+    type:DELETE_BUY_PRODUCT,
+    payload:id
+  }
+}
+
+export const createUser = (email) => {
+  console.log(email);
+  const endpoint = '/users';
+  return async (dispatch) => {
+      try {
+          const {data} = await axios.post(endpoint, {email});
+          if (!data) throw new Error('There was no data');
+          console.log(data);
+          return dispatch({
+              type: CREATE_USER,
+              payload: data,
+          });
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+
