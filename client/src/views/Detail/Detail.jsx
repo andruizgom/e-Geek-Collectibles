@@ -113,6 +113,7 @@ export default function Detail() {
             <p className="text-3xl tracking-tight text-gray-900">
               ${productDetail.price}
             </p>
+            <FavButton />
             {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
