@@ -1,26 +1,34 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Landing from './views/Landing/Landing';
-import Home from './views/Home/Home';
-import Detail from './views/Detail/Detail';
-import { Car } from './components/ShoppingCar/Car';
-import './App.css';
-import Form from './components/Form/Form';
-import User from './views/User/User';
-import { useAuth0 } from '@auth0/auth0-react';
+import React from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Navigation from "./components/Navigation/Navigation";
+import Landing from "./views/Landing/Landing";
+import Home from "./views/Home/Home";
+import Detail from "./views/Detail/Detail";
+import ShoppingCart from "./views/ShoppingCart/ShoppingCart";
+import Form from "./components/Form/Form";
+import User from "./views/User/User";
+import { useAuth0 } from "@auth0/auth0-react";
+import { CartProvider } from "./context/CartContext";
+import UserForm from './views/UserForm/UserForm';
+import Admin from './views/Admin/Admin';
 
 function App() {
   const {  isAuthenticated } = useAuth0();
   return (
     <div className="App">
-      <Routes>
-        <Route path='/create' element={<Form/>} />
-        <Route exact path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/Car" element={<Car/>} /> 
-        {isAuthenticated && <Route path="/user" element={<User />} />}
-      </Routes>
+      {window.location.pathname !== "/" && <Navigation />}
+      <CartProvider>
+        <Routes>
+          <Route exact path="/" element={<Landing />} />
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/detail/:id" element={<Detail />} />
+          <Route exact path="/cart" element={<ShoppingCart />} />
+          <Route exact path="/create" element={<Form />} />
+          <Route path="/userform" element={<UserForm/>} />
+          {isAuthenticated && <Route exact path="/user" element={<User />} />}
+          {isAuthenticated && <Route path="/admin" element={<Admin />} />}
+        </Routes>
+      </CartProvider>
     </div>
   );
 }

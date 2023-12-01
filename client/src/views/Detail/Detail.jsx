@@ -1,28 +1,36 @@
-import React, { useEffect , useState} from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail,buyProduct } from "../../redux/actions";
-import { Link } from "react-router-dom";
-import "./detail.css";
-import FavButton from '../../components/FavButton/FavButton';
+import {
+  getProductById,
+  resetProductDetail,
+  buyProduct,
+} from "../../redux/actions";
+import { CartContext } from "../../context/CartContext";
+import FavButton from "../../components/FavButton/FavButton";
+import { StarIcon } from "@heroicons/react/20/solid";
+
+const reviews = { href: "#", average: 4 };
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default function Detail() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
+  const { agregarAlCarrito } = useContext(CartContext);
 
-  const [quantity, setQuantity] = useState(1); 
-  const { id } = useParams(); //modifique 
   const useProducts = () => {
-    
-    
-    
     const productsDetail = useSelector((state) => state.productsDetail);
 
     useEffect(() => {
       if (id) {
-        dispatch(getProductById(id, false))
-          .then(() => console.log("Éxito"))
+        dispatch(getProductById(id))
+          .then()
           .catch((err) => {
-            throw new Error("Error en la acción:", err);
+            throw new Error("Error: ", err);
           });
       }
       return () => {
@@ -33,65 +41,188 @@ export default function Detail() {
   };
 
   const productDetail = useProducts();
-  
-const Buy = () => {
-    
-    console.log(id)
-    
-    for (let i = 0; i < quantity; i++) {
-      dispatch(buyProduct(id));
-      
-    }
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    agregarAlCarrito(productDetail, quantity);
   };
 
   const handleIncrement = () => {
-    setQuantity(quantity + 1);
+    quantity < productDetail.stock && setQuantity(quantity + 1);
   };
-  
+
   const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    quantity > 1 && setQuantity(quantity - 1);
   };
-
-
 
   return (
-    <div>
-      <Link to="/home">
-        <button className="btn-back">🔙</button>
-      </Link>
-      <div className="containerDetail">
-        <img src={productDetail.image} className="image" />
-        <div className="titles">
-          <h2>{productDetail.title}</h2>
-          <h3>Fabricante: {productDetail.manufacturer}</h3>
-          <h3>Creador: {productDetail.author}</h3>
-          <h3>Stock: {productDetail.stock} unidades</h3>
-          <h3>${productDetail.price}</h3>
-          <h3>Categoria: {productDetail.category}</h3>
-          <h4>{productDetail.description}</h4>
-          <FavButton/>
-
-          <button className="bg-black"onClick={Buy}>COMPRAR PRODUCTO</button>
-          
-          <div>
-           <button onClick={handleDecrement}>-</button>
-              <span>{quantity}</span>
-           <button onClick={handleIncrement}>+</button>
+    <div className="bg-white">
+      <div className="pt-6">
+        <nav aria-label="Breadcrumb">
+          <ol
+            role="list"
+            className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
+          >
+            <li>
+              <div className="flex items-center">
+                <Link
+                  to="/home"
+                  className="mr-2 text-sm font-medium text-gray-900"
+                >
+                  Products
+                </Link>
+                <svg
+                  width={16}
+                  height={20}
+                  viewBox="0 0 16 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="h-5 w-4 text-gray-400"
+                >
+                  <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                </svg>
+              </div>
+            </li>
+            <li className="text-sm">
+              <p className="font-medium text-gray-400 hover:text-gray-600">
+                {productDetail.title}
+              </p>
+            </li>
+          </ol>
+        </nav>
+        {/* Image */}
+        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+          <div className="aspect-h-4 aspect-w-3 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+            <img
+              src={productDetail.image}
+              alt={productDetail.title}
+              className="h-full w-full object-cover object-center"
+            />
           </div>
-          <Link to="/car">
-              <button className="mt-20">IR AL CARRITO DE COMPRAS</button>
-
-          </Link>
         </div>
-      </div>
-      <div className="reviews">
-        {productDetail.Reviews && productDetail.Reviews.length > 0 ? (
-          productDetail.Reviews.map((r) => <p key={r.id}>{r.content}</p>)
-        ) : (
-          <p>No hay reviews de este producto todavía!</p>
-        )}
+        {/* Product info */}
+        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              {productDetail.title}
+            </h1>
+          </div>
+          {/* Options */}
+          <div className="mt-4 lg:row-span-3 lg:mt-0">
+            <h2 className="sr-only">Product information</h2>
+            <p className="text-3xl tracking-tight text-gray-900">
+              ${productDetail.price}
+            </p>
+            <FavButton />
+            {/* Reviews */}
+            <div className="mt-6">
+              <h3 className="sr-only">Reviews</h3>
+              <div className="flex items-center">
+                <div className="flex items-center">
+                  {[0, 1, 2, 3, 4].map((rating) => (
+                    <StarIcon
+                      key={rating}
+                      className={classNames(
+                        reviews.average > rating
+                          ? "text-gray-900"
+                          : "text-gray-200",
+                        "h-5 w-5 flex-shrink-0",
+                      )}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <p className="sr-only">
+                  {productDetail?.Reviews?.length} reviews
+                </p>
+                <Link
+                  to="/home"
+                  className="ml-3 text-sm font-medium text-amber-500 hover:text-amber-600"
+                >
+                  {productDetail?.Reviews && productDetail?.Reviews.length === 0
+                    ? "0"
+                    : productDetail?.Reviews}
+                  {productDetail?.Reviews?.length <= 1 ? " review" : " reviews"}
+                </Link>
+              </div>
+              <div className="mt-8 flex items-center border-gray-100">
+                <span
+                  onClick={handleDecrement}
+                  className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+                >
+                  -
+                </span>
+                <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
+                  {quantity}
+                </span>
+                <span
+                  onClick={handleIncrement}
+                  className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+                >
+                  +
+                </span>
+                <span className="ml-4 text-sm font-medium text-gray-500">
+                  Inventory: {productDetail.stock}
+                </span>
+              </div>
+            </div>
+            <form className="mt-10 flex">
+              <div className="mr-4 w-1/2">
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-amber-500 px-8 py-3 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                  onClick={handleAddToCart}
+                >
+                  Add to bag
+                </button>
+              </div>
+              <div className="w-1/2">
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                >
+                  Buy
+                </button>
+              </div>
+            </form>
+          </div>
+          <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+            {/* Description and details */}
+            <div>
+              <h3 className="sr-only">Description</h3>
+              <div className="space-y-6">
+                <p className="text-base text-gray-900">
+                  {productDetail.description}
+                </p>
+              </div>
+            </div>
+            <div className="mt-10">
+              <h3 className="text-sm font-medium text-gray-900">Details</h3>
+              <div className="mt-4">
+                <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                  <li key={productDetail.category} className="text-gray-400">
+                    <span className="text-gray-600">
+                      Category: {productDetail.category}
+                    </span>
+                  </li>
+                  <li key={productDetail.author} className="text-gray-400">
+                    <span className="text-gray-600">
+                      Author: {productDetail.author}
+                    </span>
+                  </li>
+                  <li
+                    key={productDetail.manufacturer}
+                    className="text-gray-400"
+                  >
+                    <span className="text-gray-600">
+                      Manufacturer: {productDetail.manufacturer}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

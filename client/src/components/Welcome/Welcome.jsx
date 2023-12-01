@@ -35,7 +35,7 @@ export default function Welcome() {
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
               <Link
                 to="/home"
-                className="rounded-md bg-amber-500 px-3.5 py-2.5 text-3xl font-semibold text-black shadow-sm hover:bg-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                className="rounded-md bg-amber-500 px-3.5 py-2.5 text-3xl font-semibold text-gray-900 shadow-sm hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Get started
               </Link>

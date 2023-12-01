@@ -2,7 +2,7 @@ const {Op} = require('sequelize')
 const { Products } = require('../../db');
 
 const filterProducts = async(req) => {
-    const { title, price, category, sortOrder, nameOrder} = req.query;
+    const { title, price, category, manufacturer, sortOrder, nameOrder} = req.query;
     try {
         
         const filterOptions = {};
@@ -22,6 +22,12 @@ const filterProducts = async(req) => {
         if(category){
             filterOptions.category = {
                 [Op.iLike]: `%${category}%`
+            };
+        }
+
+        if (manufacturer) {
+            filterOptions.manufacturer = {
+                [Op.iLike]: `%${manufacturer}%`
             };
         }
 
