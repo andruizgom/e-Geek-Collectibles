@@ -23,7 +23,7 @@ router.get("/products/:id", getProductsByIdH);
 router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
-router.get("/reviews/", getReviewH);
+router.get("/reviews", getReviewH);
 
 router.post("/users", postUserH);
 

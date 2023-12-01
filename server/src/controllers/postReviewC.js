@@ -2,15 +2,26 @@ const axios = require("axios");
 const { Products, Review } = require("../db");
 
 const postReviewC = async (content, score, productId) => {
+    try {
+        // Crear la nueva reseña
+        const newReview = await Review.create({ content, score });
 
-    const newReview = await Review.create({ content, score, productId });
+        // Encontrar el producto
+        const product = await Products.findByPk(productId);
+        if (!product) {
+            throw new Error('Producto no encontrado');
+        }
 
-    const product = await Products.findByPk(productId);
+        // Asociar la reseña con el producto
+        await product.addReview(newReview);
 
-    await newReview.setProduct(product);
-
-    return newReview;
+        return newReview;
+    } catch (error) {
+        // Manejar el error adecuadamente
+        throw error;
+    }
 };
+
 
 
 
