@@ -96,8 +96,13 @@ const Buy = () => {
       </div>
       <div className="reviews">
         {productDetail.Reviews && productDetail.Reviews.length > 0 ? (
-          productDetail.Reviews.map((r) => <p key={r.id}>{r.content}</p>)
-        ) : (
+          productDetail.Reviews.map((r) => <div key={r.id}>
+                  <li key={r.id}>
+                      <p>Reviews 📝: {r.content}</p>
+                      <p> ⭐Score: {Array(parseInt(r.score, 10)).fill('⭐').join(' ')}</p>
+                    </li>
+                </div>
+        )) : (
           <Reviews productId={productId} />
         )}
       </div>
