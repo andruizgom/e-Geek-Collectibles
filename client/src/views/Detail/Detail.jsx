@@ -134,15 +134,7 @@ export default function Detail() {
                 <p className="sr-only">
                   {productDetail?.Reviews?.length} reviews
                 </p>
-                <Link
-                  to="/home"
-                  className="ml-3 text-sm font-medium text-amber-500 hover:text-amber-600"
-                >
-                  {productDetail?.Reviews && productDetail?.Reviews.length === 0
-                    ? "0"
-                    : productDetail?.Reviews}
-                  {productDetail?.Reviews?.length <= 1 ? " review" : " reviews"}
-                </Link>
+                
               </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
