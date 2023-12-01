@@ -12,6 +12,7 @@ export default function ShoppingCart() {
     eliminarDelCarrito,
     incremento,
     decremento,
+    precioFinalIva,
   } = useContext(CartContext);
 
   const handleVaciar = () => {
@@ -31,7 +32,7 @@ export default function ShoppingCart() {
   };
 
   const subtotal = precioTotal();
-  const total = Number((precioTotal() + precioTotal() * 0.08).toFixed(2));
+  const total = precioFinalIva()
 
   return (
     <div className="h-auto bg-white pt-10">
