@@ -56,14 +56,10 @@ export const searchProducts = (searchTerm) => {
   return async (dispatch) => {
     dispatch(fetchProductsRequest());
     try {
-      const response = await fetch(
-        `http://localhost:3001/products/name?name=${searchTerm}`
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.length === 0) {
+      const response = await axios.get(
+        `/products/name`, { params: {name: searchTerm} });
+      const data = await response.data;
+        if (data.length === 0) {
         dispatch(fetchProductsFailure('No matches found'));
       } else {
         dispatch(fetchProductsSuccess(data));
@@ -76,7 +72,7 @@ export const searchProducts = (searchTerm) => {
 export const getProductById = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios(`http://localhost:3001/products/${id}`);
+      const { data } = await axios.get(`/products/${id}`);
       await dispatch({
         type: GET_PRODUCT_BY_ID,
         payload: data,
@@ -93,8 +89,7 @@ export const resetProductDetail = () => {
 export const filteredProducts = (filters) => {
   return async (dispatch) => {
     try {
-
-      const response = await axios.get('http://localhost:3001/products?page=all', {
+      const response = await axios.get('/products?page=all', {
         params: filters,
       });
       await dispatch({
@@ -109,25 +104,24 @@ export const filteredProducts = (filters) => {
 
 export const createProduct = ({category,description,available,price,stock,author,manufacturer,title,image}) => {
   return async (dispatch) => {
-     try {
-  const product = {
-  title,
-  manufacturer,
-  author,
-  stock,
-  price,
-  image,
-  available,
-  description,
-  category
+    try {
+      const product = {
+        title,
+        manufacturer,
+        author,
+        stock,
+        price,
+        image,
+        available,
+        description,
+        category
 }
-    const endPoint = "http://localhost:3001/products"
+    const endPoint = "/products"
     const { data } = await axios.post(endPoint,product);
     dispatch({
-         type: CREATE_PRODUCT,
-         payload: data
+      type: CREATE_PRODUCT,
+      payload: data
     })
-    console.log(data);
   } catch (error) {
     throw new Error(error)
   }
