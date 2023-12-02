@@ -19,6 +19,7 @@ export const CartProvider = ({ children }) => {
       nuevoCarrito.push(itemAgregado);
     }
     setCarrito(nuevoCarrito);
+    console.log(carrito);
   };
 
   const eliminarDelCarrito = (productId) => {
@@ -38,6 +39,12 @@ export const CartProvider = ({ children }) => {
       0,
     );
     return parseFloat(total.toFixed(2));
+  };
+  const precioFinalIva = () => {
+    const precioFinal = Number(
+      (precioTotal() + precioTotal() * 0.08).toFixed(2),
+    );
+    return precioFinal;
   };
 
   const vaciarCarrito = () => {
@@ -87,6 +94,7 @@ export const CartProvider = ({ children }) => {
         vaciarCarrito,
         incremento,
         decremento,
+        precioFinalIva,
       }}
     >
       {children}

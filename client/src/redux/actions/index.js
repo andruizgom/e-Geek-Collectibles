@@ -14,6 +14,8 @@ import {
   REMOVE_FAVORITES,
   GET_FAVORITES,
   BUY_PRODUCT,
+  CREATE_USER,
+  RESET_PRODUCTS_HOME
 } from "../types";
 import axios from "axios";
 
@@ -128,15 +130,19 @@ export const createProduct = ({category,description,available,price,stock,author
 }
 
 export const postFavorite = (favorite) => {
-  const endpoint = '/favorites';
+  const endpoint = 'http://localhost:3001/favorites';
   return async (dispatch) => {
       try {
+
           const {data} = await axios.post(endpoint, favorite);
+
           if (!data) throw new Error('There was no data');
+
           return dispatch({
               type: ADD_FAVORITES,
               payload: data.Products,
           });
+
       } catch (error) {
           throw new Error(error.message)
       }
@@ -144,15 +150,19 @@ export const postFavorite = (favorite) => {
 };
 
 export const removeFavorite = (favorite) => {
-  const endpoint = '/favorites';
+  const endpoint = 'http://localhost:3001/favorites';
   return async (dispatch) => {
       try {
+
           const {data} = await axios.put(endpoint, favorite);
+
           if (!data) throw new Error('There was no data');
+
           return dispatch({
               type: REMOVE_FAVORITES,
               payload: data.Products,
           });
+
       } catch (error) {
           throw new Error(error.message)
       }
@@ -160,15 +170,22 @@ export const removeFavorite = (favorite) => {
 };
 
 export const getFavorites = (email) => {
-  const endpoint = `/favorites/email`;
+  const endpoint = `http://localhost:3001/favorites/email?email=${email}`;
   
   return async (dispatch) => {
     try {
-      const response = await axios.get(endpoint, { params: {email: email} });
-      const data = await response.data;
+      const response = await fetch(endpoint);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
       if (!data) {
         throw new Error('There was no data');
       }
+
       return dispatch({
         type: GET_FAVORITES,
         payload: data.Products,
@@ -193,4 +210,25 @@ export const deleteProductCar=()=>{
     payload:id
   }
 }
+
+export const createUser = (email) => {
+  console.log(email);
+  const endpoint = '/users';
+  return async (dispatch) => {
+      try {
+          const {data} = await axios.post(endpoint, {email});
+          if (!data) throw new Error('There was no data');
+          console.log(data);
+          return dispatch({
+              type: CREATE_USER,
+              payload: data,
+          });
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  };
+};
+export const resetHomeProducts = () => {
+  return { type: RESET_PRODUCTS_HOME };
+};
 

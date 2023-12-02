@@ -8,6 +8,9 @@ const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
 const { deleteFavoritesH } = require("../handlers/deleteFavoritesH");
+const { getUserByEmailH } = require("../handlers/getUserByEmailH");
+const { updateUserH } = require("../handlers/updateUserH");
+const { getAllUsersH } = require("../handlers/getAllUsersH");
 
 const router = Router();
 
@@ -23,7 +26,13 @@ router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
 
+router.get("/users", getAllUsersH);
+
 router.post("/users", postUserH);
+
+router.put("/users", updateUserH);
+
+router.get("/users/email/", getUserByEmailH);
 
 router.get("/favorites/email/", getFavoritesH);
 

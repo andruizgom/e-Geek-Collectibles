@@ -1,17 +1,17 @@
 const { Users } = require('../db');
 
-const postUserC = async (req) => {
+const getUserByEmailC = async (req) => {
 
 	try {
 		
-        const { email } = req.body;
+        const { email } = req.query;
 
         if (!email) throw new Error('Incomplete data');
 
-        const [user, created] = await Users.findOrCreate({
+        const user = await Users.findOne({
             where: {
                 email: email,
-            },
+            }
         });
 
 		return user;
@@ -22,5 +22,5 @@ const postUserC = async (req) => {
 };
 
 module.exports = {
-	postUserC,
+	getUserByEmailC,
 };
