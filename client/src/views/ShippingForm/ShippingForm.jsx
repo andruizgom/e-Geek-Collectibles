@@ -80,24 +80,6 @@ export const ShippingForm = () => {
             />
         {errors.city && <p>{errors.city.message}</p>}
       </div>
-
-      <div className="form-group">
-            <label>Documento de Identidad:</label>
-            <Controller
-              name="idDocument"
-              control={control}
-              rules={{
-                required: 'Campo obligatorio',
-                pattern: {
-                  value: /^[0-9]+$/,
-                  message: 'Ingrese un número de documento válido.',
-                },
-              }}
-              render={({ field }) => <input {...field} placeholder="Ingrese el documento de identidad" />}
-            />
-        {errors.idDocument && <p>{errors.idDocument.message}</p>}
-      </div>
-
       <div className="form-group">
             <label>Dirección de Domicilio:</label>
             <Controller
