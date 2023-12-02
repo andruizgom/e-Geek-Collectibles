@@ -10,13 +10,21 @@ const Reviews = ({ productId }) => {
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
-  const productReviews = useSelector((state) => state.productsDetail.reviews);
+  
+  const useMortis = () => {
+    const productReviews = useSelector((state) => state.productsDetail);
+    useEffect(() => {
+      if (productId) {
+        return () => {
+          dispatch(getProductReviews(productId));
+        };
+      }
+    }, [dispatch, productId]);
+    return productReviews
+  }
 
-  useEffect(() => {
-    if (productId) {
-      dispatch(getProductReviews(productId));
-    }
-  }, [dispatch, productId]);
+
+  let productReviews = useMortis();
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -37,17 +45,16 @@ const Reviews = ({ productId }) => {
       productId: productId,
     };
 
-    await dispatch(createReview(reviewData));
+    dispatch(createReview(reviewData));
 
     // Aqui envio la reseña y actualizo las reviews
-    dispatch(getProductReviews(productId));
-
     alert('Reseña enviada con éxito');
 
     setReviewText('');
     setRating(0);
-  };
 
+  };
+  
   return (
     <div>
       <h2>Reviews:</h2>
@@ -78,16 +85,14 @@ const Reviews = ({ productId }) => {
         <div >
           <h4>Reseñas anteriores:</h4>
           <ul>
-            {productReviews && productReviews.length > 0 ? (
-              productReviews.map((product) => (
-                <div key={product.id}>
-                  <h5>Reseñas para {product.title}</h5>
-                  {product.Reviews && product.Reviews.map((review, index) => (
+            {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
+              productReviews.Reviews.map((review, index) => (
+                <div key={review.id}>
+                  <h5>Reseñas para {productReviews.title}</h5>
                     <li key={index}>
                       <p>Descripción 📝: {review.content}</p>
                       <p>Puntuación ⭐: {Array(parseInt(review.score, 10)).fill('⭐').join(' ')}</p>
                     </li>
-                  ))}
                 </div>
               ))
             ) : (

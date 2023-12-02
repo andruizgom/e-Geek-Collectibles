@@ -15,8 +15,6 @@ export default function Detail() {
   const { id } = useParams(); //modifique 
   const useProducts = () => {
     
-    
-    
     const productsDetail = useSelector((state) => state.productsDetail);
 
     useEffect(() => {
@@ -31,12 +29,13 @@ export default function Detail() {
         dispatch(resetProductDetail());
       };
     }, [dispatch, id]);
+
     return productsDetail;
   };
 
   const productDetail = useProducts();
   
-const Buy = () => {
+  const Buy = () => {
     
     console.log(id)
     
@@ -95,16 +94,7 @@ const Buy = () => {
         </div>
       </div>
       <div className="reviews">
-        {productDetail.Reviews && productDetail.Reviews.length > 0 ? (
-          productDetail.Reviews.map((r) => <div key={r.id}>
-                  <li key={r.id}>
-                      <p>Reviews 📝: {r.content}</p>
-                      <p> ⭐Score: {Array(parseInt(r.score, 10)).fill('⭐').join(' ')}</p>
-                    </li>
-                </div>
-        )) : (
-          <Reviews productId={productId} />
-        )}
+          <Reviews productId={productDetail.id} />
       </div>
     </div>
   );
