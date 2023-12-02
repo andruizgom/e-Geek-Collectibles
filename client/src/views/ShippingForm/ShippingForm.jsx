@@ -17,7 +17,7 @@ export const ShippingForm = () => {
   return  (
     <div className='general'>
       
-        <CartSummary className="cartSummary"subtotal={subtotal} total={total} />
+        <CartSummary mostrarCheckout={false} className="cartSummary"subtotal={subtotal} total={total} />
       
     
       
@@ -104,7 +104,7 @@ export const ShippingForm = () => {
               name="homeAddress"
               control={control}
               rules={{ required: 'Campo obligatorio' }}
-              render={({ field }) => <input {...field} placeholder="Ingrese la dirección de domicilio/departamento " />}
+              render={({ field }) => <input {...field} placeholder="Ingrese la dirección de domicilio/departamento y referencias. " />}
             />
         {errors.homeAddress && <p>{errors.homeAddress.message}</p>}
       </div>
