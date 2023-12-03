@@ -4,7 +4,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import Cards from "../../components/Cards/Cards";
 import Filters from "../../components/Filters/Filters";
 import Loading from "../../components/Loading/Loading";
-import { getProducts } from "../../redux/actions";
+import { getProducts, resetHomeProducts } from "../../redux/actions";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchProducts } from "../../components/Pagination/Pagination";
 
@@ -29,6 +29,9 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getProducts());
+    return () => {
+      dispatch(resetHomeProducts());
+    };
   }, [dispatch]);
 
   return (
@@ -42,8 +45,11 @@ const Home = () => {
         hasMore={!loading}
         loader={<Loading />}
       >
-        {filtered.length > 0 ? <Cards allProducts={filtered} /> : <Cards allProducts={allProducts} />}
-        
+        {filtered.length > 0 ? (
+          <Cards allProducts={filtered} />
+        ) : (
+          <Cards allProducts={allProducts} />
+        )}
       </InfiniteScroll>
 
       {loading && <p>Cargando...</p>}

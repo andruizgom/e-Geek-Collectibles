@@ -14,9 +14,9 @@ function Card({ title, id, img, price }) {
           <img src={img} className="mouse" />
         </div>
         <p>${price}</p>
-        <a  href="#" className="buy">
+        <button className="buy">
           Comprar
-        </a>
+        </button>
       </Link>
     </div>
   );
