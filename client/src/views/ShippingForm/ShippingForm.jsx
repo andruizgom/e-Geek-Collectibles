@@ -11,12 +11,6 @@ export const ShippingForm = () => {
     formState: { errors },
   } = useForm();
   const { precioFinalIva, precioTotal } = useContext(CartContext);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
-  const { precioFinalIva, precioTotal } = useContext(CartContext);
   const subtotal = precioTotal();
   const total = precioFinalIva();
 
@@ -71,8 +65,7 @@ export const ShippingForm = () => {
             />
             {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
           </div>
-          <div className="form-group">
-          </div>
+          <div className="form-group"></div>
           <div className="form-group">
             <label>País:</label>
             <Controller
@@ -123,7 +116,7 @@ export const ShippingForm = () => {
             {errors.homeAddress && <p>{errors.homeAddress.message}</p>}
           </div>
           <button
-            className="className= mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
+            className= "mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
             disabled={Object.keys(errors).length > 0}
           >
             Enviar Datos
