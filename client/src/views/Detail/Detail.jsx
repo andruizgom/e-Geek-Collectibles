@@ -6,7 +6,7 @@ import {
   resetProductDetail,
   buyProduct,
 } from "../../redux/actions";
-import { CartContext } from "../../context/CartContext";
+import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
 

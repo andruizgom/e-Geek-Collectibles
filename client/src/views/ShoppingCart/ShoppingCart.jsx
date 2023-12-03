@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CartContext } from "../../context/CartContext";
+import CartContext from "../../context/CartContext";
 import CartItem from "../../components/CartItem/CartItem";
 import CartSummary from "../../components/CartSummary/CartSummary";
 
@@ -32,7 +32,7 @@ export default function ShoppingCart() {
   };
 
   const subtotal = precioTotal();
-  const total = precioFinalIva()
+  const total = precioFinalIva();
 
   return (
     <div className="h-auto bg-white pt-10">
@@ -47,7 +47,7 @@ export default function ShoppingCart() {
         <div className="rounded-lg md:w-2/3">
           {carrito.map((product) => (
             <CartItem
-              key={product.title}
+              key={product.id}
               id={product.id}
               title={product.title}
               category={product.category}
@@ -61,7 +61,7 @@ export default function ShoppingCart() {
             />
           ))}
         </div>
-        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true}/>
+        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true} />
       </div>
     </div>
   );
