@@ -61,7 +61,7 @@ export default function ShoppingCart() {
             />
           ))}
         </div>
-        <CartSummary subtotal={subtotal} total={total} />
+        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true}/>
       </div>
     </div>
   );
