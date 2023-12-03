@@ -75,10 +75,6 @@ export const ShippingForm = () => {
               render={({ field }) => (
                 <input {...field} placeholder=" Ingrese el país" />
               )}
-              rules={{ required: "Campo obligatorio" }}
-              render={({ field }) => (
-                <input {...field} placeholder=" Ingrese el país" />
-              )}
             />
             {errors.country && <p>{errors.country.message}</p>}
           </div>
@@ -116,7 +112,7 @@ export const ShippingForm = () => {
             {errors.homeAddress && <p>{errors.homeAddress.message}</p>}
           </div>
           <button
-            className= "mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
+            className="mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
             disabled={Object.keys(errors).length > 0}
           >
             Enviar Datos
