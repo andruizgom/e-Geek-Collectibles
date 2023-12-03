@@ -11,6 +11,7 @@ const { deleteFavoritesH } = require("../handlers/deleteFavoritesH");
 const { getUserByEmailH } = require("../handlers/getUserByEmailH");
 const { updateUserH } = require("../handlers/updateUserH");
 const { getAllUsersH } = require("../handlers/getAllUsersH");
+const { crearPago } = require("../controllers/Stripe/checkoutSession");
 
 const router = Router();
 
@@ -39,5 +40,7 @@ router.get("/favorites/email/", getFavoritesH);
 router.post("/favorites", postFavoritesH);
 
 router.put("/favorites", deleteFavoritesH);
+
+router.post('/crear-pago', crearPago);
 
 module.exports = router;

@@ -11,6 +11,12 @@ export const ShippingForm = () => {
     formState: { errors },
   } = useForm();
   const { precioFinalIva, precioTotal } = useContext(CartContext);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+  const { precioFinalIva, precioTotal } = useContext(CartContext);
   const subtotal = precioTotal();
   const total = precioFinalIva();
 
@@ -66,6 +72,8 @@ export const ShippingForm = () => {
             {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
           </div>
           <div className="form-group">
+          </div>
+          <div className="form-group">
             <label>País:</label>
             <Controller
               name="country"
@@ -74,7 +82,14 @@ export const ShippingForm = () => {
               render={({ field }) => (
                 <input {...field} placeholder=" Ingrese el país" />
               )}
+              rules={{ required: "Campo obligatorio" }}
+              render={({ field }) => (
+                <input {...field} placeholder=" Ingrese el país" />
+              )}
             />
+            {errors.country && <p>{errors.country.message}</p>}
+          </div>
+          <div className="form-group">
             {errors.country && <p>{errors.country.message}</p>}
           </div>
           <div className="form-group">
@@ -90,6 +105,9 @@ export const ShippingForm = () => {
                 />
               )}
             />
+            {errors.city && <p>{errors.city.message}</p>}
+          </div>
+          <div className="form-group">
             {errors.city && <p>{errors.city.message}</p>}
           </div>
           <div className="form-group">

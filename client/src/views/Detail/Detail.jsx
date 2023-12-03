@@ -9,6 +9,7 @@ import {
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
+import PaymentForm from "../../components/Stripe/paymentForm";
 
 const reviews = { href: "#", average: 4 };
 
@@ -168,12 +169,7 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
-                >
-                  Buy
-                </button>
+                <PaymentForm productId={id}/>
               </div>
             </form>
           </div>
@@ -216,5 +212,6 @@ export default function Detail() {
         </div>
       </div>
     </div>
+    
   );
 }
