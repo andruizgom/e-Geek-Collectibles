@@ -26,6 +26,16 @@ const Reviews = ({ productId }) => {
 
   let productReviews = useMortis();
 
+  const calculateAverageRating = () => {
+    if (productReviews.Reviews && productReviews.Reviews.length > 0) {
+      const total = productReviews.Reviews.reduce((acc, review) => acc + parseInt(review.score, 10), 0);
+      return (total / productReviews.Reviews.length).toFixed(1); // Redondeo a un decimal
+    }
+    return 0;
+  };
+
+  const averageRating = calculateAverageRating();
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,10 +64,17 @@ const Reviews = ({ productId }) => {
     setRating(0);
 
   };
+
+  
   
   return (
     <div>
       <h2>Reviews:</h2>
+            {/* Muestra el promedio de puntuaciones */}
+            <div>
+        <strong>Puntuación promedio: </strong>
+        {averageRating} ⭐
+      </div>
       <div>
         {[1, 2, 3, 4, 5].map((index) => (
              <span
