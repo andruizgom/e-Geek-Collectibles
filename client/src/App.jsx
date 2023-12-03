@@ -9,12 +9,12 @@ import Form from "./components/Form/Form";
 import User from "./views/User/User";
 import { useAuth0 } from "@auth0/auth0-react";
 import { CartProvider } from "./context/CartContext";
-import UserForm from './views/UserForm/UserForm';
-import Admin from './views/Admin/Admin';
+import UserForm from "./views/UserForm/UserForm";
+import Admin from "./views/Admin/Admin";
 import { ShippingForm } from "./views/ShippingForm/ShippingForm";
 
 function App() {
-  const {  isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   return (
     <div className="App">
       {window.location.pathname !== "/" && <Navigation />}
@@ -25,8 +25,8 @@ function App() {
           <Route exact path="/detail/:id" element={<Detail />} />
           <Route exact path="/cart" element={<ShoppingCart />} />
           <Route exact path="/create" element={<Form />} />
-          <Route path="/userform" element={<UserForm/>} />
-          <Route path="/shippingForm" element={<ShippingForm/>}/>
+          <Route exact path="/userform" element={<UserForm />} />
+          <Route exact path="/shippingForm" element={<ShippingForm />} />
           {isAuthenticated && <Route exact path="/user" element={<User />} />}
           {isAuthenticated && <Route path="/admin" element={<Admin />} />}
         </Routes>
