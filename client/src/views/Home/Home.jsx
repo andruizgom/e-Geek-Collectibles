@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import NavBar from "../../components/NavBar/NavBar";
 import Cards from "../../components/Cards/Cards";
 import Filters from "../../components/Filters/Filters";
+import FiltersTest from "../../components/Filters/FiltersTest";
+
 import Loading from "../../components/Loading/Loading";
 import { getProducts, resetHomeProducts } from "../../redux/actions";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -37,8 +39,7 @@ const Home = () => {
   return (
     <div>
       <NavBar />
-      <Filters />
-
+      <FiltersTest />
       <InfiniteScroll
         dataLength={allProducts.length}
         next={loadMoreProducts}
@@ -51,7 +52,6 @@ const Home = () => {
           <Cards allProducts={allProducts} />
         )}
       </InfiniteScroll>
-
       {loading && <p>Cargando...</p>}
     </div>
   );
