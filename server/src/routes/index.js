@@ -46,12 +46,3 @@ router.put("/favorites", deleteFavoritesH);
 router.post('/crear-pago', crearPago);
 
 module.exports = router;
-
-
-
-
-
-
-
-
-

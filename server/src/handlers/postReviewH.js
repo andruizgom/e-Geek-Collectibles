@@ -1,7 +1,5 @@
 const { postReviewC } = require('../controllers/postReviewC')
 
-
-
 const postReviewH = async (req, res) => {
     try {
         const { content, score, productId } = req.body
