@@ -60,6 +60,7 @@ const Reviews = ({ productId }) => {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
+      
     };
 
     dispatch(createReview(reviewData));
@@ -122,6 +123,7 @@ const Reviews = ({ productId }) => {
               productReviews.Reviews.map((review, index) => (
                 <div key={review.id}>
                   <li key={index}>
+                  
                     <p>Descripción 📝: {review.content}</p>
                     <p>Puntuación ⭐: {Array(parseInt(review.score, 10)).fill('⭐').join(' ')}</p>
                   </li>
