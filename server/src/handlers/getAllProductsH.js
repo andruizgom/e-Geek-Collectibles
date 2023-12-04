@@ -8,11 +8,12 @@ const getAllProductsH = async (req, res) => {
     title,
     price,
     category,
+    manufacturer,
     sortOrder,
     nameOrder,
   } = req.query;
-  if (title || price || category || sortOrder || nameOrder) {
-    try {
+  if (title || price || category || manufacturer || sortOrder || nameOrder) {
+  try {
       const products = await filterProducts(req);
       res.status(200).json(products);
     } catch (error) {

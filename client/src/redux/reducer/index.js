@@ -17,8 +17,9 @@ import {
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
-  GET_PRODUCT_REVIEWS_SUCCESS
-  
+  GET_PRODUCT_REVIEWS_SUCCESS,
+  CREATE_USER,
+  RESET_PRODUCTS_HOME
 } from "../types/index";
 
 const initialState = {
@@ -31,7 +32,9 @@ const initialState = {
   productsFiltered: [],
   product: {},
   idCarProduct: [], //modifique
-  carrito:[],
+  carrito: [],
+  favorites: [],
+  user: {},
   reviews: [],
   createReviewError: null,
   getProductReviewsError: null,
@@ -73,7 +76,6 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
-
     case ADD_FAVORITES:
       return {
         ...state,
@@ -89,54 +91,60 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         favorites: payload,
       };
-
-      case BUY_PRODUCT:
-        let listaIdBuy = [...state.idCarProduct, payload];
+    case BUY_PRODUCT:
+      let listaIdBuy = [...state.idCarProduct, payload];
+      return {
+        ...state,
+        idCarProduct: listaIdBuy
+      };
+    case DELETE_BUY_PRODUCT:
+      const updatedCar = state.idCarProduct.filter((elemento) => elemento !== action.payload);
+      return {
+        ...state,
+        idCarProduct: updatedCar
+      }
+      case CREATE_USER:
         return {
           ...state,
-          idCarProduct: listaIdBuy
+          user: payload,
         };
-
-    case DELETE_BUY_PRODUCT:
-      const updatedCar = idCarProduct.filter((elemento) => elemento !== action.payload);
-      return{
-        ...state,
-        idCarProduct:updatedCar
-      }
-
-      case CREATE_REVIEW_SUCCESS:
+      case RESET_PRODUCTS_HOME:
         return {
-            ...state,
-            reviews: [...state.reviews, payload],
-            createReviewError: null,
-        };
-
-    case CREATE_REVIEW_ERROR:
-        return {
-            ...state,
-            reviews: null,
-            createReviewError: payload,
-        };
-
-    case GET_PRODUCT_REVIEWS_SUCCESS:
-        return {
-            ...state,
-            reviews: payload,
-            getProductReviewsError: null,
-        };
-
-    case GET_PRODUCT_REVIEWS_ERROR:
-        return {
-            ...state,
-            reviews: null,
-            getProductReviewsError: payload,
+          ...state,
+          allProducts: [],
         };  
-
-
+        case CREATE_REVIEW_SUCCESS:
+          return {
+              ...state,
+              reviews: [...state.reviews, payload],
+              createReviewError: null,
+          };
+  
+      case CREATE_REVIEW_ERROR:
+          return {
+              ...state,
+              reviews: null,
+              createReviewError: payload,
+          };
+  
+      case GET_PRODUCT_REVIEWS_SUCCESS:
+          return {
+              ...state,
+              reviews: payload,
+              getProductReviewsError: null,
+          };
+  
+      case GET_PRODUCT_REVIEWS_ERROR:
+          return {
+              ...state,
+              reviews: null,
+              getProductReviewsError: payload,
+          };  
   
     default:
       return state;
   }
+
 
 };
 
