@@ -4,8 +4,6 @@ import "./Card.styles.css";
 
 function Card({ title, id, img, price }) {
 
-  
-  
   return (
     <div className="card">
       <Link to={`/detail/${id}`} className="contentBox">
