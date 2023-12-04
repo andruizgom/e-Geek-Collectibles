@@ -14,7 +14,8 @@ import {
   REMOVE_FAVORITES,
   GET_FAVORITES,
   BUY_PRODUCT,
-  CREATE_USER
+  CREATE_USER,
+  RESET_PRODUCTS_HOME
 } from "../types";
 import axios from "axios";
 
@@ -226,5 +227,8 @@ export const createUser = (email) => {
           throw new Error(error.message)
       }
   };
+};
+export const resetHomeProducts = () => {
+  return { type: RESET_PRODUCTS_HOME };
 };
 

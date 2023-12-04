@@ -6,9 +6,10 @@ import {
   resetProductDetail,
   buyProduct,
 } from "../../redux/actions";
-import { CartContext } from "../../context/CartContext";
+import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
+import PaymentForm from "../../components/Stripe/paymentForm";
 
 const reviews = { href: "#", average: 4 };
 
@@ -24,7 +25,6 @@ export default function Detail() {
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
-
     useEffect(() => {
       if (id) {
         dispatch(getProductById(id))
@@ -135,15 +135,7 @@ export default function Detail() {
                 <p className="sr-only">
                   {productDetail?.Reviews?.length} reviews
                 </p>
-                <Link
-                  to="/home"
-                  className="ml-3 text-sm font-medium text-amber-500 hover:text-amber-600"
-                >
-                  {productDetail?.Reviews && productDetail?.Reviews.length === 0
-                    ? "0"
-                    : productDetail?.Reviews}
-                  {productDetail?.Reviews?.length <= 1 ? " review" : " reviews"}
-                </Link>
+                
               </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
@@ -177,12 +169,7 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
-                >
-                  Buy
-                </button>
+                <PaymentForm productId={id}/>
               </div>
             </form>
           </div>
@@ -225,5 +212,6 @@ export default function Detail() {
         </div>
       </div>
     </div>
+    
   );
 }
