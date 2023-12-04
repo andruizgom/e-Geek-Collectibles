@@ -4,6 +4,7 @@ import { getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
 
 
+
 const ShowReview = ({ productId }) => {
   const dispatch = useDispatch();
 
@@ -54,11 +55,13 @@ const ShowReview = ({ productId }) => {
               productReviews.Reviews.map((review, index) => (
                 <div key={review.id}>
                   <li key={index}>
+
                     <p>Descripción 📝: {review.content}</p>
                     <p>
                       Puntuación ⭐:{" "}
                       {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
                     </p>
+                    <p>Usuario: {review.userId ? review.userId : 'Anónimo'}</p>
                   </li>
                 </div>
               ))

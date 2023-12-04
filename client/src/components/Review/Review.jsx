@@ -56,6 +56,7 @@ const Reviews = ({ productId }) => {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
+      userId: user.sub,
     };
 
     dispatch(createReview(reviewData));
