@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './UserForm.styles.css'; 
 
 function UserForm() {
     const navigate = useNavigate();
 
     const [users, setUsers] = useState(null);
-    const [userData, setUserData] = useState({
-        email: '',
-        isAdmin: null,
-        isBanned: null,
-    });
+    const [userFormData, setUserFormData] = useState([]);
 
     useEffect(() => {
         const getAllUsers = async () => {
@@ -21,6 +18,15 @@ function UserForm() {
                 if (!data) {
                     throw new Error('There was no data');
                 }
+                const usersWithFormData = data.map(user => {
+                    const existingFormData = userFormData.find(data => data.email === user.email);
+                    return existingFormData || {
+                        email: user.email,
+                        isAdmin: user.isAdmin,
+                        isBanned: user.isBanned,
+                    };
+                });
+                setUserFormData(usersWithFormData);
                 setUsers(data);
             } catch (error) {
                 console.error('Error fetching users:', error.message);
@@ -30,12 +36,11 @@ function UserForm() {
         getAllUsers();
     }, []);
 
-    const handleChange = (event) => {
+    const handleChange = (event, userEmail) => {
         const { name, value } = event.target;
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            [name]: name === 'isAdmin' || name === 'isBanned' ? JSON.parse(value) : value,
-        }));
+        setUserFormData(prevData => prevData.map(user => (
+            user.email === userEmail ? { ...user, [name]: name === 'isAdmin' || name === 'isBanned' ? JSON.parse(value) : value } : user
+        )));
     };
 
     const updateUser = async (userData) => {
@@ -53,41 +58,54 @@ function UserForm() {
         }
     };
 
-    const handleSubmit = async (evento) => {
+    const handleSubmit = async (event) => {
         try {
-            evento.preventDefault();
-            await updateUser(userData);
+            event.preventDefault();
+            await Promise.all(userFormData.map(updateUser));
             navigate('/admin');
         } catch (error) {
-            alert('User could not be updated');
+            alert('User(s) could not be updated');
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Select user</label>
-            <select name="email" onChange={handleChange} value={userData.email}>
-                <option>Select...</option>
-                {users?.map((user) => (
-                    <option key={user.id} value={user.email}>
-                        {user.email}
-                    </option>
-                ))}
-            </select>
-
-            <label htmlFor="isBanned">Banned user</label>
-            <select name="isBanned" onChange={handleChange} value={String(userData.isBanned)}>
-                <option>Select...</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-            </select>
-
-            <label htmlFor="isAdmin">Admin role</label>
-            <select name="isAdmin" onChange={handleChange} value={String(userData.isAdmin)}>
-                <option>Select...</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-            </select>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Banned user</th>
+                        <th>Admin role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users?.map((user) => (
+                        <tr key={user.id}>
+                            <td>{user.email}</td>
+                            <td>
+                                <select
+                                    name="isBanned"
+                                    onChange={(e) => handleChange(e, user.email)}
+                                    value={String(userFormData.find(data => data.email === user.email)?.isBanned)}
+                                >
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select
+                                    name="isAdmin"
+                                    onChange={(e) => handleChange(e, user.email)}
+                                    value={String(userFormData.find(data => data.email === user.email)?.isAdmin)}
+                                >
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
 
             <button type="submit">Submit</button>
         </form>
