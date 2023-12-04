@@ -13,6 +13,7 @@ import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
 import PaymentForm from "../../components/Stripe/paymentForm";
 import Reviews from '../../components/Review/Review';
+import ShowReview from "../../components/Review/ShowReview";
 
 const reviews = { href: "#", average: 4 };
 
@@ -195,7 +196,11 @@ export default function Detail() {
                   >
                     <span className="text-gray-600">
                       Manufacturer: {productDetail.manufacturer}
+                      
                     </span>
+                    <div className="mt-10">
+  <ShowReview productId={productDetail.id} />
+</div>
                   </li>
                 </ul>
               </div>

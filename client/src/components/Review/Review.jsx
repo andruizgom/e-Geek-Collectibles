@@ -11,25 +11,19 @@ const Reviews = ({ productId }) => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
 
-  const useMortis = () => {
-    const productReviews = useSelector((state) => state.productsDetail);
-    useEffect(() => {
-      if (productId) {
-        return () => {
-          dispatch(getProductReviews(productId));
-        };
-      }
-    }, [dispatch, productId]);
-    return productReviews;
-  };
+  useEffect(() => {
+    if (productId) {
+      dispatch(getProductReviews(productId));
+    }
+  }, [dispatch, productId]);
 
-  let productReviews = useMortis();
+  const productReviews = useSelector((state) => state.productsDetail);
 
   const calculateAverageRating = () => {
     if (productReviews.Reviews && productReviews.Reviews.length > 0) {
       const total = productReviews.Reviews.reduce(
         (acc, review) => acc + parseInt(review.score, 10),
-        0,
+        0
       );
       return (total / productReviews.Reviews.length).toFixed(1);
     }
@@ -53,7 +47,7 @@ const Reviews = ({ productId }) => {
 
     if (!reviewText || rating === 0) {
       alert(
-        "Por favor, completa la reseña y asigna una puntuación antes de enviar.",
+        "Por favor, completa la reseña y asigna una puntuación antes de enviar."
       );
       return;
     }
@@ -70,12 +64,37 @@ const Reviews = ({ productId }) => {
     setRating(0);
   };
 
+  const StarRating = ({ rating }) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    const renderStars = () => {
+      const stars = [];
+
+      for (let i = 0; i < fullStars; i++) {
+        stars.push(<span key={i}>&#9733;</span>); // Full star character
+      }
+
+      if (hasHalfStar) {
+        stars.push(
+          <span key="half" style={{ position: "relative" }}>
+            &#9733;&#189;
+          </span>
+        ); // Half star character
+      }
+
+      return stars;
+    };
+
+    return <div>{renderStars()}</div>;
+  };
+
   return (
     <div>
       <h2>Reviews:</h2>
       <div>
         <strong>Puntuación promedio: </strong>
-        {averageRating} ⭐
+        {averageRating} <StarRating rating={parseFloat(averageRating)} />
       </div>
       <div>
         {isAuthenticated ? (
@@ -83,7 +102,9 @@ const Reviews = ({ productId }) => {
             {[1, 2, 3, 4, 5].map((index) => (
               <span
                 key={index}
-                className={index <= rating ? styles.selectedStar : styles.star}
+                className={
+                  index <= rating ? styles.selectedStar : styles.star
+                }
                 onClick={() => setRating(index)}
               >
                 ★
@@ -104,29 +125,6 @@ const Reviews = ({ productId }) => {
           <p>Debes estar autenticado para dejar una reseña.</p>
         )}
       </div>
-      {showReviews && (
-        <div>
-          <h4>Reseñas anteriores:</h4>
-          <ul>
-            <h5>Reseñas para {productReviews.title}</h5>
-            {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
-              productReviews.Reviews.map((review, index) => (
-                <div key={review.id}>
-                  <li key={index}>
-                    <p>Descripción 📝: {review.content}</p>
-                    <p>
-                      Puntuación ⭐:{" "}
-                      {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
-                    </p>
-                  </li>
-                </div>
-              ))
-            ) : (
-              <p>No hay reseñas disponibles.</p>
-            )}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };
