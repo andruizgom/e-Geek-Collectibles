@@ -9,6 +9,7 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
+  UPDATE_PRODUCT,
   ADD_FAVORITES,
   REMOVE_FAVORITES,
   GET_FAVORITES,
@@ -31,6 +32,8 @@ const initialState = {
   cart: [],
   favorites: [],
   user: {},
+  product: {},
+  updateProductMessage:""
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -108,6 +111,7 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         allProducts: [],
       };
+    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
     default:
       return state;
   }

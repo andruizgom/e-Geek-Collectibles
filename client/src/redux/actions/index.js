@@ -10,6 +10,7 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
+  UPDATE_PRODUCT,
   ADD_FAVORITES,
   REMOVE_FAVORITES,
   GET_FAVORITES,
@@ -71,7 +72,7 @@ export const searchProducts = (searchTerm) => {
     }
   };
 };
-export const getProductById = (id) => {
+export const getProductById = (id,) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/products/${id}`);
@@ -141,7 +142,7 @@ export const createProduct = ({
 };
 
 export const postFavorite = (favorite) => {
-  const endpoint = "/favorites";
+  const endpoint = '/favorites';
   return async (dispatch) => {
     try {
       const { data } = await axios.post(endpoint, favorite);
@@ -159,7 +160,7 @@ export const postFavorite = (favorite) => {
 };
 
 export const removeFavorite = (favorite) => {
-  const endpoint = "/favorites";
+  const endpoint = '/favorites';
   return async (dispatch) => {
     try {
       const { data } = await axios.put(endpoint, favorite);
@@ -178,7 +179,7 @@ export const removeFavorite = (favorite) => {
 
 export const getFavorites = (email) => {
   const endpoint = `/favorites/email?email=${email}`;
-
+  
   return async (dispatch) => {
     try {
       const response = await fetch(endpoint);
@@ -238,3 +239,30 @@ export const createUser = (email) => {
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
+
+export const updateProduct = ({category,description,available,price,stock,author,manufacturer,title,image},id) => {
+  return async (dispatch) => {
+     try {
+  const product = {
+  title,
+  manufacturer,
+  author,
+  stock,
+  price,
+  image,
+  available,
+  description,
+  category
+       }
+    const endPoint = `/products/${id}`
+    const { data } = await axios.put(endPoint,product);
+    dispatch({
+         type: UPDATE_PRODUCT,
+         payload: data
+    })
+    alert(data)
+  } catch (error) {
+    throw new Error(error)
+  }
+  }
+}
