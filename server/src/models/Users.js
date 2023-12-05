@@ -24,9 +24,9 @@ module.exports = (sequelize) => {
       defaultValue: false,
     },
     cart: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      allowNull: true,
+      type: DataTypes.JSON,
       defaultValue: [],
+      allowNull: false,
     },
   });
 };

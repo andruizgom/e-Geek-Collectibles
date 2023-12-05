@@ -15,7 +15,7 @@ import {
   GET_FAVORITES,
   BUY_PRODUCT,
   CREATE_USER,
-  RESET_PRODUCTS_HOME
+  RESET_PRODUCTS_HOME,
 } from "../types";
 import axios from "axios";
 
@@ -57,11 +57,12 @@ export const searchProducts = (searchTerm) => {
   return async (dispatch) => {
     dispatch(fetchProductsRequest());
     try {
-      const response = await axios.get(
-        `/products/name`, { params: {name: searchTerm} });
+      const response = await axios.get(`/products/name`, {
+        params: { name: searchTerm },
+      });
       const data = await response.data;
-        if (data.length === 0) {
-        dispatch(fetchProductsFailure('No matches found'));
+      if (data.length === 0) {
+        dispatch(fetchProductsFailure("No matches found"));
       } else {
         dispatch(fetchProductsSuccess(data));
       }
@@ -90,7 +91,7 @@ export const resetProductDetail = () => {
 export const filteredProducts = (filters) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get('/products?page=all', {
+      const response = await axios.get("/products?page=all", {
         params: filters,
       });
       await dispatch({
@@ -98,12 +99,22 @@ export const filteredProducts = (filters) => {
         payload: response.data,
       });
     } catch (error) {
-      console.error('Error fetching filtered products:', error);
+      console.error("Error fetching filtered products:", error);
     }
   };
 };
 
-export const createProduct = ({category,description,available,price,stock,author,manufacturer,title,image}) => {
+export const createProduct = ({
+  category,
+  description,
+  available,
+  price,
+  stock,
+  author,
+  manufacturer,
+  title,
+  image,
+}) => {
   return async (dispatch) => {
     try {
       const product = {
@@ -115,75 +126,71 @@ export const createProduct = ({category,description,available,price,stock,author
         image,
         available,
         description,
-        category
-}
-    const endPoint = "/products"
-    const { data } = await axios.post(endPoint,product);
-    dispatch({
-      type: CREATE_PRODUCT,
-      payload: data
-    })
-  } catch (error) {
-    throw new Error(error)
-  }
-  }
-}
+        category,
+      };
+      const endPoint = "/products";
+      const { data } = await axios.post(endPoint, product);
+      dispatch({
+        type: CREATE_PRODUCT,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+};
 
 export const postFavorite = (favorite) => {
-  const endpoint = 'http://localhost:3001/favorites';
+  const endpoint = "/favorites";
   return async (dispatch) => {
-      try {
+    try {
+      const { data } = await axios.post(endpoint, favorite);
 
-          const {data} = await axios.post(endpoint, favorite);
+      if (!data) throw new Error("There was no data");
 
-          if (!data) throw new Error('There was no data');
-
-          return dispatch({
-              type: ADD_FAVORITES,
-              payload: data.Products,
-          });
-
-      } catch (error) {
-          throw new Error(error.message)
-      }
+      return dispatch({
+        type: ADD_FAVORITES,
+        payload: data.Products,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 };
 
 export const removeFavorite = (favorite) => {
-  const endpoint = 'http://localhost:3001/favorites';
+  const endpoint = "/favorites";
   return async (dispatch) => {
-      try {
+    try {
+      const { data } = await axios.put(endpoint, favorite);
 
-          const {data} = await axios.put(endpoint, favorite);
+      if (!data) throw new Error("There was no data");
 
-          if (!data) throw new Error('There was no data');
-
-          return dispatch({
-              type: REMOVE_FAVORITES,
-              payload: data.Products,
-          });
-
-      } catch (error) {
-          throw new Error(error.message)
-      }
+      return dispatch({
+        type: REMOVE_FAVORITES,
+        payload: data.Products,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 };
 
 export const getFavorites = (email) => {
-  const endpoint = `http://localhost:3001/favorites/email?email=${email}`;
-  
+  const endpoint = `/favorites/email?email=${email}`;
+
   return async (dispatch) => {
     try {
       const response = await fetch(endpoint);
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data = await response.json();
 
       if (!data) {
-        throw new Error('There was no data');
+        throw new Error("There was no data");
       }
 
       return dispatch({
@@ -196,39 +203,38 @@ export const getFavorites = (email) => {
   };
 };
 
-export const buyProduct=(id)=>{ //MODIFIQUE
-  return{
+export const buyProduct = (id) => {
+  //MODIFIQUE
+  return {
     type: BUY_PRODUCT,
-    payload:id,
-  }
+    payload: id,
+  };
+};
 
-}
-
-export const deleteProductCar=()=>{
-  return{
-    type:DELETE_BUY_PRODUCT,
-    payload:id
-  }
-}
+export const deleteProductCar = () => {
+  return {
+    type: DELETE_BUY_PRODUCT,
+    payload: id,
+  };
+};
 
 export const createUser = (email) => {
   console.log(email);
-  const endpoint = '/users';
+  const endpoint = "/users";
   return async (dispatch) => {
-      try {
-          const {data} = await axios.post(endpoint, {email});
-          if (!data) throw new Error('There was no data');
-          console.log(data);
-          return dispatch({
-              type: CREATE_USER,
-              payload: data,
-          });
-      } catch (error) {
-          throw new Error(error.message)
-      }
+    try {
+      const { data } = await axios.post(endpoint, { email });
+      if (!data) throw new Error("There was no data");
+      console.log(data);
+      return dispatch({
+        type: CREATE_USER,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 };
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
-

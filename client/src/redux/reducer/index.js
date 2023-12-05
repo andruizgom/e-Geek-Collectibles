@@ -15,7 +15,7 @@ import {
   BUY_PRODUCT,
   DELETE_BUY_PRODUCT,
   CREATE_USER,
-  RESET_PRODUCTS_HOME
+  RESET_PRODUCTS_HOME,
 } from "../types/index";
 
 const initialState = {
@@ -28,9 +28,9 @@ const initialState = {
   productsFiltered: [],
   product: {},
   idCarProduct: [], //modifique
-  carrito: [],
+  cart: [],
   favorites: [],
-  user: {}
+  user: {},
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -65,7 +65,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case GET_FILTERS:
       return {
         ...state,
-        productsFiltered: payload
+        productsFiltered: payload,
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
@@ -88,14 +88,16 @@ const reducer = (state = initialState, { type, payload }) => {
       let listaIdBuy = [...state.idCarProduct, payload];
       return {
         ...state,
-        idCarProduct: listaIdBuy
+        idCarProduct: listaIdBuy,
       };
     case DELETE_BUY_PRODUCT:
-      const updatedCar = state.idCarProduct.filter((elemento) => elemento !== action.payload);
+      const updatedCar = state.idCarProduct.filter(
+        (elemento) => elemento !== action.payload,
+      );
       return {
         ...state,
-        idCarProduct: updatedCar
-      }
+        idCarProduct: updatedCar,
+      };
     case CREATE_USER:
       return {
         ...state,
@@ -109,8 +111,6 @@ const reducer = (state = initialState, { type, payload }) => {
     default:
       return state;
   }
-
-
 };
 
 export default reducer;

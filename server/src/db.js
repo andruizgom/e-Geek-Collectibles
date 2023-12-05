@@ -37,8 +37,14 @@ const { Orders, Products, Review, Users } = sequelize.models;
 // Product.hasMany(Reviews);
 
 /* Relacion entre Productos y Usuarios */
-Products.belongsToMany(Users, { through: "user_favorites", timestamps: false });
-Users.belongsToMany(Products, { through: "user_favorites", timestamps: false });
+Products.belongsToMany(Users, {
+  through: "user_favorites",
+  timestamps: false,
+});
+Users.belongsToMany(Products, {
+  through: "user_favorites",
+  timestamps: false,
+});
 
 /* Relacion entre Productos y Reviews */
 Products.belongsToMany(Review, {
