@@ -4,6 +4,7 @@ import { getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
 import Favorites from "../Favorites/Favorites";
 import { useAuth0 } from '@auth0/auth0-react';
+import Reviews from "./Review.jsx";
 
 
 
@@ -60,7 +61,7 @@ const ShowReview = ({ productId }) => {
         <div>
           <ul>
             <h5>Reseñas para {productReviews.title}</h5>
-            {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
+              {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
               productReviews.Reviews.map((review, index) => (
                 <div key={review.id}>
                   <li key={index}>

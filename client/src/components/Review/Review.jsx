@@ -26,12 +26,13 @@ const Reviews = ({ productId }) => {
         (acc, review) => acc + parseInt(review.score, 10),
         0
       );
-      return (total / productReviews.Reviews.length).toFixed(1);
+      const average = (total / productReviews.Reviews.length).toFixed(1);
+      return { average, count: productReviews.Reviews.length };
     }
-    return 0;
+    return { average: 0, count: 0 };
   };
 
-  const averageRating = calculateAverageRating();
+  const { average: averageRating, count: reviewCount } = calculateAverageRating();
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -103,6 +104,7 @@ const Reviews = ({ productId }) => {
       <div>
         <strong>Puntuación promedio: </strong>
         {averageRating} <StarRating rating={parseFloat(averageRating)} />
+        <span style={{ marginLeft: '8px' }}>({reviewCount} evaluaciones)</span> {/* Display the count */}
       </div>
       <div>
         {isAuthenticated ? (
