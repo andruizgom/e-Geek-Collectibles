@@ -168,7 +168,7 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <PaymentForm productId={id} />
+                <PaymentForm productId={id} quantity={quantity} />
               </div>
             </form>
           </div>
