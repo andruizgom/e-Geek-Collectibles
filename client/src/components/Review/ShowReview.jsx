@@ -67,7 +67,7 @@ const ShowReview = ({ productId }) => {
 
                     <p>Descripción 📝: {review.content}</p>
                     <p>
-                      Puntuación ⭐:{" "}
+                      Puntuación :{" "}
                       {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
                     </p>
                     <p>Usuario: {user.given_name ? user.given_name : 'Anónimo'}</p>

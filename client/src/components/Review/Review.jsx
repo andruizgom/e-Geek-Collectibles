@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
-  console.log(user)
+  
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
@@ -57,14 +57,20 @@ const Reviews = ({ productId }) => {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
-      userId: user.sub,
+      
     };
 
     dispatch(createReview(reviewData));
+    
+    
     alert("Reseña enviada con éxito");
     setReviewText("");
     setRating(0);
+
+    
+    
   };
+
 
   const StarRating = ({ rating }) => {
     const fullStars = Math.floor(rating);
@@ -74,7 +80,7 @@ const Reviews = ({ productId }) => {
       const stars = [];
 
       for (let i = 0; i < fullStars; i++) {
-        stars.push(<span key={i}>&#9733;</span>); // Full star character
+        stars.push(<span key={i}>&#9733;</span>);
       }
 
       if (hasHalfStar) {
@@ -82,7 +88,7 @@ const Reviews = ({ productId }) => {
           <span key="half" style={{ position: "relative" }}>
             &#9733;&#189;
           </span>
-        ); // Half star character
+        );
       }
 
       return stars;
