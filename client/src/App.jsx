@@ -1,27 +1,36 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Landing from './views/Landing/Landing';
-import Home from './views/Home/Home';
-import Detail from './views/Detail/Detail';
-import './App.css';
-import Admin from './views/Admin/Admin';
-import Orders from './views/Orders/Orders'
-import Products from './views/Products/Products'
-import Users from './views/Users/Users'
-
+import React from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Navigation from "./components/Navigation/Navigation";
+import Landing from "./views/Landing/Landing";
+import Home from "./views/Home/Home";
+import Detail from "./views/Detail/Detail";
+import ShoppingCart from "./views/ShoppingCart/ShoppingCart";
+import Form from "./components/Form/Form";
+import User from "./views/User/User";
+import { useAuth0 } from "@auth0/auth0-react";
+import { CartProvider } from "./context/CartContext";
+import UserForm from "./views/UserForm/UserForm";
+import Admin from "./views/Admin/Admin";
+import { ShippingForm } from "./views/ShippingForm/ShippingForm";
 
 function App() {
+  const { isAuthenticated } = useAuth0();
   return (
     <div className="App">
-      <Routes>
-        <Route path='/admin' element={<Admin />} />
-        <Route path='/admin/products' element={<Admin />} />
-        <Route path='/admin/orders' element={<Admin/>} />
-        <Route path='/admin/users' element={<Admin />} />
+      {window.location.pathname !== "/" && <Navigation />}
+      <CartProvider>
+        <Routes>
         <Route exact path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/detail/:id" element={<Detail />} />
-      </Routes>
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/detail/:id" element={<Detail />} />
+          <Route exact path="/cart" element={<ShoppingCart />} />
+          <Route exact path="/create" element={<Form />} />
+          <Route exact path="/userform" element={<UserForm />} />
+          <Route exact path="/shippingForm" element={<ShippingForm />} />
+          {isAuthenticated && <Route exact path="/user" element={<User />} />}
+          {isAuthenticated && <Route path="/admin" element={<Admin />} />}
+        </Routes>
+      </CartProvider>
     </div>
   );
 }

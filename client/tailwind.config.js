@@ -8,6 +8,11 @@ export default {
     "./public/index.html",
     "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html",
+    "node_modules/flowbite-react/lib/esm/**/*.js",
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -44,6 +49,9 @@ export default {
     'Noto Color Emoji'
   ],
       },
+      gridTemplateRows: {
+        "[auto,auto,1fr]": "auto auto 1fr",
+      },
       colors: {
         "dark-purple": "#081A51",
         "light-white": "rgba(255,255,255,0.18)",
@@ -51,5 +59,9 @@ export default {
       }
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [
+    require("flowbite/plugin"),
+    "@tailwindcss/aspect-ratio",
+    "@tailwindcss/forms",
+  ],
 };

@@ -1,4 +1,9 @@
+import Loging from "../../components/Loging/Login";
+import { useAuth0 } from "@auth0/auth0-react";
+import Logout from "../../components/Logout/Logout";
+
 export default function Banner() {
+  const { isAuthenticated } = useAuth0();
   return (
     <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-red-700 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       <div
@@ -30,12 +35,13 @@ export default function Banner() {
           Explore the latest releases, exclusive deals, and more. Your
           collection awaits.
         </p>
-        <a
+        <div
           href="#"
-          className="flex-none rounded-full bg-amber-500 px-3.5 py-1 text-sm font-semibold text-black shadow-sm hover:bg-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+          className="flex-none rounded-full bg-amber-500 px-3.5 py-1 text-sm font-semibold text-gray-900 shadow-sm hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
-          Sign up now <span aria-hidden="true">&rarr;</span>
-        </a>
+          {isAuthenticated ? <Logout /> : <Loging />}{" "}
+          <span aria-hidden="true">&rarr;</span>
+        </div>
       </div>
     </div>
   );

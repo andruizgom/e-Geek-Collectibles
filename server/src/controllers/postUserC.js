@@ -1,33 +1,21 @@
 const { Users } = require('../db');
 
 const postUserC = async (req) => {
-	const { name, email, password, isBanned, isAdmin } = req.body;
-
-	if (!name || !email) {
-		throw new Error("Name and email are required");
-	}
 
 	try {
 		
-		const existingUser = await Users.findOne({
-			where: {
-				email: email,
-			},
-		});
+        const { email } = req.body;
 
-		if (existingUser) {
-			throw new Error("User already exists");
-		}
+        if (!email) throw new Error('Incomplete data');
+
+        const [user, created] = await Users.findOrCreate({
+            where: {
+                email: email,
+            },
+        });
+
+		return user;
 		
-		const newUser = await Users.create({
-			name: name,
-			email: email,
-			password: password,
-			isBanned,
-			isAdmin,
-		});
-
-		return newUser;
 	} catch (error) {
 		throw new Error(error.message);
 	}

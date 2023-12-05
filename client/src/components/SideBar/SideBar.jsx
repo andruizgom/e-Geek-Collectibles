@@ -5,7 +5,7 @@ import { BiPurchaseTagAlt } from "react-icons/bi";
 import { CiLogout } from "react-icons/ci";
 import { useState } from "react";
 
-const SideBar = ({handleProduct,handleOrder}) => {
+const SideBar = ({handleProduct,handleOrder,handleUser}) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -42,7 +42,7 @@ const SideBar = ({handleProduct,handleOrder}) => {
           </Link>
 
           <Link>
-            <li className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
+            <li onClick={handleUser} className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
               <span className="block float-left text-3xl text-white">
                 <FaUsers className={""} />
               </span>
