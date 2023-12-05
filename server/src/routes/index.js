@@ -8,6 +8,7 @@ const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
 const { deleteFavoritesH } = require("../handlers/deleteFavoritesH");
+const {putUpdateProductH} = require('../handlers/putUpdateProductH');
 
 const router = Router();
 
@@ -30,5 +31,7 @@ router.get('/favorites/email/', getFavoritesH)
 router.post('/favorites', postFavoritesH)
 
 router.put('/favorites', deleteFavoritesH)
+
+router.put("/products/:id",putUpdateProductH)
 
 module.exports = router;

@@ -5,13 +5,14 @@ export const useUploadImage = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [imageStatus, setImageStatus] = useState(null)
 
-  const handleUpload = async (image) => {
+  const handleUpload = async (file) => {
     try {
       setLoading(true);
-      const url = await uploadImage(image);
-      console.log("url",url);
-      setImageUrl(url);
+      const {image,status} = await uploadImage(file);
+      setImageUrl(image);
+      setImageStatus(status);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -19,5 +20,5 @@ export const useUploadImage = () => {
     }
   };
 
-  return { imageUrl, loading, error, uploadImage: handleUpload };
+  return { imageUrl,imageStatus, loading, error, uploadImage: handleUpload };
 };

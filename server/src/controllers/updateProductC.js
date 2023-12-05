@@ -3,11 +3,21 @@ const { Products } = require('../db');
 const updateProducts = async (req) => {
   try {
     const { id } = req.params;
-    const { price, available, stock, image } = req.body;
+    const {
+      category,
+      description,
+      available,
+      price,
+      stock,
+      author,
+      manufacturer,
+      title,
+      image,
+    } = req.body;
     const notFound = "Product not found";
 
      const [rowsUpdated, [product]] =  await Products.update(
-      { price, available, stock, image },
+      { price, available, stock, image,author,available,description,category,title,manufacturer },
       {
         returning: true,
         where: { id: Number(id) },
@@ -16,7 +26,7 @@ const updateProducts = async (req) => {
     
     if (rowsUpdated === 0) return ({notFound,isProduct:false})
     
-    return ({product,isProduct:true})
+    return ({message:"product updated",isProduct:true})
    
   } catch (error) {
     throw new Error(error.message);
