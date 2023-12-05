@@ -1,28 +1,22 @@
-import React from "react";
 import Card from "../Card/Card";
-import PageNotFound from "../PageNotFound/PageNotFound";
-import "./Cards.styles.css";
 
-function Cards({ allProducts }) {
+export default function Cards({ allProducts }) {
   return (
-    <div className="container">
-      {allProducts ? (
-        allProducts.map((prod) => {
-          return (
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
+        <h2 className="sr-only">Products</h2>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-6">
+          {allProducts.map((product) => (
             <Card
-              key={prod.id}
-              title={prod.title}
-              img={prod.image}
-              price={prod.price}
-              id={prod.id}
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              img={product.image}
+              price={product.price}
             />
-          );
-        })
-      ) : (
-        <PageNotFound />
-      )}
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
-
-export default Cards;
