@@ -7,6 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
+  console.log(user)
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
@@ -89,7 +90,7 @@ const Reviews = ({ productId }) => {
 
     return <div>{renderStars()}</div>;
   };
-
+    
   return (
     <div>
       <h2>Reviews:</h2>

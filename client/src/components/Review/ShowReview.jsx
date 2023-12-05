@@ -2,10 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
+import Favorites from "../Favorites/Favorites";
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 
 const ShowReview = ({ productId }) => {
+  const { user } = useAuth0();
+  let email = null;
+
+  if (user) {
+    email = user?.email;
+  }
+
   const dispatch = useDispatch();
 
   const [showReviews, setShowReviews] = useState(false);
@@ -61,7 +70,7 @@ const ShowReview = ({ productId }) => {
                       Puntuación ⭐:{" "}
                       {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
                     </p>
-                    <p>Usuario: {review.userId ? review.userId : 'Anónimo'}</p>
+                    <p>Usuario: {user.given_name ? user.given_name : 'Anónimo'}</p>
                   </li>
                 </div>
               ))
