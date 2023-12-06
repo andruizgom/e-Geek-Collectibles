@@ -10,9 +10,6 @@ import {
   GET_FILTERS,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES,
   BUY_PRODUCT,
   DELETE_BUY_PRODUCT,
   CREATE_USER,
@@ -30,7 +27,6 @@ const initialState = {
   product: {},
   idCarProduct: [], //modifique
   carrito: [],
-  favorites: [],
   user: {},
   product: {},
   updateProductMessage:""
@@ -72,21 +68,6 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
-    case ADD_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case REMOVE_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case GET_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
     case BUY_PRODUCT:
       let listaIdBuy = [...state.idCarProduct, payload];
       return {
