@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+.containercards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:space-between;
+
+}
+
+.user{
+  color: black;
+  text-align: center;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
+  font-size: 3vw;
+  font-family: 'Permanent Marker', cursive;
+}
+
+.cards, .orders, .review{
+  color: black;
+  text-align: center;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
+  font-size: 2vw;
+  font-family: 'Permanent Marker', cursive;
+}

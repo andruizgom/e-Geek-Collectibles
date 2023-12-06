@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import CartSummary from "../../components/CartSummary/CartSummary";
-import { CartContext } from "../../context/CartContext";
+import CartContext from "../../context/CartContext";
 import "./ShippingForm.css";
 
 export const ShippingForm = () => {
@@ -39,7 +39,10 @@ export const ShippingForm = () => {
                 },
               }}
               render={({ field }) => (
-                <input {...field} placeholder=" Ingrese el nombre del titular" />
+                <input
+                  {...field}
+                  placeholder=" Ingrese el nombre del titular"
+                />
               )}
             />
             {errors.cardHolderName && <p>{errors.cardHolderName.message}</p>}
@@ -62,6 +65,7 @@ export const ShippingForm = () => {
             />
             {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
           </div>
+          <div className="form-group"></div>
           <div className="form-group">
             <label>País:</label>
             <Controller
@@ -71,7 +75,14 @@ export const ShippingForm = () => {
               render={({ field }) => (
                 <input {...field} placeholder=" Ingrese el país" />
               )}
+              rules={{ required: "Campo obligatorio" }}
+              render={({ field }) => (
+                <input {...field} placeholder=" Ingrese el país" />
+              )}
             />
+            {errors.country && <p>{errors.country.message}</p>}
+          </div>
+          <div className="form-group">
             {errors.country && <p>{errors.country.message}</p>}
           </div>
           <div className="form-group">
@@ -81,9 +92,15 @@ export const ShippingForm = () => {
               control={control}
               rules={{ required: "Campo obligatorio" }}
               render={({ field }) => (
-                <input {...field} placeholder=" Ingrese la provincia o ciudad" />
+                <input
+                  {...field}
+                  placeholder=" Ingrese la provincia o ciudad"
+                />
               )}
             />
+            {errors.city && <p>{errors.city.message}</p>}
+          </div>
+          <div className="form-group">
             {errors.city && <p>{errors.city.message}</p>}
           </div>
           <div className="form-group">
@@ -93,16 +110,13 @@ export const ShippingForm = () => {
               control={control}
               rules={{ required: "Campo obligatorio" }}
               render={({ field }) => (
-                <input
-                  {...field}
-                  placeholder=" Ej: Calle 123 4B CP5000"
-                />
+                <input {...field} placeholder=" Ej: Calle 123 4B CP5000" />
               )}
             />
             {errors.homeAddress && <p>{errors.homeAddress.message}</p>}
           </div>
           <button
-            class="className= mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
+            className= "mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
             disabled={Object.keys(errors).length > 0}
           >
             Enviar Datos

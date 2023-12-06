@@ -6,10 +6,10 @@ import {
   resetProductDetail,
   buyProduct,
 } from "../../redux/actions";
-import { CartContext } from "../../context/CartContext";
+import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
-import PaymentForm from "../../components/Stripe/paymentForm";
+import PaymentForm from "../../components/Stripe/PaymentForm";
 
 const reviews = { href: "#", average: 4 };
 
@@ -135,7 +135,6 @@ export default function Detail() {
                 <p className="sr-only">
                   {productDetail?.Reviews?.length} reviews
                 </p>
-                
               </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
@@ -169,7 +168,7 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <PaymentForm productId={id}/>
+                <PaymentForm productId={id} quantity={quantity} />
               </div>
             </form>
           </div>
@@ -212,6 +211,5 @@ export default function Detail() {
         </div>
       </div>
     </div>
-    
   );
 }

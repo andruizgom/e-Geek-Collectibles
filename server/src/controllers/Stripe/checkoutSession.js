@@ -4,8 +4,11 @@ const infoProducts = require('../Stripe/infoProduct');
 async function crearPago(req, res) {
     try {
         const productId = req.body.productId;
+        const quantity = req.body.quantity; 
+
         const producto = await infoProducts(productId);
-            if (!producto || !producto.available || producto.stock <= 0) {
+
+        if (!producto || !producto.available || producto.stock < quantity) {
             return res.status(400).json({ error: 'Producto no válido o no disponible' });
         }
 
@@ -21,7 +24,7 @@ async function crearPago(req, res) {
                         },
                         unit_amount: Math.round(producto.price * 100),
                     },
-                    quantity: 1,
+                    quantity: quantity, 
                 },
             ],
             mode: 'payment',
@@ -29,13 +32,7 @@ async function crearPago(req, res) {
             cancel_url: 'http://localhost:5173/home',
         });
 
-        
-        const responseObj = {
-            id: session.id,
-            price: producto.price, 
-        };
-
-        res.json(responseObj);
+        res.json({ id: session.id, price: producto.price });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al crear sesión de pago');
@@ -43,5 +40,5 @@ async function crearPago(req, res) {
 }
 
 module.exports = {
-    crearPago,
+crearPago,
 };
