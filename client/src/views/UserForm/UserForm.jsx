@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './UserForm.styles.css'; 
 
 function UserForm() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [users, setUsers] = useState(null);
     const [userFormData, setUserFormData] = useState([]);
@@ -62,7 +62,7 @@ function UserForm() {
         try {
             event.preventDefault();
             await Promise.all(userFormData.map(updateUser));
-            navigate('/admin');
+            alert('data updated correctly')
         } catch (error) {
             alert('User(s) could not be updated');
         }
