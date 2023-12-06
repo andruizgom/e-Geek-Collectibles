@@ -12,7 +12,10 @@ const { getUserByEmailH } = require("../handlers/getUserByEmailH");
 const { updateUserH } = require("../handlers/updateUserH");
 const { getAllUsersH } = require("../handlers/getAllUsersH");
 const { crearPago } = require("../controllers/Stripe/checkoutSession");
-const {putUpdateProductH} = require('../handlers/putUpdateProductH');
+const { putUpdateProductH } = require("../handlers/putUpdateProductH");
+const { postCartH } = require("../handlers/postCartH");
+const { deleteCartH } = require("../handlers/deleteCartH");
+const { getCartH } = require("../handlers/getCartH");
 
 const router = Router();
 
@@ -44,6 +47,12 @@ router.put("/favorites", deleteFavoritesH);
 
 router.post("/crear-pago", crearPago);
 
-router.put("/products/:id",putUpdateProductH)
+router.put("/products/:id", putUpdateProductH);
+
+router.post("/cart", postCartH);
+
+router.put("/cart", deleteCartH);
+
+router.get("/cart", getCartH);
 
 module.exports = router;

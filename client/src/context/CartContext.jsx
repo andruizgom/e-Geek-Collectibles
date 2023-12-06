@@ -19,7 +19,6 @@ export const CartProvider = ({ children }) => {
       nuevoCarrito.push(itemAgregado);
     }
     setCarrito(nuevoCarrito);
-    console.log(nuevoCarrito);
   };
 
   const eliminarDelCarrito = (productId) => {

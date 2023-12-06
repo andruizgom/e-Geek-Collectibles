@@ -31,12 +31,13 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Orders, Products, Review, Users } = sequelize.models;
+
+const { Orders, Products, Review, Users, Cart } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
-/* Relacion entre Productos y Usuarios */
+/* Relacion entre Productos y Usuarios Favoritos*/
 Products.belongsToMany(Users, {
   through: "user_favorites",
   timestamps: false,
@@ -44,6 +45,18 @@ Products.belongsToMany(Users, {
 Users.belongsToMany(Products, {
   through: "user_favorites",
   timestamps: false,
+});
+
+/*Relación entre Productos y Usuarios Carrito*/
+Products.belongsToMany(Users, {
+  through: Cart,
+  timestamps: false,
+  foreignKey: "productId",
+});
+Users.belongsToMany(Products, {
+  through: Cart,
+  timestamps: false,
+  foreignKey: "userId",
 });
 
 /* Relacion entre Productos y Reviews */
