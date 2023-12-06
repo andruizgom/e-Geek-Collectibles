@@ -11,9 +11,6 @@ import {
   GET_FILTERS,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES,
   BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
@@ -127,82 +124,19 @@ export const createProduct = ({
         image,
         available,
         description,
-        category,
-      };
-      const endPoint = "/products";
-      const { data } = await axios.post(endPoint, product);
-      dispatch({
-        type: CREATE_PRODUCT,
-        payload: data,
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-};
-
-export const postFavorite = (favorite) => {
-  const endpoint = '/favorites';
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.post(endpoint, favorite);
-
-      if (!data) throw new Error("There was no data");
-
-      return dispatch({
-        type: ADD_FAVORITES,
-        payload: data.Products,
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-};
-
-export const removeFavorite = (favorite) => {
-  const endpoint = '/favorites';
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.put(endpoint, favorite);
-
-      if (!data) throw new Error("There was no data");
-
-      return dispatch({
-        type: REMOVE_FAVORITES,
-        payload: data.Products,
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-};
-
-export const getFavorites = (email) => {
-  const endpoint = `/favorites/email?email=${email}`;
-  
-  return async (dispatch) => {
-    try {
-      const response = await fetch(endpoint);
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (!data) {
-        throw new Error("There was no data");
-      }
-
-      return dispatch({
-        type: GET_FAVORITES,
-        payload: data.Products,
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-};
+        category
+}
+    const endPoint = "/products"
+    const { data } = await axios.post(endPoint,product);
+    dispatch({
+      type: CREATE_PRODUCT,
+      payload: data
+    })
+  } catch (error) {
+    throw new Error(error)
+  }
+  }
+}
 
 export const buyProduct = (id) => {
   //MODIFIQUE
@@ -220,20 +154,18 @@ export const deleteProductCar = () => {
 };
 
 export const createUser = (email) => {
-  console.log(email);
-  const endpoint = "/users";
+  const endpoint = '/users';
   return async (dispatch) => {
-    try {
-      const { data } = await axios.post(endpoint, { email });
-      if (!data) throw new Error("There was no data");
-      console.log(data);
-      return dispatch({
-        type: CREATE_USER,
-        payload: data,
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
+      try {
+          const {data} = await axios.post(endpoint, {email});
+          if (!data) throw new Error('There was no data');
+          return dispatch({
+              type: CREATE_USER,
+              payload: data,
+          });
+      } catch (error) {
+          throw new Error(error.message)
+      }
   };
 };
 export const resetHomeProducts = () => {

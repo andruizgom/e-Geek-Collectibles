@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
@@ -7,17 +7,62 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import logo from "../../assets/logo.svg";
+import Loging from "../../components/Loging/Login";
+import Logout from "../../components/Logout/Logout";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
-const navigation = {
-  pages: [
-    { name: "Home", route: "/home" },
-    { name: "Account", route: "/user" },
-  ],
-};
+
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);  
+  const { isAuthenticated, user } = useAuth0();
+  const [isAdminLocal, setIsAdminLocal] = useState(false);
 
+  const checkUserRole = async (email) => {
+      const endpoint = `/users/email`;
+
+      try {
+          const response = await axios.get(endpoint, { params: { email: email } });
+          const data = response.data;
+          if (!data) {
+              throw new Error('There was no data');
+          }
+          return data.isAdmin;
+      } catch (error) {
+          throw new Error(error.message);
+      }
+
+  };
+
+
+  useEffect(() => {
+      const checkAuthentication = async () => {
+          if (!isAuthenticated) {
+              return;
+          }
+
+          try {
+              const isAdmin = await checkUserRole(user?.email);
+              setIsAdminLocal(isAdmin);
+          } catch (error) {
+              console.error('Error while verifying user role:', error.message);
+          }
+      };
+
+      checkAuthentication();
+  }, [isAuthenticated, user?.email]);
+  
+  const navigation = {
+    pages: [
+      { name: "Home", route: "/home" },
+      isAuthenticated && isAdminLocal
+        ? { name: "Admin Dashboard", route: "/admin" }
+        : isAuthenticated
+        ? { name: "User Dashboard", route: "/user" }
+        : {name: null, route: null},
+    ],
+  };
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -74,7 +119,7 @@ export default function Navigation() {
                       to="/home"
                       className="-m-2 block p-2 font-medium text-gray-900"
                     >
-                      Sign in
+                      {isAuthenticated ? <Logout /> : <Loging />}{" "}
                     </Link>
                   </div>
                 </div>
@@ -131,7 +176,7 @@ export default function Navigation() {
                   to="/home"
                   className="text-sm font-medium text-white hover:text-gray-900"
                 >
-                  Sign in
+                  {isAuthenticated ? <Logout /> : <Loging />}{" "}
                 </Link>
               </div>
               {/* Cart */}
