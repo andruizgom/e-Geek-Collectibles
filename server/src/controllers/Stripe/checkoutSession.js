@@ -1,5 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const infoProducts = require('../Stripe/infoProduct');
+const {Products} = require('../../db'); // Importa tu modelo de productos
 
 async function crearPago(req, res) {
     try {
@@ -11,6 +12,18 @@ async function crearPago(req, res) {
         if (!producto || !producto.available || producto.stock < quantity) {
             return res.status(400).json({ error: 'Producto no válido o no disponible' });
         }
+
+        const updatedProduct = await Products.findByPk(productId);
+        if (!updatedProduct) {
+            return res.status(400).json({ error: 'Producto no encontrado' });
+        }
+
+        if (updatedProduct.stock < quantity) {
+            return res.status(400).json({ error: 'No hay suficiente stock disponible.' });
+        }
+
+        updatedProduct.stock -= quantity;
+        await updatedProduct.save();
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -40,5 +53,5 @@ async function crearPago(req, res) {
 }
 
 module.exports = {
-crearPago,
+    crearPago,
 };
