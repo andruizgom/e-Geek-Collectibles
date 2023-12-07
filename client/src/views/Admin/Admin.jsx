@@ -36,7 +36,7 @@ const Admin = () => {
 
       <div className="flex-1">
         {pageProduct && <ProductsView />}
-        {pageOrder && <Orders handleOrder={handleOrder} />}
+        {pageOrder && <Orders />}
         {pageUser && <UserForm/>}
       </div>
     </div>
