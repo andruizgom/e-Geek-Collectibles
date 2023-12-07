@@ -187,3 +187,7 @@ export const updateProduct = ({category,description,available,price,stock,author
   }
   }
 }
+
+export const createDataClient=()=>{
+  
+}
