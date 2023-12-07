@@ -153,7 +153,7 @@ export default function Detail() {
                   +
                 </span>
                 <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock}
+                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
                 </span>
               </div>
             </div>
