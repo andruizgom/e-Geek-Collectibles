@@ -34,7 +34,10 @@ const initialState = {
   carrito: [],
   user: {},
   product: {},
-  updateProductMessage:""
+  updateProductMessage:"",
+  reviews: [],
+  createReviewError: null,
+  getProductReviewsError: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -95,10 +98,38 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         allProducts: [],
       };
-    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
+    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload};
+    case CREATE_REVIEW_SUCCESS:
+          return {
+              ...state,
+              reviews: [...state.reviews, payload],
+              createReviewError: null,
+          };
+  
+      case CREATE_REVIEW_ERROR:
+          return {
+              ...state,
+              reviews: null,
+              createReviewError: payload,
+          };
+  
+      case GET_PRODUCT_REVIEWS_SUCCESS:
+          return {
+              ...state,
+              reviews: payload,
+              getProductReviewsError: null,
+          };
+  
+      case GET_PRODUCT_REVIEWS_ERROR:
+          return {
+              ...state,
+              reviews: null,
+              getProductReviewsError: payload,
+          };
     default:
       return state;
   }
+    
 };
 
 export default reducer;
