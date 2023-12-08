@@ -1,26 +1,27 @@
 const { Users } = require('../db');
 
 const postUserC = async (req) => {
+  try {
+    const { email } = req.body;
 
-	try {
-		
-        const { email } = req.body;
+    if (!email) {
+      throw new Error('Datos incompletos');
+    }
 
-        if (!email) throw new Error('Incomplete data');
+    const [user, created] = await Users.findOrCreate({
+      where: {
+        email: email,
+      },
+    });
 
-        const [user, created] = await Users.findOrCreate({
-            where: {
-                email: email,
-            },
-        });
-
-		return user;
-		
-	} catch (error) {
-		throw new Error(error.message);
-	}
+    return user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 module.exports = {
-	postUserC,
+  postUserC,
 };
+
+

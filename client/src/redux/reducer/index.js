@@ -9,9 +9,7 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES,
+  UPDATE_PRODUCT,
   BUY_PRODUCT,
   DELETE_BUY_PRODUCT,
   CREATE_REVIEW_SUCCESS,
@@ -19,7 +17,8 @@ import {
   GET_PRODUCT_REVIEWS_ERROR,
   GET_PRODUCT_REVIEWS_SUCCESS,
   CREATE_USER,
-  RESET_PRODUCTS_HOME
+  RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT
 } from "../types/index";
 
 const initialState = {
@@ -33,11 +32,9 @@ const initialState = {
   product: {},
   idCarProduct: [], //modifique
   carrito: [],
-  favorites: [],
   user: {},
-  reviews: [],
-  createReviewError: null,
-  getProductReviewsError: null,
+  product: {},
+  updateProductMessage:""
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -76,21 +73,6 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
-    case ADD_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case REMOVE_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case GET_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
     case BUY_PRODUCT:
       let listaIdBuy = [...state.idCarProduct, payload];
       return {
@@ -103,49 +85,20 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         idCarProduct: updatedCar
       }
-      case CREATE_USER:
-        return {
-          ...state,
-          user: payload,
-        };
-      case RESET_PRODUCTS_HOME:
-        return {
-          ...state,
-          allProducts: [],
-        };  
-        case CREATE_REVIEW_SUCCESS:
-          return {
-              ...state,
-              reviews: [...state.reviews, payload],
-              createReviewError: null,
-          };
-  
-      case CREATE_REVIEW_ERROR:
-          return {
-              ...state,
-              reviews: null,
-              createReviewError: payload,
-          };
-  
-      case GET_PRODUCT_REVIEWS_SUCCESS:
-          return {
-              ...state,
-              reviews: payload,
-              getProductReviewsError: null,
-          };
-  
-      case GET_PRODUCT_REVIEWS_ERROR:
-          return {
-              ...state,
-              reviews: null,
-              getProductReviewsError: payload,
-          };  
-  
+    case CREATE_USER:
+      return {
+        ...state,
+        user: payload,
+      };
+    case RESET_PRODUCTS_HOME:
+      return {
+        ...state,
+        allProducts: [],
+      };
+    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
     default:
       return state;
   }
-
-
 };
 
 export default reducer;

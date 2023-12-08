@@ -147,7 +147,7 @@ export default function Detail() {
                   +
                 </span>
                 <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock}
+                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
                 </span>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <PaymentForm productId={id}/>
+                <PaymentForm productId={id} quantity={quantity} />
               </div>
             </form>
           </div>
