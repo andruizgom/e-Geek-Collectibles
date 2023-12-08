@@ -9,13 +9,12 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES,
+  UPDATE_PRODUCT,
   BUY_PRODUCT,
   DELETE_BUY_PRODUCT,
   CREATE_USER,
-  RESET_PRODUCTS_HOME
+  RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT
 } from "../types/index";
 
 const initialState = {
@@ -29,8 +28,9 @@ const initialState = {
   product: {},
   idCarProduct: [], //modifique
   carrito: [],
-  favorites: [],
-  user: {}
+  user: {},
+  product: {},
+  updateProductMessage:""
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -69,21 +69,6 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
-    case ADD_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case REMOVE_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
-    case GET_FAVORITES:
-      return {
-        ...state,
-        favorites: payload,
-      };
     case BUY_PRODUCT:
       let listaIdBuy = [...state.idCarProduct, payload];
       return {
@@ -106,11 +91,10 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         allProducts: [],
       };
+    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
     default:
       return state;
   }
-
-
 };
 
 export default reducer;

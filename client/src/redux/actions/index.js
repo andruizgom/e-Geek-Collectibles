@@ -10,9 +10,7 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES,
+  UPDATE_PRODUCT,
   BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME
@@ -70,7 +68,7 @@ export const searchProducts = (searchTerm) => {
     }
   };
 };
-export const getProductById = (id) => {
+export const getProductById = (id,) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/products/${id}`);
@@ -129,73 +127,6 @@ export const createProduct = ({category,description,available,price,stock,author
   }
 }
 
-export const postFavorite = (favorite) => {
-  const endpoint = 'http://localhost:3001/favorites';
-  return async (dispatch) => {
-      try {
-
-          const {data} = await axios.post(endpoint, favorite);
-
-          if (!data) throw new Error('There was no data');
-
-          return dispatch({
-              type: ADD_FAVORITES,
-              payload: data.Products,
-          });
-
-      } catch (error) {
-          throw new Error(error.message)
-      }
-  };
-};
-
-export const removeFavorite = (favorite) => {
-  const endpoint = 'http://localhost:3001/favorites';
-  return async (dispatch) => {
-      try {
-
-          const {data} = await axios.put(endpoint, favorite);
-
-          if (!data) throw new Error('There was no data');
-
-          return dispatch({
-              type: REMOVE_FAVORITES,
-              payload: data.Products,
-          });
-
-      } catch (error) {
-          throw new Error(error.message)
-      }
-  };
-};
-
-export const getFavorites = (email) => {
-  const endpoint = `http://localhost:3001/favorites/email?email=${email}`;
-  
-  return async (dispatch) => {
-    try {
-      const response = await fetch(endpoint);
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-
-      if (!data) {
-        throw new Error('There was no data');
-      }
-
-      return dispatch({
-        type: GET_FAVORITES,
-        payload: data.Products,
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-};
-
 export const buyProduct=(id)=>{ //MODIFIQUE
   return{
     type: BUY_PRODUCT,
@@ -212,13 +143,11 @@ export const deleteProductCar=()=>{
 }
 
 export const createUser = (email) => {
-  console.log(email);
   const endpoint = '/users';
   return async (dispatch) => {
       try {
           const {data} = await axios.post(endpoint, {email});
           if (!data) throw new Error('There was no data');
-          console.log(data);
           return dispatch({
               type: CREATE_USER,
               payload: data,
@@ -232,3 +161,33 @@ export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
 
+export const updateProduct = ({category,description,available,price,stock,author,manufacturer,title,image},id) => {
+  return async (dispatch) => {
+     try {
+  const product = {
+  title,
+  manufacturer,
+  author,
+  stock,
+  price,
+  image,
+  available,
+  description,
+  category
+       }
+    const endPoint = `/products/${id}`
+    const { data } = await axios.put(endPoint,product);
+    dispatch({
+         type: UPDATE_PRODUCT,
+         payload: data
+    })
+    alert(data)
+  } catch (error) {
+    throw new Error(error)
+  }
+  }
+}
+
+export const createDataClient=()=>{
+  
+}

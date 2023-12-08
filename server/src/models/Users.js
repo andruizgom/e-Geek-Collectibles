@@ -22,6 +22,26 @@ module.exports = (sequelize) => {
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    name: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
+    address: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
+    country: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
+    city: {
+      type: DataTypes.STRING,
+      defaultValue: ''
+    },
+    phone: {
+      type: DataTypes.STRING,
+      defaultValue: ''
     }
   });
 };
