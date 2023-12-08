@@ -4,13 +4,18 @@ import { createReview, getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
+
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
   
+  const userId = user
+  
+  
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
+ 
 
   useEffect(() => {
     if (productId) {
@@ -34,6 +39,8 @@ const Reviews = ({ productId }) => {
 
   const { average: averageRating, count: reviewCount } = calculateAverageRating();
 
+  
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,21 +60,23 @@ const Reviews = ({ productId }) => {
       );
       return;
     }
-
+    
     const reviewData = {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
+      userId: userId,
+      
       
     };
-
+    
     dispatch(createReview(reviewData));
     
     
     alert("Reseña enviada con éxito");
     setReviewText("");
     setRating(0);
-
+    
     
     
   };
@@ -104,7 +113,9 @@ const Reviews = ({ productId }) => {
       <div>
         <strong>Puntuación promedio: </strong>
         {averageRating} <StarRating rating={parseFloat(averageRating)} />
-        <span style={{ marginLeft: '8px' }}>({reviewCount} evaluaciones)</span> {/* Display the count */}
+        <span style={{ marginLeft: '8px' }}>
+  ({reviewCount === 1 ? '1 evaluación' : `${reviewCount} evaluaciones`})
+</span>
       </div>
       <div>
         {isAuthenticated ? (
