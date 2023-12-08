@@ -1,7 +1,10 @@
-import React, { useContext } from "react";
-import CartContext from "../../context/CartContext";
-import CartItem from "../../components/CartItem/CartItem";
-import CartSummary from "../../components/CartSummary/CartSummary";
+import React, { useContext } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import CartContext from '../../context/CartContext';
+import CartItem from '../../components/CartItem/CartItem';
+import CartSummary from '../../components/CartSummary/CartSummary';
+
+const stripePromise = loadStripe('pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n');
 
 export default function ShoppingCart() {
   const {
@@ -19,20 +22,49 @@ export default function ShoppingCart() {
     vaciarCarrito();
   };
 
-  const handleEliminar = (id) => {
-    eliminarDelCarrito(id);
+  const handleEliminar = (productId) => {
+    eliminarDelCarrito(productId);
   };
 
-  const hanldeIncrementar = (id) => {
-    incremento(id);
+  const hanldeIncrementar = (productId) => {
+    incremento(productId);
   };
 
-  const handleDecrementar = (id) => {
-    decremento(id);
+  const handleDecrementar = (productId) => {
+    decremento(productId);
   };
 
   const subtotal = precioTotal();
   const total = precioFinalIva();
+
+  const handleBuy = async () => {
+    console.log("Objeto enviado al backend:", { cartItems: carrito }); 
+    try {
+      const response = await fetch('http://localhost:3001/crear-pago', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartItems: carrito.map(item => ({ productId: item.id, quantity: item.quantity })) }), 
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error en la solicitud:', errorData.error);
+      } else {
+        const session = await response.json();
+        console.log('Sesión creada:', session);
+        
+        const stripe = await stripePromise;
+        await stripe.redirectToCheckout({
+          sessionId: session.id
+        });
+      }
+      
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
 
   return (
     <div className="h-auto bg-white pt-10">
@@ -61,7 +93,7 @@ export default function ShoppingCart() {
             />
           ))}
         </div>
-        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true} />
+        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true} handleBuy={handleBuy} />
       </div>
     </div>
   );
