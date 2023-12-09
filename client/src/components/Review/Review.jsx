@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { createReview, getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useRef } from "react";
 
 
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
+
+
   
-  const userId = user
+  
   
   
   const [showReviews, setShowReviews] = useState(false);
@@ -65,7 +68,7 @@ const Reviews = ({ productId }) => {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
-      userId: userId,
+      usersId: user.email
       
       
     };

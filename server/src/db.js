@@ -54,6 +54,9 @@ Review.belongsToMany(Products, {
 Users.belongsToMany(Orders, { through: "users_orders", timestamps: false });
 Orders.belongsToMany(Users, { through: "users_orders", timestamps: false }); //Consultar
 
+ Users.belongsToMany(Review, { through: "users_reviews", timestamps: false });
+ Review.belongsToMany(Users, { through: "users_reviews", timestamps: false });
+
 
 
 

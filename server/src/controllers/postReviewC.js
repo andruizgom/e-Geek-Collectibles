@@ -1,10 +1,16 @@
 const axios = require("axios");
-const { Products, Review} = require("../db");
+const { Products, Review, Users} = require("../db");
 
-const postReviewC = async (content, score, productId) => {
-    try {        
+const postReviewC = async (content, score, productId, usersId) => {
+
+    try {  
+       
+             
         const newReview = await Review.create({ content, score});     
         const product = await Products.findByPk(productId);
+        const users = await Users.findOne({ where: { email: usersId } });
+        //const users = await Users.findByPk(usersId);
+        console.log(usersId)
         
        
         
@@ -13,8 +19,13 @@ const postReviewC = async (content, score, productId) => {
         }
 
        
+        if (!users) {
+            throw new Error('usuario no encontrado');
+        }
+       
            
         await product.addReview(newReview);
+        await users.addReview(newReview);
         
        
         
