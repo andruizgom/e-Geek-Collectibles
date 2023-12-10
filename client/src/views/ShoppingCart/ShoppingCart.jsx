@@ -3,6 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import CartContext from '../../context/CartContext';
 import CartItem from '../../components/CartItem/CartItem';
 import CartSummary from '../../components/CartSummary/CartSummary';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const stripePromise = loadStripe('pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n');
 
@@ -66,6 +67,8 @@ export default function ShoppingCart() {
     }
   };
 
+  const { isAuthenticated } = useAuth0();
+  
   return (
     <div className="h-auto bg-white pt-10">
       <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
@@ -93,7 +96,7 @@ export default function ShoppingCart() {
             />
           ))}
         </div>
-        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={true} handleBuy={handleBuy} />
+        <CartSummary subtotal={subtotal} total={total} mostrarCheckout={isAuthenticated} handleBuy={handleBuy} />
       </div>
     </div>
   );
