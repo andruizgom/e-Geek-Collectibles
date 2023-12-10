@@ -9,9 +9,12 @@ import {
   RESET_PRODUCT_DETAIL,
   GET_FILTERS,
   CREATE_PRODUCT,
-  ADD_FAVORITES,
-  REMOVE_FAVORITES,
-  GET_FAVORITES
+  UPDATE_PRODUCT,
+  BUY_PRODUCT,
+  DELETE_BUY_PRODUCT,
+  CREATE_USER,
+  RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT
 } from "../types/index";
 
 const initialState = {
@@ -22,7 +25,12 @@ const initialState = {
   products: [],
   productsDetail: {},
   productsFiltered: [],
-  product: {}
+  product: {},
+  idCarProduct: [], //modifique
+  carrito: [],
+  user: {},
+  product: {},
+  updateProductMessage:""
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -61,26 +69,32 @@ const reducer = (state = initialState, { type, payload }) => {
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
-
-    case ADD_FAVORITES:
+    case BUY_PRODUCT:
+      let listaIdBuy = [...state.idCarProduct, payload];
       return {
         ...state,
-        favorites: payload,
+        idCarProduct: listaIdBuy
       };
-    case REMOVE_FAVORITES:
+    case DELETE_BUY_PRODUCT:
+      const updatedCar = state.idCarProduct.filter((elemento) => elemento !== action.payload);
       return {
         ...state,
-        favorites: payload,
-      };
-    case GET_FAVORITES:
+        idCarProduct: updatedCar
+      }
+    case CREATE_USER:
       return {
         ...state,
-        favorites: payload,
+        user: payload,
       };
+    case RESET_PRODUCTS_HOME:
+      return {
+        ...state,
+        allProducts: [],
+      };
+    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
     default:
       return state;
   }
-
 };
 
 export default reducer;
