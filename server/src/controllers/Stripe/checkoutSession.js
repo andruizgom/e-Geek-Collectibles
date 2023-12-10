@@ -103,8 +103,8 @@ async function crearPago(req, res) {
             },
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'http://localhost:5173/user',
-            cancel_url: 'http://localhost:5173/home',
+            success_url: 'http://localhost:5173/successfullpayment',
+            cancel_url: 'http://localhost:5173/failedpayment',
         });
 
         return res.json({ id: session.id, totalPrice: session.amount_total / 100 });
