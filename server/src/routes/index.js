@@ -16,8 +16,9 @@ const { putUpdateProductH } = require("../handlers/putUpdateProductH");
 const { postCartH } = require("../handlers/postCartH");
 const { deleteCartH } = require("../handlers/deleteCartH");
 const { getCartH } = require("../handlers/getCartH");
-const {updateShippingH}=require('../handlers/updateShippingH');
+const { updateShippingH } = require("../handlers/updateShippingH");
 const { getShippingH } = require("../handlers/getShippingH");
+const { updateQuantityH } = require("../handlers/updateQuantityH");
 
 const router = Router();
 
@@ -57,8 +58,10 @@ router.put("/cart", deleteCartH);
 
 router.get("/cart", getCartH);
 
-router.put("/data-client",updateShippingH);
+router.put("/cart/updateQuantity", updateQuantityH);
 
-router.get("/data-client",getShippingH);
+router.put("/data-client", updateShippingH);
+
+router.get("/data-client", getShippingH);
 
 module.exports = router;

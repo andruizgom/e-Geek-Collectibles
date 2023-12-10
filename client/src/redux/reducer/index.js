@@ -11,10 +11,10 @@ import {
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   BUY_PRODUCT,
-  DELETE_BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT
+  CREATE_DATA_CLIENT,
+  GET_CART,
 } from "../types/index";
 
 const initialState = {
@@ -30,8 +30,7 @@ const initialState = {
   cart: [],
   favorites: [],
   user: {},
-  product: {},
-  updateProductMessage:""
+  updateProductMessage: "",
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -76,14 +75,6 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         idCarProduct: listaIdBuy,
       };
-    case DELETE_BUY_PRODUCT:
-      const updatedCar = state.idCarProduct.filter(
-        (elemento) => elemento !== action.payload,
-      );
-      return {
-        ...state,
-        idCarProduct: updatedCar,
-      };
     case CREATE_USER:
       return {
         ...state,
@@ -94,7 +85,13 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         allProducts: [],
       };
-    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload}
+    case UPDATE_PRODUCT:
+      return { ...state, updateProductMessage: payload };
+    case GET_CART:
+      return {
+        ...state,
+        cart: payload,
+      };
     default:
       return state;
   }

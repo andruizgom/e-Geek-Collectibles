@@ -1,11 +1,8 @@
 const { Users, Products, Cart } = require("../db");
 
-const getCartC = async (req) => {
+const getCartC = async (email) => {
   try {
-    const { email } = req.query;
-
     if (!email) throw new Error("Incomplete data");
-
     const cart = await Users.findOne({
       where: { email },
       include: {
@@ -13,9 +10,7 @@ const getCartC = async (req) => {
         through: { model: Cart },
       },
     });
-
     if (!cart) throw new Error("User not found");
-
     return cart;
   } catch (error) {
     throw new Error(error.message);

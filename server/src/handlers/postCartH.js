@@ -1,9 +1,16 @@
 const { postCartC } = require("../controllers/postCartC");
 
 const postCartH = async (req, res) => {
-  postCartC(req)
-    .then((productInCart) => res.status(200).json(productInCart))
-    .catch((error) => res.status(500).json(error.message));
+  console.log("Este es el req.body ", req.body);
+  console.log(req.body.id);
+  try {
+    const newCart = await postCartC(req);
+    res.status(200).json(newCart);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: "Error al postear un nuevo producto. " + error.message });
+  }
 };
 
 module.exports = {

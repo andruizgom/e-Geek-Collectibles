@@ -19,13 +19,16 @@ export const CartProvider = ({ children }) => {
       nuevoCarrito.push(itemAgregado);
     }
     setCarrito(nuevoCarrito);
+    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
   };
 
-  const eliminarDelCarrito = (productId) => {
-    const nuevoCarrito = carrito.filter(
-      (producto) => producto.id !== productId,
-    );
-    setCarrito(nuevoCarrito);
+  const eliminarDelCarrito = async (id) => {
+    try {
+      const nuevoCarrito = carrito.filter((producto) => producto.id !== id);
+      setCarrito(nuevoCarrito);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   const cantidadEnElCarrito = () => {
@@ -48,6 +51,7 @@ export const CartProvider = ({ children }) => {
 
   const vaciarCarrito = () => {
     setCarrito([]);
+    localStorage.removeItem("carrito");
   };
 
   const incremento = (id) => {
@@ -71,7 +75,9 @@ export const CartProvider = ({ children }) => {
         ? {
             ...producto,
             quantity:
-              producto.quantity > 1 ? producto.quantity - 1 : producto.quantity,
+              producto.quantity > 1
+                ? producto.quantity - 1
+                : producto.quantity,
           }
         : producto,
     );
@@ -86,6 +92,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         carrito,
+        setCarrito,
         agregarAlCarrito,
         eliminarDelCarrito,
         cantidadEnElCarrito,
