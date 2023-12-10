@@ -17,7 +17,10 @@ import {
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
-  GET_PRODUCT_REVIEWS_SUCCESS
+  GET_PRODUCT_REVIEWS_SUCCESS,
+  
+
+  
 } from "../types";
 import axios from "axios";
 
@@ -189,7 +192,8 @@ export const getProductReviews = (productId) => {
   return async (dispatch) => {
       try {
           // Hago la solicitud GET al servidor para obtener las revisiones/reviews del producto
-          const response = await axios.get(`/products/${productId}`);
+          //const response = await axios.get(`/products/${productId}`);
+          const response = await axios.get('/reviews/', productId);
 
           // Despacho una acción con las revisiones obtenidas, con los datos
           dispatch({
@@ -238,3 +242,7 @@ export const updateProduct = ({category,description,available,price,stock,author
 export const createDataClient=()=>{
   
 }
+
+
+
+

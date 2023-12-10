@@ -28,6 +28,7 @@ const Reviews = ({ productId }) => {
 
   const productReviews = useSelector((state) => state.productsDetail);
 
+
   const calculateAverageRating = () => {
     if (productReviews.Reviews && productReviews.Reviews.length > 0) {
       const total = productReviews.Reviews.reduce(

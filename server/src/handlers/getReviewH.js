@@ -1,4 +1,4 @@
-const { getAllReviewC } = require("../controllers/getAllReviewC");
+const { getAllReviewC, getUserReviewsC } = require("../controllers/getAllReviewC");
 const { Products } = require("../db");
 
 
@@ -12,6 +12,17 @@ const getReviewH = async (req, res) => {
     }
 }
 
+const getUserReviewsH = async (req, res) => {
+    try {
+        const usersId = req.params.usersId;
+        const userReviews = await getUserReviewsC(usersId);
+        res.status(200).json(userReviews);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
-    getReviewH
+    getReviewH,
+    getUserReviewsH
 }

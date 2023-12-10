@@ -18,7 +18,9 @@ import {
   GET_PRODUCT_REVIEWS_SUCCESS,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT
+  CREATE_DATA_CLIENT,
+  
+  
 } from "../types/index";
 
 const initialState = {
@@ -38,6 +40,8 @@ const initialState = {
   reviews: [],
   createReviewError: null,
   getProductReviewsError: null,
+  userReviews: [],
+  
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -126,6 +130,9 @@ const reducer = (state = initialState, { type, payload }) => {
               reviews: null,
               getProductReviewsError: payload,
           };
+
+
+        
     default:
       return state;
   }

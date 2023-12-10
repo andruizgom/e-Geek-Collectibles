@@ -14,6 +14,8 @@ import UserForm from "./views/UserForm/UserForm";
 import Admin from "./views/Admin/Admin";
 import { ShippingForm } from "./views/ShippingForm/ShippingForm";
 
+
+
 function App() {
   const { isAuthenticated, user } = useAuth0();
     const [isAdminLocal, setIsAdminLocal] = useState(false);
@@ -62,6 +64,7 @@ function App() {
       <CartProvider>
         <Routes>
         <Route exact path="/" element={<Landing />} />
+        
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/detail/:id" element={<Detail />} />
           <Route exact path="/cart" element={<ShoppingCart />} />
