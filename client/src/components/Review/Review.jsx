@@ -4,7 +4,8 @@ import { createReview, getProductReviews } from "../../redux/actions";
 import styles from "./Review.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useRef } from "react";
-
+import ReviewForm from "./ReviewForm";
+//inicio2
 
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
@@ -122,33 +123,9 @@ const Reviews = ({ productId }) => {
 </span>
       </div>
       <div>
-        {isAuthenticated ? (
-          <div>
-            {[1, 2, 3, 4, 5].map((index) => (
-              <span
-                key={index}
-                className={
-                  index <= rating ? styles.selectedStar : styles.star
-                }
-                onClick={() => setRating(index)}
-              >
-                ★
-              </span>
-            ))}
-            <textarea
-              placeholder="Deja un comentario"
-              className="reviews-textarea"
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-            />
-            <button onClick={handleReviewSubmit}>Enviar</button>
-            <button onClick={() => setShowReviews(!showReviews)}>
-              {showReviews ? "Ocultar Reseñas" : "Ver Reseñas"}
-            </button>
-          </div>
-        ) : (
-          <p>Debes estar autenticado para dejar una reseña.</p>
-        )}
+
+          <p>Debes hacer una compra para dejar una reseña.</p>
+      
       </div>
     </div>
   );
