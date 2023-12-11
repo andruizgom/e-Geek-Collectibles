@@ -8,6 +8,16 @@ const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
 const { deleteFavoritesH } = require("../handlers/deleteFavoritesH");
+const { getUserByEmailH } = require("../handlers/getUserByEmailH");
+const { updateUserH } = require("../handlers/updateUserH");
+const { getAllUsersH } = require("../handlers/getAllUsersH");
+const { crearPago } = require("../controllers/Stripe/checkoutSession");
+const {putUpdateProductH} = require('../handlers/putUpdateProductH');
+const {updateShippingH}=require('../handlers/updateShippingH');
+const { getShippingH } = require("../handlers/getShippingH");
+const { createOrderH } = require("../handlers/createOrderH");
+const { updateOrderH } = require("../handlers/updateOrderH");
+const { getAllOrdersH } = require("../handlers/getAllOrdersH");
 
 const router = Router();
 
@@ -23,12 +33,32 @@ router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
 
+router.get("/users", getAllUsersH);
+
 router.post("/users", postUserH);
+
+router.put("/users", updateUserH);
+
+router.get("/users/email/", getUserByEmailH);
 
 router.get("/favorites/email/", getFavoritesH);
 
 router.post("/favorites", postFavoritesH);
 
 router.put("/favorites", deleteFavoritesH);
+
+router.post('/crear-pago', crearPago);
+
+router.put("/products/:id",putUpdateProductH);
+
+router.put("/data-client",updateShippingH);
+
+router.get("/data-client",getShippingH);
+
+router.get("/order", getAllOrdersH);
+
+router.post("/order", createOrderH);
+
+router.put("/order", updateOrderH);
 
 module.exports = router;
