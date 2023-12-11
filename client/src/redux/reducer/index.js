@@ -15,7 +15,9 @@ import {
   DELETE_BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT,
   GET_PRODUCT_DATA,
+  ORDERS_FILTERED,
 } from "../types/index";
 
 const initialState = {
@@ -33,6 +35,7 @@ const initialState = {
   products: [],
   productsDetail: {},
   productsFiltered: [],
+  ordersFiltered: [],
   product: {},
   idCarProduct: [], //modifique
   carrito: [],
@@ -126,6 +129,11 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         idProduct: payload.id,
         productAvailable: payload.available,
+      };
+    case ORDERS_FILTERED:
+      return {
+        ...state,
+        ordersFiltered: payload,
       };
     default:
       return state;

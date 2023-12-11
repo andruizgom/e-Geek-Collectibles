@@ -16,6 +16,7 @@ import {
   CREATE_USER,
   RESET_PRODUCTS_HOME,
   GET_PRODUCT_DATA,
+  ORDERS_FILTERED,
 } from "../types";
 import axios from "axios";
 
@@ -191,3 +192,25 @@ export const getIdAvailable = (id, available) => {
     });
   };
 };
+
+export const ordersFilters = ({ createdDate, state }) => {
+  return async (dispatch) => {
+    try {
+      const endPoint = `/orders?`;
+      const { data } = await axios.get(endPoint, {
+        params: {
+          createdDate,
+          state,
+        },
+      });
+      dispatch({
+        type: ORDERS_FILTERED,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+};
+
+export const createDataClient = () => {};

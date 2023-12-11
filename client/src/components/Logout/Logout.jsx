@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { createUser } from "../../redux/actions";
 
 const Logout = () => {
-
     
     const { logout, isAuthenticated, user } = useAuth0();
     const dispatch = useDispatch();
@@ -25,9 +24,10 @@ const Logout = () => {
     }, [isAuthenticated, user, dispatch]);
 
     return (
-
-        <button onClick={() => logout()}>Logout</button>
-
+        <div>
+            <button onClick={() => logout()}>Logout</button>
+              
+        </div>
     );
 };
 
