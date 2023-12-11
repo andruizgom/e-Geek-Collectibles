@@ -22,6 +22,7 @@ module.exports = (sequelize) => {
             min: 1,
             max: 5
         }
-    }
+    },
+
   });
 };
