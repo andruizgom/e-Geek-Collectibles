@@ -1,21 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductById,
-  resetProductDetail,
-  buyProduct,
-  createReview,
-  getProductReviews
-} from "../../redux/actions";
-import { getProductById, resetProductDetail } from "../../redux/actions";
+import { getProductById, resetProductDetail, getProductReviews } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
-import PaymentForm from "../../components/Stripe/paymentForm";
+import PaymentForm from "../../components/Stripe/PaymentForm";
 import { loadStripe } from "@stripe/stripe-js";
-import Reviews from '../../components/Review/Review';
 import ShowReview from "../../components/Review/ShowReview";
+import Reviews from "../../components/Review/Review";
 
 const stripePromise = loadStripe("pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n");
 
@@ -33,7 +26,7 @@ export default function Detail() {
     const productsDetail = useSelector((state) => state.productsDetail);
     useEffect(() => {
       if (id) {
-        dispatch(getProductById(id, false))
+        dispatch(getProductById(id))
           .then()
           .catch((err) => {
             throw new Error("Error: ", err);
@@ -88,14 +81,6 @@ export default function Detail() {
   const handleDecrement = () => {
     quantity > 1 && setQuantity(quantity - 1);
   };
-
-  const [productId, setProductId] = useState(null);
-  useEffect(() => {
-    if (productDetail?.id) {
-      setProductId(productDetail.id);
-      dispatch(getProductReviews(productDetail.id));
-    }
-  }, [dispatch, productDetail]);
 
   return (
     <div className="bg-white">
@@ -153,25 +138,9 @@ export default function Detail() {
               ${productDetail.price}
             </p>
             <FavButton />
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        productDetail.averageRating > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
-                        "h-5 w-5 flex-shrink-0",
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{productDetail.reviews} reviews</p>
-              </div>
+            <div>
+          <Reviews productId={productDetail.id} />
+      </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
                   onClick={handleDecrement}
@@ -212,7 +181,7 @@ export default function Detail() {
                 </button>
               </div>
             </form>
-          </div>
+          
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             <div>
               <h3 className="sr-only">Description</h3>
@@ -242,7 +211,6 @@ export default function Detail() {
                   >
                     <span className="text-gray-600">
                       Manufacturer: {productDetail.manufacturer}
-                      
                     </span>
                     <div className="mt-10">
   <ShowReview productId={productDetail.id} />
@@ -254,7 +222,6 @@ export default function Detail() {
           </div>
         </div>
       </div>
-    
-    
+    </div>
   );
 }
