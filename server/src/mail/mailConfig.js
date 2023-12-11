@@ -1,12 +1,22 @@
+require("dotenv").config();
 const nodemailer = require("nodemailer");
 
+const { MAIL, MAILS_KEY } = process.env;
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.forwardemail.net",
+  host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-    user: "REPLACE-WITH-YOUR-ALIAS@YOURDOMAIN.COM",
-    pass: "REPLACE-WITH-YOUR-GENERATED-PASSWORD",
+    user: MAIL,
+    pass: MAILS_KEY,
   },
 });
+
+transporter.verify().then(() => {
+  console.log("Ready for send emails");
+});
+
+module.exports = {
+  transporter,
+};
