@@ -2,23 +2,30 @@ const { Products } = require('../../db');
 
 async function infoProducts(productId) {
     try {
-        const producto = await Products.findByPk(productId);
-        console.log('Producto:', producto);
-        return producto ? {
-            id: producto.id,
-            title: producto.title,
-            description: producto.description,
-            price: producto.price,
-            category: producto.category,
-            manufacturer: producto.manufacturer,
-            author: producto.author,
-            image: producto.image,
-            stock: producto.stock,
-            available: producto.available,
-        } : null;
-    } catch (error) {
+        console.log('Buscando producto con ID:', productId);
         
-        console.error(error);
+        const product = await Products.findByPk(productId);
+
+        if (product) {
+            console.log('Producto encontrado:', product);
+            return {
+                id: product.id,
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                category:product.category,
+                manufacturer: product.manufacturer,
+                author: product.author,
+                image: product.image,
+                stock: product.stock,
+                available: product.available,
+            };
+        } else {
+            console.log('Producto no encontrado');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al buscar el producto:', error);
         return null;
     }
 }

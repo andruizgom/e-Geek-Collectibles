@@ -13,6 +13,8 @@ import { CartProvider } from "./context/CartContext";
 import UserForm from "./views/UserForm/UserForm";
 import Admin from "./views/Admin/Admin";
 import { ShippingForm } from "./views/ShippingForm/ShippingForm";
+import FailedPayment from "./views/failedPayment/failedPayment";
+import SuccessfullPayment from "./views/successfulPayment/successfullPayment";
 
 function App() {
   const { isAuthenticated, user } = useAuth0();
@@ -68,6 +70,8 @@ function App() {
           <Route exact path="/create" element={<Form />} />
           <Route exact path="/userform" element={<UserForm />} />
           <Route exact path="/shippingForm" element={<ShippingForm />} />
+          <Route exact path="/failedpayment" element={<FailedPayment />} />
+          {isAuthenticated && <Route exact path="/successfullpayment" element={<SuccessfullPayment />} />}
           {isAuthenticated && !isAdminLocal && !isBanned &&<Route exact path="/user" element={<User />} />}
           {isAuthenticated && isAdminLocal && <Route path="/admin" element={<Admin />} />}
         </Routes>
