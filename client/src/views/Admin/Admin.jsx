@@ -4,6 +4,7 @@ import ProductsView from "../Products/Products";
 import Orders from "../Orders/Orders";
 import { useState } from "react";
 import UserForm from "../UserForm/UserForm";
+import OrdersAdmin from "../OrdersAdmin/OrdersAdmin";
 
 const Admin = () => {
   const { pathname } = useLocation();
@@ -36,7 +37,7 @@ const Admin = () => {
 
       <div className="flex-1">
         {pageProduct && <ProductsView />}
-        {pageOrder && <Orders handleOrder={handleOrder} />}
+        {pageOrder && <OrdersAdmin handleOrder={handleOrder} />}
         {pageUser && <UserForm/>}
       </div>
     </div>

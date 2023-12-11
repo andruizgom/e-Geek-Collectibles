@@ -16,6 +16,9 @@ const { crearPago } = require("../controllers/Stripe/checkoutSession");
 const {putUpdateProductH} = require('../handlers/putUpdateProductH');
 const {updateShippingH}=require('../handlers/updateShippingH');
 const { getShippingH } = require("../handlers/getShippingH");
+const { createOrderH } = require("../handlers/createOrderH");
+const { updateOrderH } = require("../handlers/updateOrderH");
+const { getAllOrdersH } = require("../handlers/getAllOrdersH");
 
 const router = Router();
 
@@ -56,5 +59,14 @@ router.put("/products/:id",putUpdateProductH);
 router.put("/data-client",updateShippingH);
 
 router.get("/data-client",getShippingH);
+
+router.get("/order", getAllOrdersH);
+
+router.post("/order", createOrderH);
+
+router.put("/order", updateOrderH);
+
+
+
 
 module.exports = router;
