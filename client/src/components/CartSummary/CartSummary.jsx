@@ -21,14 +21,14 @@ export default function CartSummary({ subtotal, total ,mostrarCheckout, handleBu
         </div>
       </div>
       
-      {mostrarCheckout && (
+      {mostrarCheckout? (
           <button
             onClick={handleBuy} 
             className="mt-6 w-full rounded-md bg-green-500 py-1.5 font-medium text-blue-50 hover:bg-green-600"
           >
             Check out
           </button>
-        )}
+        ) : <div>Login before paying</div>}
       
     </div>
   );
