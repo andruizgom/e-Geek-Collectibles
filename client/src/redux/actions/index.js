@@ -18,6 +18,7 @@ import {
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
   GET_PRODUCT_REVIEWS_SUCCESS,
+  SET_USER_REVIEWS
   
 
   
@@ -242,6 +243,24 @@ export const updateProduct = ({category,description,available,price,stock,author
 export const createDataClient=()=>{
   
 }
+
+// reviewActions.js
+
+export const getUserReviews = (usersId) => async (dispatch) => {
+  try {
+    const response = await axios.get(`/reviews/${usersId}`);
+    const data = response.data;
+
+    // Dispatch la acción para almacenar las revisiones en el estado global
+    dispatch({
+      type: SET_USER_REVIEWS,
+      payload: data // Ajusta esto según la estructura de datos de tu backend
+    });
+  } catch (error) {
+    console.error("Error al obtener las revisiones del usuario:", error);
+  }
+};
+
 
 
 

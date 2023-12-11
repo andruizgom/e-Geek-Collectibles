@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail, getProductReviews } from "../../redux/actions";
+import { getProductById, resetProductDetail, getProductReviews, createReview } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
@@ -9,6 +9,7 @@ import PaymentForm from "../../components/Stripe/PaymentForm";
 import { loadStripe } from "@stripe/stripe-js";
 import ShowReview from "../../components/Review/ShowReview";
 import Reviews from "../../components/Review/Review";
+import ReviewForm from "../../components/Review/ReviewForm";
 
 const stripePromise = loadStripe("pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n");
 
@@ -215,6 +216,12 @@ export default function Detail() {
                     <div className="mt-10">
   <ShowReview productId={productDetail.id} />
 </div>
+<ReviewForm
+  productId={productDetail.id}  // Utiliza productDetail.id en lugar de productId
+  onSuccess={() => {
+    dispatch(getProductReviews(productDetail.id)); // Recargar revisiones después de enviar una nueva
+  }}
+/>
                   </li>
                 </ul>
               </div>
