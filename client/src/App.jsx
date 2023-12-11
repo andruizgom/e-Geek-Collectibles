@@ -16,7 +16,7 @@ import { ShippingForm } from "./views/ShippingForm/ShippingForm";
 
 function App() {
   const { isAuthenticated, user } = useAuth0();
-    const [isAdminLocal, setIsAdminLocal] = useState(false);
+    const [isAdminLocal, setIsAdminLocal] = useState(true);
     const [isBanned, setIsBanned] = useState(false);
 
     const checkUser = async (email) => {
@@ -61,15 +61,26 @@ function App() {
       {window.location.pathname !== "/" && <Navigation />}
       <CartProvider>
         <Routes>
-        <Route exact path="/" element={<Landing />} />
+          <Route exact path="/" element={<Landing />} />
+          <Route exact path="/admin1" element={<Admin />}>
+            <Route path="products" element={<Admin />} />
+            <Route path="orders" element={<Admin />} />
+            <Route path="users" element={<Admin />} />
+          </Route>
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/detail/:id" element={<Detail />} />
           <Route exact path="/cart" element={<ShoppingCart />} />
           <Route exact path="/create" element={<Form />} />
           <Route exact path="/userform" element={<UserForm />} />
           <Route exact path="/shippingForm" element={<ShippingForm />} />
-          {isAuthenticated && !isAdminLocal && !isBanned &&<Route exact path="/user" element={<User />} />}
-          {isAuthenticated && isAdminLocal && <Route path="/admin" element={<Admin />} />}
+          {isAuthenticated && !isAdminLocal && !isBanned && (
+            <Route exact path="/user" element={<User />} />
+          )}
+          {isAuthenticated && isAdminLocal && (
+            <Route path="/admin" element={<Admin />}>
+              <Route path="products" element={<Admin />} />
+            </Route>
+          )}
         </Routes>
       </CartProvider>
     </div>
