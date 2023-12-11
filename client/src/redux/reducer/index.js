@@ -19,7 +19,7 @@ import {
   CREATE_USER,
   RESET_PRODUCTS_HOME,
   CREATE_DATA_CLIENT,
-  SET_USER_REVIEWS
+  
   
   
 } from "../types/index";
@@ -132,11 +132,7 @@ const reducer = (state = initialState, { type, payload }) => {
               getProductReviewsError: payload,
           };
 
-      case SET_USER_REVIEWS:
-      return {
-        ...state,
-        reviews: payload,
-      };
+
 
 
         

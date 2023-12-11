@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createReview, getUserReviews } from "../../redux/actions";
+import { createReview } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./Review.module.css";
 //aqui esta
-
-
 
 const ReviewForm = ({ productId, onSuccess }) => {
   const dispatch = useDispatch();
@@ -13,11 +11,6 @@ const ReviewForm = ({ productId, onSuccess }) => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      dispatch(getUserReviews(user.email));
-    }
-  }, [isAuthenticated, user, dispatch]);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
