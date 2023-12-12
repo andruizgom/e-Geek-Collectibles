@@ -14,7 +14,6 @@ import {
   DELETE_BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT
 } from "../types/index";
 
 const initialState = {

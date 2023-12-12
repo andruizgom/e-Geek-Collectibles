@@ -12,25 +12,12 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
       unique: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     manufacturer: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    author: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -41,40 +28,26 @@ module.exports = (sequelize) => {
     stock: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     price: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
     image: {
       type: DataTypes.STRING,
       allowNull: false,
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     available: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      available: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-      description: {
+    },
+    description: {
         type: DataTypes.TEXT,
         allowNull: false,
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      category: {
+    },
+    category: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      type: DataTypes.STRING,
-      allowNull: false,
     },
   });
 };
