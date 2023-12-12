@@ -24,14 +24,8 @@ function User() {
       <h2 className="orders">These are your products orders</h2>
       <OrdersUser/>
       <h2 className="review">Write a product review</h2>
-      {selectedProductId && (
-        <ReviewForm
-        productId={productDetail.id}  // Utiliza productDetail.id en lugar de productId
-        onSuccess={() => {
-          dispatch(getProductReviews(productDetail.id)); // Recargar revisiones después de enviar una nueva
-        }}
-      />
-      )}
+       <ReviewForm />
+      
     </div>
   );
 }

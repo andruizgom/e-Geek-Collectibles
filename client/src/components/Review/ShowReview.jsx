@@ -49,38 +49,30 @@ const ShowReview = ({ productId }) => {
 
   const averageRating = calculateAverageRating();
 
-    return (
+  return (
     <div>
-      <h2>Reviews:</h2>      
-      <div>            
-            <button onClick={() => setShowReviews(!showReviews)}>
-              {showReviews ? "Ocultar Reseñas" : "Ver Reseñas"}
-            </button>           
+      
+      <div>
+        <ul>
+          <h5>Reseñas para {productReviews.title}</h5>
+          {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
+            productReviews.Reviews.map((review, index) => (
+              <div key={review.id}>
+                <li key={index}>
+                  <p>Descripción 📝: {review.content}</p>
+                  <p>
+                    Puntuación :{" "}
+                    {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
+                  </p>
+                  <p>Usuario: {user?.given_name ? user.given_name : 'Anónimo'}</p>
+                </li>
+              </div>
+            ))
+          ) : (
+            <p>No hay reseñas disponibles.</p>
+          )}
+        </ul>
       </div>
-      {showReviews && (
-        <div>
-          <ul>
-            <h5>Reseñas para {productReviews.title}</h5>
-              {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
-              productReviews.Reviews.map((review, index) => (
-                <div key={review.id}>
-                  <li key={index}>
-
-                    <p>Descripción 📝: {review.content}</p>
-                    <p>
-                      Puntuación :{" "}
-                      {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
-                    </p>
-                    <p>Usuario: {user.given_name ? user.given_name : 'Anónimo'}</p>
-                  </li>
-                </div>
-              ))
-            ) : (
-              <p>No hay reseñas disponibles.</p>
-            )}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

@@ -114,10 +114,10 @@ const Reviews = ({ productId }) => {
     
   return (
     <div>
-      <h2>Reviews:</h2>
+      
       <div>
-        <strong>Puntuación promedio: </strong>
-        {averageRating} <StarRating rating={parseFloat(averageRating)} />
+        
+         <StarRating rating={parseFloat(averageRating)} />
         <span style={{ marginLeft: '8px' }}>
   ({reviewCount === 1 ? '1 evaluación' : `${reviewCount} evaluaciones`})
 </span>

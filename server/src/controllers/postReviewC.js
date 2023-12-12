@@ -40,7 +40,7 @@ const postReviewC = async (content, score, productId, usersId) => {
         }
 
         // Puedes acceder al estado de la orden con order.state
-        console.log('Estado de la orden:', order.state);
+        //console.log('Estado de la orden:', order.state);
 
         
 
