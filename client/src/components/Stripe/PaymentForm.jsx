@@ -54,6 +54,7 @@ const PaymentForm = ({ productId, quantity }) => {
                 console.log(result.error.message);
                 setLoading(false);
             } else {
+              //TODO: IMPLEMENTAR ENVIÓ DE MAIL
                 vaciarCarrito();
             }
         } catch (error) {

@@ -8,7 +8,9 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import PaymentForm from "../../components/Stripe/PaymentForm";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe("pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n");
+const stripePromise = loadStripe(
+  "pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n",
+);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -47,28 +49,29 @@ export default function Detail() {
   const handleBuyNow = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/crear-pago', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/crear-pago", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cartItems: [{ productId: productDetail.id, quantity }] }),
+        body: JSON.stringify({
+          cartItems: [{ productId: productDetail.id, quantity }],
+        }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error en la solicitud:', errorData.error);
+        console.error("Error en la solicitud:", errorData.error);
       } else {
         const session = await response.json();
-        console.log('Sesión creada:', session);
+        console.log("Sesión creada:", session);
         const stripe = await stripePromise;
         await stripe.redirectToCheckout({
-          sessionId: session.id
+          sessionId: session.id,
         });
       }
-      
     } catch (error) {
-      console.error('Error en la solicitud:', error);
+      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -172,7 +175,8 @@ export default function Detail() {
                   +
                 </span>
                 <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
+                  Inventory:{" "}
+                  {productDetail.stock > 0 ? productDetail.stock : "SIN STOCK"}
                 </span>
               </div>
             </div>
