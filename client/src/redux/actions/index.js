@@ -13,7 +13,15 @@ import {
   UPDATE_PRODUCT,
   BUY_PRODUCT,
   CREATE_USER,
-  RESET_PRODUCTS_HOME
+  RESET_PRODUCTS_HOME,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_ERROR,
+  GET_PRODUCT_REVIEWS_ERROR,
+  GET_PRODUCT_REVIEWS_SUCCESS,
+  
+  
+
+  
 } from "../types";
 import axios from "axios";
 
@@ -58,7 +66,7 @@ export const searchProducts = (searchTerm) => {
       const response = await axios.get(
         `/products/name`, { params: {name: searchTerm} });
       const data = await response.data;
-        if (data.length === 0) {
+      if (data.length === 0) {
         dispatch(fetchProductsFailure('No matches found'));
       } else {
         dispatch(fetchProductsSuccess(data));
@@ -141,7 +149,6 @@ export const deleteProductCar=()=>{
     payload:id
   }
 }
-
 export const createUser = (email) => {
   const endpoint = '/users';
   return async (dispatch) => {
@@ -160,6 +167,56 @@ export const createUser = (email) => {
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
+
+
+
+export const createReview = (reviewData) => {
+  return async (dispatch) => {
+      try {
+          
+          const response = await axios.post('/reviews', reviewData);
+          console.log(response)
+
+          
+          dispatch({
+              type: CREATE_REVIEW_SUCCESS,
+              payload: response.data, 
+          });
+      } catch (error) {
+          
+          dispatch({
+              type: CREATE_REVIEW_ERROR,
+              payload: error.message,
+          });
+      }
+  };
+};
+
+
+export const getProductReviews = (productId) => {
+  return async (dispatch) => {
+      try {
+          
+          //const response = await axios.get(`/products/${productId}`);
+          const response = await axios.get('/reviews/', productId);
+          
+          
+          dispatch({
+              type: GET_PRODUCT_REVIEWS_SUCCESS,
+              payload: response.data,
+              
+          });
+      } catch (error) {
+          
+          dispatch({
+              type: GET_PRODUCT_REVIEWS_ERROR,
+              payload: error.message,
+          });
+      }
+  };
+};
+
+
 
 export const updateProduct = ({category,description,available,price,stock,author,manufacturer,title,image},id) => {
   return async (dispatch) => {
@@ -191,3 +248,10 @@ export const updateProduct = ({category,description,available,price,stock,author
 export const createDataClient=()=>{
   
 }
+
+
+
+
+
+
+

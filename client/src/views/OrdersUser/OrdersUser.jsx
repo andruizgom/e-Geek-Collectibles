@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdPagination from '../../components/Pagination/AdPagination';
 import { useAuth0 } from '@auth0/auth0-react';
+import OrderEvaluation from '../../components/Review/OrderEvaluation';
+//aqui inicio
 
 function OrdersUser() {
   const [orders, setOrders] = useState(null);
@@ -50,6 +52,7 @@ function OrdersUser() {
                     <th scope="col" className="px-4 py-3">Price</th>
                     <th scope="col" className="px-4 py-3">Quantity</th>
                     <th scope="col" className="px-4 py-3">State</th>
+                    <th scope="col" className="px-4 py-3">Reseñas</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -62,6 +65,10 @@ function OrdersUser() {
                       <td className="px-4 py-3">{order.price}</td>
                       <td className="px-4 py-3">{order.quantity}</td>
                       <td className="px-4 py-3">{order.state}</td>
+                     
+                      <td className="px-4 py-3">
+                        <OrderEvaluation orderId={order.id} orderState={order.state} productId={order.product_id} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
