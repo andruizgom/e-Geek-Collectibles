@@ -18,10 +18,6 @@ import {
   GET_PRODUCT_REVIEWS_SUCCESS,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT,
-  
-  
-  
 } from "../types/index";
 
 const initialState = {
