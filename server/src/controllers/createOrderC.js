@@ -1,4 +1,4 @@
-const { Orders } = require("../db.js");
+const { Orders, Users } = require("../db.js");
 
 const createOrderC = async (req) => {
   try {
@@ -15,9 +15,13 @@ const createOrderC = async (req) => {
     }));
 
     const order = await Orders.bulkCreate(items);
+    const user = await Users.findOne({ email });
+    console.log("user", user);
+    order.addUser(user);
 
     return order;
   } catch (error) {
+    console.log("se cae");
     throw new Error(error.message);
   }
 };

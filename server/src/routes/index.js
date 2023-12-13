@@ -4,6 +4,7 @@ const { getProductsByNameH } = require("../handlers/getProductsByNameH");
 const { getProductsByIdH } = require("../handlers/getProductsByIdH");
 const { postCreateProductH } = require("../handlers/postCreateProductH");
 const { postReviewH } = require("../handlers/postReviewH");
+const { getReviewH, getUserReviewsH } = require("../handlers/getReviewH");
 const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
@@ -33,6 +34,10 @@ router.get("/products/:id", getProductsByIdH);
 router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
+
+router.get("/reviews", getReviewH);
+
+router.get("/reviews/:usersId", getUserReviewsH);
 
 router.get("/users", getAllUsersH);
 

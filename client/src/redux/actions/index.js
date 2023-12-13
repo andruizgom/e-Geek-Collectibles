@@ -18,6 +18,10 @@ import {
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
   SET_ORDERS_PAGE,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_ERROR,
+  GET_PRODUCT_REVIEWS_ERROR,
+  GET_PRODUCT_REVIEWS_SUCCESS,
 } from "../types";
 import axios from "axios";
 
@@ -164,6 +168,44 @@ export const createUser = (email) => {
 };
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
+};
+
+export const createReview = (reviewData) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post("/reviews", reviewData);
+      console.log(response);
+
+      dispatch({
+        type: CREATE_REVIEW_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_REVIEW_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+export const getProductReviews = (productId) => {
+  return async (dispatch) => {
+    try {
+      //const response = await axios.get(`/products/${productId}`);
+      const response = await axios.get("/reviews/", productId);
+
+      dispatch({
+        type: GET_PRODUCT_REVIEWS_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_PRODUCT_REVIEWS_ERROR,
+        payload: error.message,
+      });
+    }
+  };
 };
 
 export const updateProduct = (product, id, updateState, actions) => {
