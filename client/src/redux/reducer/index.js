@@ -53,6 +53,7 @@ const initialState = {
   createReviewError: null,
   getProductReviewsError: null,
   userReviews: [],
+  error: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -73,21 +74,25 @@ const reducer = (state = initialState, { type, payload }) => {
         adSearchTerm: payload.adSearchTerm,
       };
     case FETCH_PRODUCTS_SUCCESS:
-      return { ...state, products: payload };
-    case FETCH_PRODUCTS_SUCCESS_ADMIN:
-      return { ...state, adSearchProducts: payload };
+      return {
+        ...state,
+        productsFiltered: payload,
+      };
     case FETCH_PRODUCTS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_PRODUCTS_FAILURE:
-      return { ...state, loading: false, error: payload };
-    case CLEAR_SEARCH:
       return {
         ...state,
-        searchTerm: "",
-        products: [],
-        error: null,
-        adSearchProducts: [],
+        productsFiltered: [
+          {
+            id: 0,
+          },
+        ],
+        loading: false,
+        error: payload,
       };
+    case CLEAR_SEARCH:
+      return { ...state, searchTerm: "", productsFiltered: [], error: null };
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -179,5 +184,4 @@ const reducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
-
 export default reducer;

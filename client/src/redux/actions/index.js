@@ -67,19 +67,25 @@ const fetchProductsSuccessAdmin = (products) => ({
   payload: products,
 });
 
-export const searchProducts = (searchTerm) => {
-  return async (dispatch) => {
+export const searchProducts = () => {
+  return async (dispatch, getState) => {
+    const searchTerm = getState().searchTerm || "";
     dispatch(fetchProductsRequest());
+
     try {
       const response = await axios.get(`/products/name`, {
         params: { name: searchTerm },
       });
       const data = await response.data;
-      if (data.length === 0) {
+
+      const filteredData = data.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+      if (filteredData.length === 0) {
         dispatch(fetchProductsFailure("No matches found"));
       } else {
-        dispatch(fetchProductsSuccess(data));
-        dispatch(fetchProductsSuccessAdmin(data));
+        dispatch(fetchProductsSuccess(filteredData));
       }
     } catch (error) {
       dispatch(fetchProductsFailure(error.message));
@@ -99,6 +105,7 @@ export const getProductById = (id) => {
     }
   };
 };
+
 export const resetProductDetail = () => {
   return { type: RESET_PRODUCT_DETAIL };
 };

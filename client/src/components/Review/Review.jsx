@@ -6,7 +6,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useRef } from "react";
 import ReviewForm from "./ReviewForm";
 
-
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
@@ -14,7 +13,6 @@ const Reviews = ({ productId }) => {
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
- 
 
   useEffect(() => {
     if (productId) {
@@ -24,12 +22,11 @@ const Reviews = ({ productId }) => {
 
   const productReviews = useSelector((state) => state.productsDetail);
 
-
   const calculateAverageRating = () => {
     if (productReviews.Reviews && productReviews.Reviews.length > 0) {
       const total = productReviews.Reviews.reduce(
         (acc, review) => acc + parseInt(review.score, 10),
-        0
+        0,
       );
       const average = (total / productReviews.Reviews.length).toFixed(1);
       return { average, count: productReviews.Reviews.length };
@@ -37,9 +34,8 @@ const Reviews = ({ productId }) => {
     return { average: 0, count: 0 };
   };
 
-  const { average: averageRating, count: reviewCount } = calculateAverageRating();
-
-  
+  const { average: averageRating, count: reviewCount } =
+    calculateAverageRating();
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -56,31 +52,24 @@ const Reviews = ({ productId }) => {
 
     if (!reviewText || rating === 0) {
       alert(
-        "Por favor, completa la reseña y asigna una puntuación antes de enviar."
+        "Por favor, completa la reseña y asigna una puntuación antes de enviar.",
       );
       return;
     }
-    
+
     const reviewData = {
       content: reviewText,
       score: rating.toString(),
       productId: productId,
-      usersId: user.email
-      
-      
+      usersId: user.email,
     };
-    
+
     dispatch(createReview(reviewData));
-    
-    
+
     alert("Reseña enviada con éxito");
     setReviewText("");
     setRating(0);
-    
-    
-    
   };
-
 
   const StarRating = ({ rating }) => {
     const fullStars = Math.floor(rating);
@@ -97,7 +86,7 @@ const Reviews = ({ productId }) => {
         stars.push(
           <span key="half" style={{ position: "relative" }}>
             &#9733;&#189;
-          </span>
+          </span>,
         );
       }
 
@@ -106,22 +95,17 @@ const Reviews = ({ productId }) => {
 
     return <div>{renderStars()}</div>;
   };
-    
+
   return (
     <div>
-      
-      <div>
-        
-         <StarRating rating={parseFloat(averageRating)} />
-        <span style={{ marginLeft: '8px' }}>
-  ({reviewCount === 1 ? '1 evaluación' : `${reviewCount} evaluaciones`})
-</span>
-      </div>
-      <div>
-
-          <p>Debes hacer una compra para dejar una reseña.</p>
-      
-      </div>
+      <StarRating rating={parseFloat(averageRating)} />
+      <span className="text-xs font-semibold text-gray-900">
+        {reviewCount === 1 ? "1 review" : `${reviewCount} reviews`}
+      </span>
+      <br />
+      <span className="text-xs text-gray-600">
+        You need to buy the product to write a review.
+      </span>
     </div>
   );
 };
