@@ -1,30 +1,30 @@
 import { useState } from "react";
-import { getProducts } from "../../redux/actions/index";
+import { setOrdersPage } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
-const AdPagination = ({ indexPage }) => {
-  const adminPage = useSelector(({ adminPage }) => adminPage);
+const OrPagination = ({ indexPage }) => {
+  const ordersPage = useSelector(({ ordersPage }) => ordersPage);
   const [currentPage, setCurrentPage] = useState(1);
   const pages = [
-    { page: adminPage },
-    { page: adminPage + 1 },
-    { page: adminPage + 2 },
-    { page: adminPage + 3 },
-    { page: adminPage + 4 },
+    { page: ordersPage },
+    { page: ordersPage + 1 },
+    { page: ordersPage + 2 },
+    { page: ordersPage + 3 },
+    { page: ordersPage + 4 },
   ];
   const dispatch = useDispatch();
   const selectPage = (page) => {
     setCurrentPage(page);
-    dispatch(getProducts(page));
+    dispatch(setOrdersPage(page));
   };
   const nextPage = () => {
-    dispatch(getProducts(adminPage + 1));
-    setCurrentPage(adminPage + 1);
+    dispatch(setOrdersPage(ordersPage + 1));
+    setCurrentPage(ordersPage + 1);
   };
   const prevPage = () => {
-    dispatch(getProducts(adminPage - 1));
-    setCurrentPage(adminPage - 1);
+    dispatch(setOrdersPage(ordersPage - 1));
+    setCurrentPage(ordersPage - 1);
   };
-  
+
   return (
     <>
       <nav
@@ -34,30 +34,26 @@ const AdPagination = ({ indexPage }) => {
         <span className="m-1 text-sm font-normal text-gray-500 dark:text-gray-400">
           Showing
           <span className="m-1 font-semibold text-gray-900 dark:text-white">
-            {adminPage <= 15 && (
+            {ordersPage <= 15 && (
               <>
-                  {indexPage && indexPage[0] && indexPage[0].id
-                    ? indexPage[0].id
-                    : 0}
-                
+                {indexPage && indexPage[0] && indexPage[0].product_id
+                  ? indexPage[0].product_id
+                  : 0}
+
                 {" - "}
-                  {indexPage &&
-                  indexPage.length > 0 &&
-                  indexPage[indexPage.length - 1] &&
-                  indexPage[indexPage.length - 1].id
-                    ? indexPage[indexPage.length - 1].id
-                    : 0}
+                {indexPage &&
+                indexPage.length > 0 &&
+                indexPage[indexPage.length - 1] &&
+                indexPage[indexPage.length - 1].product_id
+                  ? indexPage[indexPage.length - 1].product_id
+                  : 0}
               </>
             )}
-          </span>
-          of
-          <span className="m-1 font-semibold text-gray-900 dark:text-white">
-            145
           </span>
         </span>
 
         <ul className="inline-flex items-stretch -space-x-px">
-          {adminPage > 1 && (
+          {ordersPage > 1 && (
             <li onClick={prevPage}>
               <a className="ml-0 flex h-full cursor-pointer items-center justify-center rounded-l-lg border border-gray-300 bg-white px-3 py-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 <svg
@@ -77,8 +73,8 @@ const AdPagination = ({ indexPage }) => {
             </li>
           )}
 
-          {pages &&
-            adminPage <= 15 &&
+          {indexPage.length > 0 &&
+            indexPage.length === 10 &&
             pages.map(({ page }) => (
               <li key={page}>
                 <a
@@ -92,7 +88,7 @@ const AdPagination = ({ indexPage }) => {
                 </a>
               </li>
             ))}
-          {adminPage <= 15 && (
+          {indexPage.length > 0 && indexPage.length === 10 && (
             <li onClick={nextPage}>
               <a className="flex h-full cursor-pointer items-center justify-center rounded-r-lg border border-gray-300 bg-white px-3 py-1.5 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 <svg
@@ -116,4 +112,4 @@ const AdPagination = ({ indexPage }) => {
     </>
   );
 };
-export default AdPagination;
+export default OrPagination;

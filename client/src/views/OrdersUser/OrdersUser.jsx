@@ -4,6 +4,8 @@ import AdPagination from '../../components/Pagination/AdPagination';
 import { useAuth0 } from '@auth0/auth0-react';
 import OrderEvaluation from '../../components/Review/OrderEvaluation';
 //aqui inicio
+import OrderEvaluation from '../../components/Review/OrderEvaluation';
+//aqui inicio
 
 function OrdersUser() {
   const [orders, setOrders] = useState(null);
@@ -65,6 +67,10 @@ function OrdersUser() {
                       <td className="px-4 py-3">{order.price}</td>
                       <td className="px-4 py-3">{order.quantity}</td>
                       <td className="px-4 py-3">{order.state}</td>
+                     
+                      <td className="px-4 py-3">
+                        <OrderEvaluation orderId={order.id} orderState={order.state} productId={order.product_id} />
+                      </td>
                      
                       <td className="px-4 py-3">
                         <OrderEvaluation orderId={order.id} orderState={order.state} productId={order.product_id} />
