@@ -63,7 +63,7 @@ router.get("/data-client", getShippingH);
 
 router.get("/order", getAllOrdersH);
 
-router.get("/orders", getFilteredOrdersHandler);
+// router.get("/orders", getFilteredOrdersHandler);
 
 router.post("/order", createOrderH);
 

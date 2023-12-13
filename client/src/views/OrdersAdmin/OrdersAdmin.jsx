@@ -17,7 +17,7 @@ function OrdersAdmin() {
   const getAllOrders = async () => {
     const endpoint = "/order?";
     try {
-      const response = await axios.get(endpoint, {
+      const { data } = await axios.get(endpoint, {
         params: {
           page: ordersPage,
           pageSize,
@@ -25,7 +25,8 @@ function OrdersAdmin() {
           state: options.state,
         },
       });
-      const data = response.data;
+      // const response = await axios.get(endpoint);
+      // const data = response.data;
       console.log("orders", data);
       if (!data) {
         throw new Error("There was no data");
@@ -57,6 +58,10 @@ function OrdersAdmin() {
       console.error("Error fetching orders:", error.message);
     }
   };
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
   useEffect(() => {
     getAllOrders();
   }, [ordersPage]);
@@ -100,6 +105,7 @@ function OrdersAdmin() {
 
   // const ordersRendered = ordersFiltered.length === 0 ? orders : ordersFiltered;
   console.log("page", ordersPage);
+  console.log("state", orderFormData);
   return (
     <>
       <section className=" p-3 antialiased dark:bg-gray-900 sm:p-5">

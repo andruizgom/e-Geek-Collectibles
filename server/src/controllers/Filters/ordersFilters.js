@@ -11,9 +11,10 @@ const ordersFilters = async (state, createdDate, pageSize, offset) => {
 
     if (state && state !== "All states") {
       filter.state = state;
+      console.log("3");
     }
 
-    if (createdDate) {
+    if (createdDate && state !== "All states") {
       const orders = await Orders.findAll({
         order: [["email", "ASC"]],
         limit: parseInt(pageSize),
@@ -22,8 +23,9 @@ const ordersFilters = async (state, createdDate, pageSize, offset) => {
       });
 
       filteredOrders = orders.filter(
-        ({ creationDate }) => createdDate == creationDate
+        ({ creationDate }) => createdDate === creationDate
       );
+      console.log("2");
 
       return filteredOrders;
     }
@@ -34,10 +36,11 @@ const ordersFilters = async (state, createdDate, pageSize, offset) => {
         limit: parseInt(pageSize),
         offset: parseInt(offset),
       });
-
+      console.log(createdDate);
       filteredOrders = orders.filter(
         ({ creationDate }) => createdDate == creationDate
       );
+      console.log("1");
       return filteredOrders;
     }
 
@@ -47,6 +50,7 @@ const ordersFilters = async (state, createdDate, pageSize, offset) => {
         limit: parseInt(pageSize),
         offset: parseInt(offset),
       });
+      console.log("4");
       return orders;
     }
 
@@ -57,6 +61,7 @@ const ordersFilters = async (state, createdDate, pageSize, offset) => {
         offset: parseInt(offset),
         where: filter,
       });
+      console.log("5");
       return orders;
     }
   } catch (error) {
