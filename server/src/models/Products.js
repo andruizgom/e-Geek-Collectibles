@@ -12,7 +12,10 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
       unique: true,
+<<<<<<< HEAD
       type: DataTypes.INTEGER,
+=======
+>>>>>>> 1636361d2a095884f966eb5178ada9ca7ab06030
     },
     title: {
       type: DataTypes.STRING,

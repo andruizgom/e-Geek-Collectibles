@@ -1,60 +1,65 @@
 import { useForm } from "react-hook-form";
-import { useUploadImage } from './service/useUploadImage.js'
-import {createProduct} from '../../redux/actions/index.js'
-import { useDispatch } from "react-redux";
+import { useUploadImage } from "./service/useUploadImage.js";
+import { createProduct, getProducts } from "../../redux/actions/index.js";
+import { useDispatch, useSelector } from "react-redux";
 
-const Create = ({ ModalCreate }) => {
-  const dispatch = useDispatch()
+const Create = ({ handleOpenModal }) => {
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
   } = useForm();
 
-  const { imageUrl, uploadImage, imageStatus } = useUploadImage();
-  const createNewProduct = async (product) => {
-    await uploadImage(product?.image);
-    if (imageStatus === 200) {
-      const newProduct = { ...product, image: imageUrl }
-      dispatch(createProduct(newProduct));
-      reset()
-      return
-    }
-    return
-  }
+  const { uploadImage } = useUploadImage();
+  const adminPage = useSelector(({ adminPage }) => adminPage);
 
-  const onSubmit = handleSubmit(async(product) => await createNewProduct(product));
+  const createNewProduct = handleSubmit(async (product) => {
+    try {
+      const { image, status } = await uploadImage(product?.image);
+      if (status === 200) {
+        const newProduct = { ...product, image: image };
+        dispatch(createProduct(newProduct));
+        reset();
+        dispatch(getProducts(adminPage));
+        handleOpenModal("");
+        return;
+      } else {
+        alert("Image upload failed");
+        return;
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
   return (
     <>
-      
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"
-      ></div>
+      <div className="fixed left-0 top-0 z-40 h-full w-full bg-black opacity-50"></div>
 
       <div
         id="createProductModal"
         tabIndex="-1"
         aria-hidden="true"
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 justify-center items-center"
+        className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center"
       >
-        <div className="relative p-4 w-full max-w-2xl max-h-full">
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-            <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+        <div className="relative max-h-full w-full max-w-2xl p-4">
+          <div className="relative rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-5">
+            <div className="mb-4 flex items-center justify-between rounded-t border-b pb-4 dark:border-gray-600 sm:mb-5">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Add Product
               </h3>
               <button
-                onClick={ModalCreate}
+                onClick={() => handleOpenModal("")}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-target="createProductModal"
                 data-modal-toggle="createProductModal"
               >
                 <svg
                   aria-hidden="true"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -69,182 +74,291 @@ const Create = ({ ModalCreate }) => {
               </button>
             </div>
 
-          <form action="" onSubmit={onSubmit}>
-            <div className="grid gap-4 mb-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                <input type="text" name="title" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {...register("title", {
-                  required: "title is required",
-                  maxLength: {
-                    value: 50,
-                    message: 'Title must not exceed 50 characters',
-                  },
-                })} placeholder="Type product name" />
-              {errors.title && (
-                <p className="text-red-500 text-xs italic">
-            {errors.title.message}
-          </p>
-        )}
-        </div>
-
-              <div>
-                <label htmlFor="manufacturer" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Manufacturer</label>
-                <input type="text" name="manufacturer" id="manufacturer" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Manufacturer"
-                  {...register("manufacturer", {
-                    required: 'Manufacturer is required',
-                  })} />
-                {errors.manufacturer && (
-          <p className="text-red-500 pt-1 text-xs italic">
-            {errors.manufacturer.message}
-          </p>
-        )}
-              </div>
-
-              <div className="mb-2">
-                <label htmlFor="available" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  Available
-                </label>
-
-                <div className="flex items-center">
+            <form action="" onSubmit={createNewProduct}>
+              <div className="mb-4 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="title"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Title
+                  </label>
                   <input
-                    type="radio"
-                    name="available"
-                    id="true"
-                    value={true}
-                    {...register("available", {
-                      required: 'Available status is required',
+                    type="text"
+                    name="title"
+                    id="title"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    {...register("title", {
+                      required: "title is required",
+                      maxLength: {
+                        value: 50,
+                        message: "Title must not exceed 50 characters",
+                      },
                     })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 mr-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type product name"
                   />
-                  <label htmlFor="true" className="text-sm">Yes</label>
-
-                  <input
-                    type="radio"
-                    name="available"
-                    id="false"
-                    value={false}
-                    {...register("available", {
-                      required: 'Available status is required',
-                    })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 ml-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  />
-                  <label htmlFor="false" className="text-sm p-2">No</label>
+                  {errors.title && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.title.message}
+                    </p>
+                  )}
                 </div>
-                {errors.available && (
-          <p className="text-red-500 text-xs italic">
-            {errors.available.message}
-          </p>
-        )}
+
+                <div>
+                  <label
+                    htmlFor="manufacturer"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Manufacturer
+                  </label>
+                  <input
+                    type="text"
+                    name="manufacturer"
+                    id="manufacturer"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    {...register("manufacturer", {
+                      required: "Manufacturer is required",
+                    })}
+                  />
+                  {errors.manufacturer && (
+                    <p className="pt-1 text-xs italic text-red-500">
+                      {errors.manufacturer.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-2">
+                  <label
+                    htmlFor="available"
+                    className="block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Available
+                  </label>
+
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      name="available"
+                      id="true"
+                      value={true}
+                      {...register("available", {
+                        required: "Available status is required",
+                      })}
+                      className="mr-2 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    />
+                    <label htmlFor="true" className="text-sm">
+                      Yes
+                    </label>
+
+                    <input
+                      type="radio"
+                      name="available"
+                      id="false"
+                      value={false}
+                      {...register("available", {
+                        required: "Available status is required",
+                      })}
+                      className="ml-2 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    />
+                    <label htmlFor="false" className="p-2 text-sm">
+                      No
+                    </label>
+                  </div>
+                  {errors.available && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.available.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="author"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Author
+                  </label>
+                  <input
+                    type="text"
+                    name="author"
+                    id="author"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    {...register("author", {
+                      required: "Author is required",
+                    })}
+                  />
+                  {errors.author && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.author.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="image"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Image
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    {...register("image", {
+                      required: "Please select an image file.",
+                    })}
+                  />
+
+                  {errors.image && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.image.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="category"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Category
+                  </label>
+                  <select
+                    name="category"
+                    id="category"
+                    {...register("category", {
+                      required: "Category is required",
+                      validate: (value) =>
+                        value !== "Select category" || "Category is required",
+                    })}
+                    defaultValue={"Select category"}
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  >
+                    <option value="Select category" disabled>
+                      Select category
+                    </option>
+                    <option value="Games">Games</option>
+                    <option value="Comics">Comics</option>
+                    <option value="Statues">Statues</option>
+                    <option value="Figures">Figures</option>
+                    <option value="Outfit And Accessories">
+                      Outfit And Accessories
+                    </option>
+                  </select>
+                  {errors.category && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.category.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="price"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Price
+                  </label>
+                  <input
+                    type="text"
+                    name="price"
+                    id="price"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    placeholder="$2999"
+                    {...register("price", {
+                      required: "Price is required",
+                      pattern: {
+                        value: /^[0-9]+(\.[0-9]{1,2})?$/,
+                        message: "Invalid price format",
+                      },
+                    })}
+                  />
+
+                  {errors.price && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.price.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="stok"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Stok
+                  </label>
+                  <input
+                    type="number"
+                    name="stok"
+                    id="stok"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    placeholder="15"
+                    {...register("stock", {
+                      required: "Stock is required",
+                      min: {
+                        value: 0,
+                        message: "Stock must be a non-negative number",
+                      },
+                    })}
+                  />
+
+                  {errors.stock && (
+                    <p className="text-xs italic text-red-500">
+                      {errors.stock.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="description"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    rows="4"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    placeholder="Write product description here"
+                    {...register("description", {
+                      required: "Description is required",
+                    })}
+                  ></textarea>
+                </div>
+                {errors.description && (
+                  <p className="text-xs italic text-red-500">
+                    {errors.description.message}
+                  </p>
+                )}
               </div>
 
-              <div>
-                <label htmlFor="author" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Author</label>
-                <input type="text" name="author" id="author" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name"
-                  {...register("author", {
-                    required: 'Author is required',
-                  })}
-                />
-                {errors.author && (
-            <p className="text-red-500 text-xs italic">
-              {errors.author.message}
-            </p>
-            )}
-              </div>
-
-              <div>
-                <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
-                <input type="file" name="image" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  {...register("image", {
-                    required: "Please select an image file.",
-                  })}
-                />
-
-                 {errors.image && (<p className="text-red-500 text-xs italic">
-            {errors.image.message}
-          </p>)}
-              </div>
-
-              <div>
-                <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                <select name="category" id="category" {...register("category", {
-                  required: 'Category is required',
-                })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                  <option name="category">Select category</option>
-                  <option value="Games">Games</option>
-                  <option value="Comics">Comics</option>
-                  <option value="Statues">Statues</option>
-                  <option value="Figures">Figures</option>
-                  <option value="Outfit And Accesories">Outfit And Accesories</option>
-                </select>
-                {errors.category && (
-          <p className="text-red-500 text-xs italic">
-            {errors.category.message}
-          </p>
-        )}
-              </div>
-
-              <div>
-                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                <input type="text" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" {...register("price", {
-                  required: 'Price is required',
-                  pattern: {
-                    value: /^[0-9]+(\.[0-9]{1,2})?$/,
-                    message: 'Invalid price format',
-                  },
-                })} />
-
-                {errors.price && (
-              <p className="text-red-500 text-xs italic">
-                {errors.price.message}
-              </p>
-            )}
-              </div>
-
-              <div>
-                <label htmlFor="stok" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok</label>
-                <input type="number" name="stok" id="stok" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="15" {...register("stock", {
-                  required: 'Stock is required',
-                  min: {
-                    value: 0,
-                    message: 'Stock must be a non-negative number',
-                  },
-                })} />
-
-                {errors.stock && (
-              <p className="text-red-500 text-xs italic">
-                {errors.stock.message}
-              </p>
-            )}
-              </div>
-
-              <div className="sm:col-span-2"><label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label><textarea
-                id="description" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Write product description here"
-                {...register("description", {
-                  required: 'Description is required',
-                })}
-              ></textarea></div>
-              {errors.description && (
-          <p className="text-red-500 text-xs italic">
-            {errors.description.message}
-          </p>
-        )}
-            </div>
-
-            <button type="submit" className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-              <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-              </svg>
-              Add new product
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                <svg
+                  className="-ml-1 mr-1 h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Add new product
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-                    </>
-
-  )
-}
-export default Create
+    </>
+  );
+};
+export default Create;
