@@ -52,7 +52,7 @@ function OrdersUser() {
                     <th scope="col" className="px-4 py-3">Price</th>
                     <th scope="col" className="px-4 py-3">Quantity</th>
                     <th scope="col" className="px-4 py-3">State</th>
-                    <th scope="col" className="px-4 py-3">Reseñas</th>
+                    <th scope="col" className="px-4 py-3">Reviews</th>
                   </tr>
                 </thead>
                 <tbody>

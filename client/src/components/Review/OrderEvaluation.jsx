@@ -20,8 +20,8 @@ function OrderEvaluation({ orderId, orderState, productId }) {
   const [rating, setRating] = useState(0);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
 
-  if (!orderId || orderState !== 'Accepted') {
-    return <div>No hay nada que evaluar para esta orden.</div>;
+  if (!orderId || orderState !== 'Delivered') {
+    return <div>Wait...</div>;
   }
 
   const handleEvaluate = async (e) => {
@@ -96,7 +96,7 @@ function OrderEvaluation({ orderId, orderState, productId }) {
         placeholder="Escribe tu evaluación..."
         disabled={isReviewSubmitted}
       />
-      <button onClick={handleEvaluate} disabled={isLoading || orderState !== 'Accepted' || isReviewSubmitted}>
+      <button onClick={handleEvaluate} disabled={isLoading || orderState !== 'Delivered' || isReviewSubmitted}>
         {isLoading ? 'Enviando...' : 'Enviar Evaluación'}
       </button>
     </div>
