@@ -17,6 +17,7 @@ import {
   RESET_PRODUCTS_HOME,
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
+  SET_ORDERS_PAGE,
 } from "../types";
 import axios from "axios";
 
@@ -211,6 +212,14 @@ export const ordersFilters = ({ createdDate, state }) => {
       throw new Error(error);
     }
   };
+};
+
+export const setOrdersPage = (page) => {
+  return (dispatch) =>
+    dispatch({
+      type: SET_ORDERS_PAGE,
+      payload: page,
+    });
 };
 
 export const createDataClient = () => {};

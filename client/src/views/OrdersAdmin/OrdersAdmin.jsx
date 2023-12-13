@@ -1,48 +1,65 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import AdPagination from "../../components/Pagination/AdPagination";
-import FiltersOrders from "../../components/Form/Date";
 import { useSelector } from "react-redux";
+import OrPagination from "../../components/Pagination/OrPagination";
+import AdFilters from "../../components/Filters/AdFilters";
 
 function OrdersAdmin() {
   const [orders, setOrders] = useState(null);
   const [orderFormData, setOrderFormData] = useState([]);
-  const ordersFiltered = useSelector(({ ordersFiltered }) => ordersFiltered);
-
-  useEffect(() => {
-    const getAllOrders = async () => {
-      const endpoint = "/order";
-      try {
-        const response = await axios.get(endpoint);
-        const data = response.data;
-        if (!data) {
-          throw new Error("There was no data");
-        }
-        const ordersWithFormData = data.map((order) => {
-          const existingFormData = orderFormData.find(
-            (data) => data.email === order.email,
-          );
-          return (
-            existingFormData || {
-              email: order.email,
-              state: order.state,
-              product_id: order.product_id,
-              product_name: order.product_name,
-              price: order.price,
-              quantity: order.quantity,
-              id: order.id,
-            }
-          );
-        });
-        setOrderFormData(ordersWithFormData);
-        setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error.message);
+  const ordersPage = useSelector(({ ordersPage }) => ordersPage);
+  const pageSize = useSelector(({ pageSizeOrders }) => pageSizeOrders);
+  const [update, setUpdate] = useState(false);
+  const [options, setOptions] = useState({
+    state: "All states",
+    createdDate: "",
+  });
+  const getAllOrders = async () => {
+    const endpoint = "/order?";
+    try {
+      const response = await axios.get(endpoint, {
+        params: {
+          page: ordersPage,
+          pageSize,
+          createdDate: options.createdDate,
+          state: options.state,
+        },
+      });
+      const data = response.data;
+      console.log("orders", data);
+      if (!data) {
+        throw new Error("There was no data");
       }
-    };
-
+      const ordersWithFormData = data.map(
+        ({
+          id,
+          email,
+          quantity,
+          creationDate,
+          price,
+          product_name,
+          product_id,
+          state,
+        }) => ({
+          id,
+          email,
+          quantity,
+          creationDate,
+          price,
+          product_name,
+          product_id,
+          state,
+        }),
+      );
+      setOrderFormData(ordersWithFormData);
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error.message);
+    }
+  };
+  useEffect(() => {
     getAllOrders();
-  }, []);
+  }, [ordersPage]);
 
   const handleChange = (event, orderId) => {
     const { name, value } = event.target;
@@ -62,6 +79,7 @@ function OrdersAdmin() {
       if (!data) {
         throw new Error("There was no data");
       }
+      setUpdate(!update);
       return data;
     } catch (error) {
       throw new Error(error.message);
@@ -78,14 +96,20 @@ function OrdersAdmin() {
     }
   };
 
-  const ordersRendered = ordersFiltered.length === 0 ? orders : ordersFiltered;
+  const handleClick = () => getAllOrders();
 
+  // const ordersRendered = ordersFiltered.length === 0 ? orders : ordersFiltered;
+  console.log("page", ordersPage);
   return (
     <>
       <section className=" p-3 antialiased dark:bg-gray-900 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-            <FiltersOrders />
+            <AdFilters
+              options={options}
+              setOptions={setOptions}
+              handleClick={handleClick}
+            />
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
                 <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
@@ -114,11 +138,8 @@ function OrdersAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {ordersRendered?.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="border-b dark:border-gray-700"
-                    >
+                  {orderFormData?.map((order, i) => (
+                    <tr key={i} className="border-b dark:border-gray-700">
                       <td className="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white">
                         {order.creationDate}
                       </td>
@@ -146,7 +167,7 @@ function OrdersAdmin() {
                 </tbody>
               </table>
             </div>
-            <AdPagination />
+            {<OrPagination indexPage={orderFormData} />}
           </div>
         </div>
       </section>
@@ -157,7 +178,7 @@ function OrdersAdmin() {
           onClick={handleSubmit}
           className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
-          Submit
+          Update
         </button>
       </div>
     </>

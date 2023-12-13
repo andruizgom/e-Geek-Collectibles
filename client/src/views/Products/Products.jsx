@@ -11,6 +11,9 @@ import Enable from "../../components/Modals/Enable";
 
 const ProductsView = () => {
   const adminProducts = useSelector(({ adminProducts }) => adminProducts);
+  const adSearchProducts = useSelector(
+    ({ adSearchProducts }) => adSearchProducts,
+  );
   const [openModal, setOpenModal] = useState("");
   const handleOpenModal = (modal) => setOpenModal(modal);
   return (
@@ -22,7 +25,9 @@ const ProductsView = () => {
 
             <ProductsTable handleOpenModal={handleOpenModal} />
 
-            <AdPagination indexPage={adminProducts} />
+            {adSearchProducts.length === 0 && (
+              <AdPagination indexPage={adminProducts} />
+            )}
           </div>
         </div>
       </section>

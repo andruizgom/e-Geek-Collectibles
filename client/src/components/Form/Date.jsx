@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 const FiltersOrders = () => {
   const dispatch = useDispatch();
   const orders = useSelector(({ ordersFiltered }) => ordersFiltered);
+  const ordersPage = useSelector(({ ordersPage }) => ordersPage);
+  const pageSize = useSelector(({ pageSizeOrders }) => pageSizeOrders);
   const [options, setOptions] = useState({
     state: "All states",
     createdDate: "",
@@ -18,25 +20,34 @@ const FiltersOrders = () => {
 
   const handleSelectChange = (e) => {
     setOptions({ ...options, state: e.target.value });
-    dispatch(ordersFilters(options));
   };
 
   const handleClick = () => {
     dispatch(ordersFilters(options));
   };
 
+  console.log(orders.length);
+
   return (
-    <div className="w-full p-5 md:w-1/2">
-      <div className="relative w-full">
+    <div className="flex w-full flex-wrap items-center p-5 md:w-1/2">
+      <div className="relative mb-3 w-full md:mr-2 md:w-52">
         <input
-          className="block w-52 rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
           type="date"
           onChange={handleDateChange}
         />
       </div>
+      {options.createdDate.length === 10 && (
+        <button
+          onClick={handleClick}
+          className="rounded-lg bg-primary-500 px-4 py-2 text-white transition duration-300 hover:bg-primary-600"
+        >
+          Apply
+        </button>
+      )}
       <div
         id="filterDropdown"
-        className="z-10  w-56 rounded-lg bg-white p-3 shadow dark:bg-gray-700"
+        className="relative  w-full rounded-lg bg-white p-3 shadow dark:bg-gray-700 md:w-56"
       >
         <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
           State
@@ -53,9 +64,6 @@ const FiltersOrders = () => {
           ))}
         </select>
       </div>
-      {options.createdDate.length === 10 && options.state === "All states" && (
-        <button onClick={handleClick}>Apply</button>
-      )}
     </div>
   );
 };

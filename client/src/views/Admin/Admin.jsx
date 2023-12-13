@@ -12,9 +12,9 @@ const Admin = () => {
       <SideBar />
 
       <div className="flex-1 overflow-hidden">
-        {pathname === "/admin1/products" && <ProductsView />}
-        {pathname === "/admin1/orders" && <OrdersAdmin />}
-        {pathname === "/admin1/users" && <UserForm />}
+        {pathname === "/admin/products" && <ProductsView />}
+        {pathname === "/admin/orders" && <OrdersAdmin />}
+        {pathname === "/admin/users" && <UserForm />}
       </div>
     </div>
   );

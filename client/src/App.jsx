@@ -85,6 +85,8 @@ function App() {
           {isAuthenticated && isAdminLocal && (
             <Route path="/admin" element={<Admin />}>
               <Route path="products" element={<Admin />} />
+              <Route path="orders" element={<Admin />} />
+              <Route path="users" element={<Admin />} />
             </Route>
           )}
         </Routes>

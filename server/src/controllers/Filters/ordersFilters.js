@@ -1,10 +1,11 @@
 const { Orders } = require("../../db");
 
-const ordersFilters = async (filterOptions) => {
+const ordersFilters = async (state, createdDate, pageSize, offset) => {
   try {
-    const { state, createdDate } = filterOptions;
+    // if (!state && !createdDate) {
+    //   return [];
+    // }
 
-    // Construir el objeto de filtro para la consulta
     const filter = {};
     let filteredOrders;
 
@@ -13,21 +14,51 @@ const ordersFilters = async (filterOptions) => {
     }
 
     if (createdDate) {
-      const filteredOrdersDate = await Orders.findAll({
+      const orders = await Orders.findAll({
+        order: [["email", "ASC"]],
+        limit: parseInt(pageSize),
+        offset: parseInt(offset),
         where: filter,
       });
 
-      filteredOrders = filteredOrdersDate.filter(
+      filteredOrders = orders.filter(
+        ({ creationDate }) => createdDate == creationDate
+      );
+
+      return filteredOrders;
+    }
+
+    if (state === "All states" && createdDate) {
+      const orders = await Orders.findAll({
+        order: [["email", "ASC"]],
+        limit: parseInt(pageSize),
+        offset: parseInt(offset),
+      });
+
+      filteredOrders = orders.filter(
         ({ creationDate }) => createdDate == creationDate
       );
       return filteredOrders;
     }
 
-    filteredOrders = await Orders.findAll({
-      where: filter,
-    });
+    if (state === "All states") {
+      const orders = await Orders.findAll({
+        order: [["email", "ASC"]],
+        limit: parseInt(pageSize),
+        offset: parseInt(offset),
+      });
+      return orders;
+    }
 
-    return filteredOrders;
+    if (state) {
+      const orders = await Orders.findAll({
+        order: [["email", "ASC"]],
+        limit: parseInt(pageSize),
+        offset: parseInt(offset),
+        where: filter,
+      });
+      return orders;
+    }
   } catch (error) {
     throw new Error(error.message);
   }

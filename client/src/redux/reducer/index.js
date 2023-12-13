@@ -18,12 +18,15 @@ import {
   CREATE_DATA_CLIENT,
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
+  SET_ORDERS_PAGE,
 } from "../types/index";
 
 const initialState = {
   allProducts: [],
   adminProducts: [],
   adminPage: 1,
+  ordersPage: 1,
+  pageSizeOrders: 10,
   idProduct: null,
   productAvailable: null,
   updateState: false,
@@ -135,6 +138,8 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         ordersFiltered: payload,
       };
+    case SET_ORDERS_PAGE:
+      return { ...state, ordersPage: payload };
     default:
       return state;
   }
