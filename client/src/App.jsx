@@ -1,4 +1,4 @@
-import React, {  useEffect, useState  } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Landing from "./views/Landing/Landing";
@@ -35,18 +35,6 @@ export default function App() {
       throw new Error(error.message);
     }
   };
-    try {
-      const response = await axios.get(endpoint, { params: { email: email } });
-      const data = response.data;
-      if (!data) {
-        throw new Error("There was no data");
-      }
-      return data;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -65,7 +53,6 @@ export default function App() {
 
     checkAuthentication();
   }, [isAuthenticated, user?.email]);
-
 
   return (
     <div className="App">
