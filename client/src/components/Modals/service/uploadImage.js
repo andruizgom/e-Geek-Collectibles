@@ -1,14 +1,15 @@
-import axios from 'axios'
+import axios from "axios";
 export const uploadImage = async (file) => {
   try {
-    const URL = "https://api.imgbb.com/1/upload?expiration=600&key=9050e732693a2f869d58ff8ab3b5d0ea";
+    const URL =
+      "https://api.imgbb.com/1/upload?expiration=600&key=9050e732693a2f869d58ff8ab3b5d0ea";
     let formData = new FormData();
-    formData.append("image", file[0],file[0].name);
-    const {data}  = await axios.post(URL, formData);
-    const image = data?.data?.display_url
-    const status = data.status
-    // console.log(status)
-    return {image,status}
+    formData.append("image", file[0], file[0].name);
+    const { data } = await axios.post(URL, formData);
+    const image = data?.data?.display_url;
+    const status = data.status;
+    // console.log(status);
+    return { image, status };
   } catch (error) {
     if (error.response) {
       // La solicitud fue realizada y el servidor respondió con un código de estado fuera del rango 2xx
