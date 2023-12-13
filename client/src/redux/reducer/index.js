@@ -33,12 +33,12 @@ const initialState = {
   carrito: [],
   user: {},
   product: {},
-  updateProductMessage:"",
+  updateProductMessage: "",
   reviews: [],
   createReviewError: null,
   getProductReviewsError: null,
   userReviews: [],
-  
+  error: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -53,13 +53,25 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_SEARCH_TERM:
       return { ...state, searchTerm: payload };
     case FETCH_PRODUCTS_SUCCESS:
-      return { ...state, products: payload };
+      return {
+        ...state,
+        productsFiltered: payload,
+      };
     case FETCH_PRODUCTS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_PRODUCTS_FAILURE:
-      return { ...state, loading: false, error: payload };
+      return {
+        ...state,
+        productsFiltered: [
+          {
+            id: 0,
+          },
+        ],
+        loading: false,
+        error: payload,
+      };
     case CLEAR_SEARCH:
-      return { ...state, searchTerm: "", products: [], error: null };
+      return { ...state, searchTerm: "", productsFiltered: [], error: null };
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -73,7 +85,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case GET_FILTERS:
       return {
         ...state,
-        productsFiltered: payload
+        productsFiltered: payload,
       };
     case CREATE_PRODUCT:
       return { ...state, product: payload };
@@ -81,14 +93,16 @@ const reducer = (state = initialState, { type, payload }) => {
       let listaIdBuy = [...state.idCarProduct, payload];
       return {
         ...state,
-        idCarProduct: listaIdBuy
+        idCarProduct: listaIdBuy,
       };
     case DELETE_BUY_PRODUCT:
-      const updatedCar = state.idCarProduct.filter((elemento) => elemento !== action.payload);
+      const updatedCar = state.idCarProduct.filter(
+        (elemento) => elemento !== action.payload,
+      );
       return {
         ...state,
-        idCarProduct: updatedCar
-      }
+        idCarProduct: updatedCar,
+      };
     case CREATE_USER:
       return {
         ...state,
@@ -99,44 +113,39 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         allProducts: [],
       };
-    case UPDATE_PRODUCT: return {...state, updateProductMessage:payload};
+    case UPDATE_PRODUCT:
+      return { ...state, updateProductMessage: payload };
     case CREATE_REVIEW_SUCCESS:
-          return {
-              ...state,
-              reviews: [...state.reviews, payload],
-              createReviewError: null,
-          };
-  
-      case CREATE_REVIEW_ERROR:
-          return {
-              ...state,
-              reviews: null,
-              createReviewError: payload,
-          };
-  
-      case GET_PRODUCT_REVIEWS_SUCCESS:
-          return {
-              ...state,
-              reviews: payload,
-              getProductReviewsError: null,
-          };
-  
-      case GET_PRODUCT_REVIEWS_ERROR:
-          return {
-              ...state,
-              reviews: null,
-              getProductReviewsError: payload,
-          };
+      return {
+        ...state,
+        reviews: [...state.reviews, payload],
+        createReviewError: null,
+      };
 
+    case CREATE_REVIEW_ERROR:
+      return {
+        ...state,
+        reviews: null,
+        createReviewError: payload,
+      };
 
+    case GET_PRODUCT_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        reviews: payload,
+        getProductReviewsError: null,
+      };
 
+    case GET_PRODUCT_REVIEWS_ERROR:
+      return {
+        ...state,
+        reviews: null,
+        getProductReviewsError: payload,
+      };
 
-        
     default:
       return state;
   }
-    
 };
-
 
 export default reducer;

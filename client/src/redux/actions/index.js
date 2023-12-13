@@ -18,10 +18,6 @@ import {
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
   GET_PRODUCT_REVIEWS_SUCCESS,
-  
-  
-
-  
 } from "../types";
 import axios from "axios";
 
@@ -59,24 +55,33 @@ const fetchProductsSuccess = (products) => ({
   payload: products,
 });
 
-export const searchProducts = (searchTerm) => {
-  return async (dispatch) => {
+export const searchProducts = () => {
+  return async (dispatch, getState) => {
+    const searchTerm = getState().searchTerm || "";
     dispatch(fetchProductsRequest());
+
     try {
-      const response = await axios.get(
-        `/products/name`, { params: {name: searchTerm} });
+      const response = await axios.get(`/products/name`, {
+        params: { name: searchTerm },
+      });
       const data = await response.data;
-      if (data.length === 0) {
-        dispatch(fetchProductsFailure('No matches found'));
+
+      const filteredData = data.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+      if (filteredData.length === 0) {
+        dispatch(fetchProductsFailure("No matches found"));
       } else {
-        dispatch(fetchProductsSuccess(data));
+        dispatch(fetchProductsSuccess(filteredData));
       }
     } catch (error) {
       dispatch(fetchProductsFailure(error.message));
     }
   };
 };
-export const getProductById = (id,) => {
+
+export const getProductById = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/products/${id}`);
@@ -89,6 +94,7 @@ export const getProductById = (id,) => {
     }
   };
 };
+
 export const resetProductDetail = () => {
   return { type: RESET_PRODUCT_DETAIL };
 };
@@ -96,7 +102,7 @@ export const resetProductDetail = () => {
 export const filteredProducts = (filters) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get('/products?page=all', {
+      const response = await axios.get("/products?page=all", {
         params: filters,
       });
       await dispatch({
@@ -104,12 +110,22 @@ export const filteredProducts = (filters) => {
         payload: response.data,
       });
     } catch (error) {
-      console.error('Error fetching filtered products:', error);
+      console.error("Error fetching filtered products:", error);
     }
   };
 };
 
-export const createProduct = ({category,description,available,price,stock,author,manufacturer,title,image}) => {
+export const createProduct = ({
+  category,
+  description,
+  available,
+  price,
+  stock,
+  author,
+  manufacturer,
+  title,
+  image,
+}) => {
   return async (dispatch) => {
     try {
       const product = {
@@ -121,137 +137,129 @@ export const createProduct = ({category,description,available,price,stock,author
         image,
         available,
         description,
-        category
-}
-    const endPoint = "/products"
-    const { data } = await axios.post(endPoint,product);
-    dispatch({
-      type: CREATE_PRODUCT,
-      payload: data
-    })
-  } catch (error) {
-    throw new Error(error)
-  }
-  }
-}
+        category,
+      };
+      const endPoint = "/products";
+      const { data } = await axios.post(endPoint, product);
+      dispatch({
+        type: CREATE_PRODUCT,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+};
 
-export const buyProduct=(id)=>{ //MODIFIQUE
-  return{
+export const buyProduct = (id) => {
+  //MODIFIQUE
+  return {
     type: BUY_PRODUCT,
-    payload:id,
-  }
+    payload: id,
+  };
+};
 
-}
-
-export const deleteProductCar=()=>{
-  return{
-    type:DELETE_BUY_PRODUCT,
-    payload:id
-  }
-}
+export const deleteProductCar = () => {
+  return {
+    type: DELETE_BUY_PRODUCT,
+    payload: id,
+  };
+};
 export const createUser = (email) => {
-  const endpoint = '/users';
+  const endpoint = "/users";
   return async (dispatch) => {
-      try {
-          const {data} = await axios.post(endpoint, {email});
-          if (!data) throw new Error('There was no data');
-          return dispatch({
-              type: CREATE_USER,
-              payload: data,
-          });
-      } catch (error) {
-          throw new Error(error.message)
-      }
+    try {
+      const { data } = await axios.post(endpoint, { email });
+      if (!data) throw new Error("There was no data");
+      return dispatch({
+        type: CREATE_USER,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 };
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
 
-
-
 export const createReview = (reviewData) => {
   return async (dispatch) => {
-      try {
-          
-          const response = await axios.post('/reviews', reviewData);
-          console.log(response)
+    try {
+      const response = await axios.post("/reviews", reviewData);
+      console.log(response);
 
-          
-          dispatch({
-              type: CREATE_REVIEW_SUCCESS,
-              payload: response.data, 
-          });
-      } catch (error) {
-          
-          dispatch({
-              type: CREATE_REVIEW_ERROR,
-              payload: error.message,
-          });
-      }
+      dispatch({
+        type: CREATE_REVIEW_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_REVIEW_ERROR,
+        payload: error.message,
+      });
+    }
   };
 };
-
 
 export const getProductReviews = (productId) => {
   return async (dispatch) => {
-      try {
-          
-          //const response = await axios.get(`/products/${productId}`);
-          const response = await axios.get('/reviews/', productId);
-          
-          
-          dispatch({
-              type: GET_PRODUCT_REVIEWS_SUCCESS,
-              payload: response.data,
-              
-          });
-      } catch (error) {
-          
-          dispatch({
-              type: GET_PRODUCT_REVIEWS_ERROR,
-              payload: error.message,
-          });
-      }
+    try {
+      //const response = await axios.get(`/products/${productId}`);
+      const response = await axios.get("/reviews/", productId);
+
+      dispatch({
+        type: GET_PRODUCT_REVIEWS_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_PRODUCT_REVIEWS_ERROR,
+        payload: error.message,
+      });
+    }
   };
 };
 
-
-
-export const updateProduct = ({category,description,available,price,stock,author,manufacturer,title,image},id) => {
+export const updateProduct = (
+  {
+    category,
+    description,
+    available,
+    price,
+    stock,
+    author,
+    manufacturer,
+    title,
+    image,
+  },
+  id,
+) => {
   return async (dispatch) => {
-     try {
-  const product = {
-  title,
-  manufacturer,
-  author,
-  stock,
-  price,
-  image,
-  available,
-  description,
-  category
-       }
-    const endPoint = `/products/${id}`
-    const { data } = await axios.put(endPoint,product);
-    dispatch({
-         type: UPDATE_PRODUCT,
-         payload: data
-    })
-    alert(data)
-  } catch (error) {
-    throw new Error(error)
-  }
-  }
-}
+    try {
+      const product = {
+        title,
+        manufacturer,
+        author,
+        stock,
+        price,
+        image,
+        available,
+        description,
+        category,
+      };
+      const endPoint = `/products/${id}`;
+      const { data } = await axios.put(endPoint, product);
+      dispatch({
+        type: UPDATE_PRODUCT,
+        payload: data,
+      });
+      alert(data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+};
 
-export const createDataClient=()=>{
-  
-}
-
-
-
-
-
-
-
+export const createDataClient = () => {};

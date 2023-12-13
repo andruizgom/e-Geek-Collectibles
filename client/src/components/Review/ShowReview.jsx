@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductReviews } from "../../redux/actions";
-import styles from "./Review.module.css";
 import Favorites from "../Favorites/Favorites";
-import { useAuth0 } from '@auth0/auth0-react';
-import Reviews from "./Review.jsx";
+import { useAuth0 } from "@auth0/auth0-react";
 
-
-
-const ShowReview = ({ productId }) => {
+export default function ShowReview({ productId }) {
   const { user } = useAuth0();
   let email = null;
-  
-  
+
   if (user) {
     email = user?.email;
   }
@@ -49,36 +44,31 @@ const ShowReview = ({ productId }) => {
   };
 
   const averageRating = calculateAverageRating();
-  
 
   return (
     <div>
       <div>
-        <ul>
-          <h5>Reseñas para {productReviews.title}</h5>
-          <br/>
+        <hr className="pb-6" />
+        <p className="pb-4 text-lg font-semibold text-gray-900">Top reviews</p>
+        <ul className="ml-2">
           {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
             productReviews.Reviews.map((review, index) => (
-              <div key={review.id} style={{ marginBottom: '20px' }}>
-                
+              <div key={review.id} className="pb-4">
                 <li key={index}>
-                  <p>Descripción 📝: {review.content}</p>
-                  <p>
-                    Puntuación :{" "}
+                  <span className="text-xs">
                     {Array(parseInt(review.score, 10)).fill("⭐").join(" ")}
+                  </span>
+                  <p className="text-md mb-2 mt-2 text-gray-600">
+                    {review.content}
                   </p>
-                  <p>Usuario: {user?.given_name ? user.given_name : 'Anónimo'}</p>
                 </li>
               </div>
             ))
           ) : (
-            <p>No hay reseñas disponibles.</p>
+            <p className="text-xs text-gray-600 ">No reviews yet</p>
           )}
         </ul>
       </div>
     </div>
   );
-  
-};
-
-export default ShowReview;
+}
