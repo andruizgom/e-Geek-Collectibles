@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createReview } from "../../redux/actions";
+import { createReview, getProductReviews } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "./Review.module.css";
 
@@ -40,7 +40,7 @@ const ReviewForm = ({ productId, onSuccess }) => {
     };
 
     dispatch(createReview(reviewData));
-    onSuccess(); // Llama a la función onSuccess para manejar el éxito del envío
+    onSuccess(); 
 
     alert("Reseña enviada con éxito");
     setReviewText("");

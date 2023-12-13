@@ -66,7 +66,7 @@ export const searchProducts = (searchTerm) => {
       const response = await axios.get(
         `/products/name`, { params: {name: searchTerm} });
       const data = await response.data;
-        if (data.length === 0) {
+      if (data.length === 0) {
         dispatch(fetchProductsFailure('No matches found'));
       } else {
         dispatch(fetchProductsSuccess(data));
@@ -168,20 +168,22 @@ export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
 };
 
+
+
 export const createReview = (reviewData) => {
   return async (dispatch) => {
       try {
-          // Hago la solicitud POST al servidor para crear la review
+          
           const response = await axios.post('/reviews', reviewData);
           console.log(response)
 
-          // Despachar una acción de éxito, con los datos si la solicitud es exitosa
+          
           dispatch({
               type: CREATE_REVIEW_SUCCESS,
               payload: response.data, 
           });
       } catch (error) {
-          // Despachar una acción de error si la solicitud falla
+          
           dispatch({
               type: CREATE_REVIEW_ERROR,
               payload: error.message,
@@ -190,20 +192,22 @@ export const createReview = (reviewData) => {
   };
 };
 
+
 export const getProductReviews = (productId) => {
   return async (dispatch) => {
       try {
-          // Hago la solicitud GET al servidor para obtener las revisiones/reviews del producto
+          
           //const response = await axios.get(`/products/${productId}`);
           const response = await axios.get('/reviews/', productId);
-
-          // Despacho una acción con las revisiones obtenidas, con los datos
+          
+          
           dispatch({
               type: GET_PRODUCT_REVIEWS_SUCCESS,
               payload: response.data,
+              
           });
       } catch (error) {
-          // Despacho una acción de error si la solicitud falla
+          
           dispatch({
               type: GET_PRODUCT_REVIEWS_ERROR,
               payload: error.message,

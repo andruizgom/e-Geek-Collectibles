@@ -216,12 +216,7 @@ export default function Detail() {
                     <div className="mt-10">
   <ShowReview productId={productDetail.id} />
 </div>
-<ReviewForm
-  productId={productDetail.id}  // Utiliza productDetail.id en lugar de productId
-  onSuccess={() => {
-    dispatch(getProductReviews(productDetail.id)); // Recargar revisiones después de enviar una nueva
-  }}
-/>
+
                   </li>
                 </ul>
               </div>

@@ -5,17 +5,12 @@ import styles from "./Review.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useRef } from "react";
 import ReviewForm from "./ReviewForm";
-//inicio2
+
 
 const Reviews = ({ productId }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth0();
 
-
-  
-  
-  
-  
   const [showReviews, setShowReviews] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);

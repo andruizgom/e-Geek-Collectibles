@@ -11,7 +11,8 @@ import Reviews from "./Review.jsx";
 const ShowReview = ({ productId }) => {
   const { user } = useAuth0();
   let email = null;
-
+  
+  
   if (user) {
     email = user?.email;
   }
@@ -48,16 +49,18 @@ const ShowReview = ({ productId }) => {
   };
 
   const averageRating = calculateAverageRating();
+  
 
   return (
     <div>
-      
       <div>
         <ul>
           <h5>Reseñas para {productReviews.title}</h5>
+          <br/>
           {productReviews.Reviews && productReviews.Reviews.length > 0 ? (
             productReviews.Reviews.map((review, index) => (
-              <div key={review.id}>
+              <div key={review.id} style={{ marginBottom: '20px' }}>
+                
                 <li key={index}>
                   <p>Descripción 📝: {review.content}</p>
                   <p>
@@ -75,6 +78,7 @@ const ShowReview = ({ productId }) => {
       </div>
     </div>
   );
+  
 };
 
 export default ShowReview;
