@@ -1,5 +1,5 @@
 const { Orders } = require("../db.js");
-const { transporter } = require("../mail/mailConfig");
+const { transporter } = require("../email/mailConfig");
 
 const createOrderC = async (req) => {
   try {
@@ -22,22 +22,25 @@ const createOrderC = async (req) => {
     const order = await Orders.bulkCreate(items);
 
     try {
-      // Obtén los detalles de la orden recién creada
-      const orderDetails = await order
-        .map(
-          (item) =>
-            `Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio: ${item.price}`
-        )
-        .join("<br>");
+      // const orderDetails = await order
+      //   .map(
+      //     (item) =>
+      //       `Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio: ${item.price}`
+      //   )
+      //   .join("<br>");
 
       await transporter.sendMail({
         from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
         to: email,
         subject: `Compra realizada con éxito!🥳`,
-        html: `<h3>Felicitaciones por tu compra!!🤩</h3><br><h4>Aqui están los detalles de tu orden:</h4><br>${orderDetails}`,
+        html: await order
+        .map(
+          (item) =>
+            `Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido. <br><br> Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}`
+        )
+        .join("<br>"),
       });
     } catch (error) {
-      // Maneja el error al enviar el correo electrónico
       console.error("Error al enviar el correo electrónico:", error.message);
     }
 

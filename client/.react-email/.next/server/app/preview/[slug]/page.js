@@ -23,48 +23,48 @@ var map = {
 		"(rsc)/./emails/NewOrder.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_NewOrder_jsx"
 	],
 	"./NewOrder.jsx": [
 		"(rsc)/./emails/NewOrder.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_NewOrder_jsx"
 	],
 	"./NewUser": [
 		"(rsc)/./emails/NewUser.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_NewUser_jsx"
 	],
 	"./NewUser.jsx": [
 		"(rsc)/./emails/NewUser.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_NewUser_jsx"
 	],
 	"./OrderReadyNotifacation": [
 		"(rsc)/./emails/OrderReadyNotifacation.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_OrderReadyNotifacation_jsx"
 	],
 	"./OrderReadyNotifacation.jsx": [
 		"(rsc)/./emails/OrderReadyNotifacation.jsx",
 		"vendor-chunks/next",
 		"vendor-chunks/@radix-ui",
-		"vendor-chunks/@babel",
 		"vendor-chunks/@react-email",
+		"vendor-chunks/@babel",
 		"_rsc_emails_OrderReadyNotifacation_jsx"
 	],
 	"./mailConfig": [
@@ -758,7 +758,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@radix-ui","vendor-chunks/@babel","vendor-chunks/@react-email","vendor-chunks/framer-motion","vendor-chunks/prism-react-renderer","vendor-chunks/@opentelemetry","vendor-chunks/@floating-ui","vendor-chunks/react-remove-scroll","vendor-chunks/tslib","vendor-chunks/aria-hidden","vendor-chunks/react-remove-scroll-bar","vendor-chunks/classnames","vendor-chunks/use-sidecar","vendor-chunks/use-callback-ref","vendor-chunks/react-style-singleton","vendor-chunks/@swc","vendor-chunks/hey-listen","vendor-chunks/get-nonce","vendor-chunks/entities","vendor-chunks/domutils","vendor-chunks/js-beautify","vendor-chunks/htmlparser2","vendor-chunks/condense-newlines","vendor-chunks/peberminta","vendor-chunks/domhandler","vendor-chunks/dom-serializer","vendor-chunks/selderee","vendor-chunks/parseley","vendor-chunks/leac","vendor-chunks/html-to-text","vendor-chunks/domelementtype","vendor-chunks/@selderee","vendor-chunks/pretty","vendor-chunks/is-whitespace","vendor-chunks/is-extendable","vendor-chunks/extend-shallow","vendor-chunks/deepmerge"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fpreview%2F%5Bslug%5D%2Fpage&page=%2Fpreview%2F%5Bslug%5D%2Fpage&appPaths=%2Fpreview%2F%5Bslug%5D%2Fpage&pagePath=private-next-app-dir%2Fpreview%2F%5Bslug%5D%2Fpage.tsx&appDir=H%3A%5CProgramaci%C3%B3n%5CHenry%5CPF%20Grupo%208%5Ce-Geek-Collectibles%5Cclient%5C.react-email%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=H%3A%5CProgramaci%C3%B3n%5CHenry%5CPF%20Grupo%208%5Ce-Geek-Collectibles%5Cclient%5C.react-email&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@radix-ui","vendor-chunks/@react-email","vendor-chunks/@babel","vendor-chunks/framer-motion","vendor-chunks/@opentelemetry","vendor-chunks/entities","vendor-chunks/domutils","vendor-chunks/react-remove-scroll","vendor-chunks/@swc","vendor-chunks/js-beautify","vendor-chunks/react-style-singleton","vendor-chunks/react-remove-scroll-bar","vendor-chunks/htmlparser2","vendor-chunks/condense-newlines","vendor-chunks/use-callback-ref","vendor-chunks/prism-react-renderer","vendor-chunks/@floating-ui","vendor-chunks/peberminta","vendor-chunks/domhandler","vendor-chunks/dom-serializer","vendor-chunks/use-sidecar","vendor-chunks/classnames","vendor-chunks/selderee","vendor-chunks/parseley","vendor-chunks/leac","vendor-chunks/html-to-text","vendor-chunks/domelementtype","vendor-chunks/@selderee","vendor-chunks/pretty","vendor-chunks/is-whitespace","vendor-chunks/is-extendable","vendor-chunks/extend-shallow","vendor-chunks/deepmerge","vendor-chunks/tslib","vendor-chunks/hey-listen","vendor-chunks/get-nonce","vendor-chunks/aria-hidden"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fpreview%2F%5Bslug%5D%2Fpage&page=%2Fpreview%2F%5Bslug%5D%2Fpage&appPaths=%2Fpreview%2F%5Bslug%5D%2Fpage&pagePath=private-next-app-dir%2Fpreview%2F%5Bslug%5D%2Fpage.tsx&appDir=H%3A%5CProgramaci%C3%B3n%5CHenry%5CPF%20Grupo%208%5Ce-Geek-Collectibles%5Cclient%5C.react-email%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=H%3A%5CProgramaci%C3%B3n%5CHenry%5CPF%20Grupo%208%5Ce-Geek-Collectibles%5Cclient%5C.react-email&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 
 })();

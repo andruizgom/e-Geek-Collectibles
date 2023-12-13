@@ -1,5 +1,5 @@
 const { Users } = require("../db");
-const { transporter } = require("../mail/mailConfig");
+const { transporter } = require("../email/mailConfig");
 
 const postUserC = async (req) => {
   try {
