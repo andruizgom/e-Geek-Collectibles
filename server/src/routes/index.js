@@ -13,12 +13,13 @@ const { getUserByEmailH } = require("../handlers/getUserByEmailH");
 const { updateUserH } = require("../handlers/updateUserH");
 const { getAllUsersH } = require("../handlers/getAllUsersH");
 const { crearPago } = require("../controllers/Stripe/checkoutSession");
-const {putUpdateProductH} = require('../handlers/putUpdateProductH');
-const {updateShippingH}=require('../handlers/updateShippingH');
+const { putUpdateProductH } = require("../handlers/putUpdateProductH");
+const { updateShippingH } = require("../handlers/updateShippingH");
 const { getShippingH } = require("../handlers/getShippingH");
 const { createOrderH } = require("../handlers/createOrderH");
 const { updateOrderH } = require("../handlers/updateOrderH");
 const { getAllOrdersH } = require("../handlers/getAllOrdersH");
+const { getFilteredOrdersHandler } = require("../handlers/ordersFilterH");
 
 const router = Router();
 
@@ -52,15 +53,17 @@ router.post("/favorites", postFavoritesH);
 
 router.put("/favorites", deleteFavoritesH);
 
-router.post('/crear-pago', crearPago);
+router.post("/crear-pago", crearPago);
 
-router.put("/products/:id",putUpdateProductH);
+router.put("/products/:id", putUpdateProductH);
 
-router.put("/data-client",updateShippingH);
+router.put("/data-client", updateShippingH);
 
-router.get("/data-client",getShippingH);
+router.get("/data-client", getShippingH);
 
 router.get("/order", getAllOrdersH);
+
+// router.get("/orders", getFilteredOrdersHandler);
 
 router.post("/order", createOrderH);
 

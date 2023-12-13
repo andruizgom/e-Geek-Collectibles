@@ -12,55 +12,51 @@ import Logout from "../../components/Logout/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
-
-
 export default function Navigation() {
-  const [open, setOpen] = useState(false);  
+  const [open, setOpen] = useState(false);
   const { isAuthenticated, user } = useAuth0();
   const [isAdminLocal, setIsAdminLocal] = useState(false);
 
   const checkUserRole = async (email) => {
-      const endpoint = `/users/email`;
+    const endpoint = `/users/email`;
 
-      try {
-          const response = await axios.get(endpoint, { params: { email: email } });
-          const data = response.data;
-          if (!data) {
-              throw new Error('There was no data');
-          }
-          return data.isAdmin;
-      } catch (error) {
-          throw new Error(error.message);
+    try {
+      const response = await axios.get(endpoint, { params: { email: email } });
+      const data = response.data;
+      if (!data) {
+        throw new Error("There was no data");
       }
-
+      return data.isAdmin;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
-
   useEffect(() => {
-      const checkAuthentication = async () => {
-          if (!isAuthenticated) {
-              return;
-          }
+    const checkAuthentication = async () => {
+      if (!isAuthenticated) {
+        return;
+      }
 
-          try {
-              const isAdmin = await checkUserRole(user?.email);
-              setIsAdminLocal(isAdmin);
-          } catch (error) {
-              console.error('Error while verifying user role:', error.message);
-          }
-      };
+      try {
+        const isAdmin = await checkUserRole(user?.email);
+        setIsAdminLocal(isAdmin);
+      } catch (error) {
+        console.error("Error while verifying user role:", error.message);
+      }
+    };
 
-      checkAuthentication();
+    checkAuthentication();
   }, [isAuthenticated, user?.email]);
-  
+
   const navigation = {
     pages: [
       { name: "Home", route: "/home" },
       isAuthenticated && isAdminLocal
-        ? { name: "Admin Dashboard", route: "/admin" }
+        ? { name: "Admin Dashboard", route: "/admin/products" }
         : isAuthenticated
-        ? { name: "User Dashboard", route: "/user" }
-        : {name: null, route: null},
+          ? { name: "User Dashboard", route: "/user" }
+          : { name: null, route: null },
     ],
   };
   return (
