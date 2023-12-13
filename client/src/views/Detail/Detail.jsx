@@ -1,8 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail, getProductReviews, createReview } from "../../redux/actions";
+import {
+  getProductById,
+  resetProductDetail,
+  getProductReviews,
+  createReview,
+} from "../../redux/actions";
 import CartContext from "../../context/CartContext";
+import Navigation from "../../components/Navigation/Navigation";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
 import PaymentForm from "../../components/Stripe/PaymentForm";
@@ -11,7 +17,9 @@ import ShowReview from "../../components/Review/ShowReview";
 import Reviews from "../../components/Review/Review";
 import ReviewForm from "../../components/Review/ReviewForm";
 
-const stripePromise = loadStripe("pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n");
+const stripePromise = loadStripe(
+  "pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n",
+);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -50,28 +58,29 @@ export default function Detail() {
   const handleBuyNow = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/crear-pago', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/crear-pago", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cartItems: [{ productId: productDetail.id, quantity }] }),
+        body: JSON.stringify({
+          cartItems: [{ productId: productDetail.id, quantity }],
+        }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error en la solicitud:', errorData.error);
+        console.error("Error en la solicitud:", errorData.error);
       } else {
         const session = await response.json();
-        console.log('Sesión creada:', session);
+        console.log("Sesión creada:", session);
         const stripe = await stripePromise;
         await stripe.redirectToCheckout({
-          sessionId: session.id
+          sessionId: session.id,
         });
       }
-      
     } catch (error) {
-      console.error('Error en la solicitud:', error);
+      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -85,6 +94,7 @@ export default function Detail() {
 
   return (
     <div className="bg-white">
+      <Navigation />
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
@@ -139,50 +149,70 @@ export default function Detail() {
               ${productDetail.price}
             </p>
             <FavButton />
-            <div>
-          <Reviews productId={productDetail.id} />
-      </div>
-              <div className="mt-8 flex items-center border-gray-100">
-                <span
-                  onClick={handleDecrement}
-                  className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-                >
-                  -
-                </span>
-                <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
-                  {quantity}
-                </span>
-                <span
-                  onClick={handleIncrement}
-                  className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-                >
-                  +
-                </span>
-                <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
-                </span>
-              </div>
+            <div className="mt-6">
+              <Reviews productId={productDetail.id} />
             </div>
+            <div className="mt-8 flex items-center border-gray-100">
+              <span
+                onClick={handleDecrement}
+                className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+              >
+                -
+              </span>
+              <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
+                {quantity}
+              </span>
+              <span
+                onClick={handleIncrement}
+                className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+              >
+                +
+              </span>
+              <span className="ml-4 text-sm font-medium text-gray-500">
+                Inventory:
+                {productDetail.stock > 0 ? productDetail.stock : "0"}
+              </span>
+            </div>
+
             <form className="mt-10 flex">
               <div className="mr-4 w-1/2">
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-amber-500 px-8 py-3 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
-                  onClick={handleAddToCart}
-                >
-                  Add to bag
-                </button>
+                {productDetail.stock === 0 ? (
+                  <button
+                    className="flex w-full cursor-not-allowed items-center justify-center rounded-md border border-transparent bg-gray-500 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    disabled
+                  >
+                    Add to cart
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-amber-500 px-8 py-3 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    onClick={handleAddToCart}
+                  >
+                    Add to cart
+                  </button>
+                )}
               </div>
               <div className="w-1/2">
-                <button
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
-                  onClick={handleBuyNow}
-                >
-                  Buy Now
-                </button>
+                {productDetail.stock === 0 ? (
+                  <button
+                    className="flex w-full cursor-not-allowed items-center justify-center rounded-md border border-transparent bg-gray-500 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    disabled
+                  >
+                    Buy Now
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                    onClick={handleBuyNow}
+                  >
+                    Buy Now
+                  </button>
+                )}
               </div>
             </form>
-          
+          </div>
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             <div>
               <h3 className="sr-only">Description</h3>
@@ -213,12 +243,11 @@ export default function Detail() {
                     <span className="text-gray-600">
                       Manufacturer: {productDetail.manufacturer}
                     </span>
-                    <div className="mt-10">
-  <ShowReview productId={productDetail.id} />
-</div>
-
                   </li>
                 </ul>
+              </div>
+              <div className="mt-10">
+                <ShowReview productId={productDetail.id} />
               </div>
             </div>
           </div>

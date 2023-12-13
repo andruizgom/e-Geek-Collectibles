@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import NavBar from "../../components/NavBar/NavBar";
+import SearchBar from "../../components/SearchBar/SearchBar";
 import Cards from "../../components/Cards/Cards";
 import Filters from "../../components/Filters/Filters";
+import Navigation from "../../components/Navigation/Navigation";
 
 import { getProducts, resetHomeProducts } from "../../redux/actions";
 import { fetchProducts } from "../../components/Pagination/Pagination";
@@ -37,7 +38,8 @@ export default function Home() {
 
   return (
     <div>
-      <NavBar />
+      <Navigation />
+      <SearchBar />
       <Filters>
         <InfiniteScroll
           dataLength={allProducts.length}
@@ -46,7 +48,13 @@ export default function Home() {
           loader={""}
         >
           {filtered.length > 0 ? (
-            <Cards allProducts={filtered} />
+            filtered.some((product) => product.id === 0) ? (
+              <p className="mt-4 text-center text-red-600">
+                Sorry, the product is not available.
+              </p>
+            ) : (
+              <Cards allProducts={filtered} />
+            )
           ) : (
             <Cards allProducts={allProducts} />
           )}
