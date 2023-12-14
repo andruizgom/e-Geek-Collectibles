@@ -1,11 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail } from "../../redux/actions";
+import {
+  getProductById,
+  resetProductDetail,
+} from "../../redux/actions";
 import CartContext from "../../context/CartContext";
-import FavButton from "../../components/FavButton/FavButton";
-import { StarIcon } from "@heroicons/react/20/solid";
 import Navigation from "../../components/Navigation/Navigation";
+import FavButton from "../../components/FavButton/FavButton";
+import ShowReview from "../../components/Review/ShowReview";
+import Reviews from "../../components/Review/Review";
 
 
 
@@ -18,7 +22,6 @@ export default function Detail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
-  const navigate = useNavigate();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -60,7 +63,7 @@ export default function Detail() {
 
   return (
     <div className="bg-white">
-      <Navigation/>
+      <Navigation />
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
@@ -116,62 +119,66 @@ export default function Detail() {
             </p>
             <FavButton />
             <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        productDetail.averageRating > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
-                        "h-5 w-5 flex-shrink-0",
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{productDetail.reviews} reviews</p>
-              </div>
-              <div className="mt-8 flex items-center border-gray-100">
-                <span
-                  onClick={handleDecrement}
-                  className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-                >
-                  -
-                </span>
-                <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
-                  {quantity}
-                </span>
-                <span
-                  onClick={handleIncrement}
-                  className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-                >
-                  +
-                </span>
-                <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
-                </span>
-              </div>
+              <Reviews productId={productDetail.id} />
             </div>
+            <div className="mt-8 flex items-center border-gray-100">
+              <span
+                onClick={handleDecrement}
+                className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+              >
+                -
+              </span>
+              <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
+                {quantity}
+              </span>
+              <span
+                onClick={handleIncrement}
+                className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+              >
+                +
+              </span>
+              <span className="ml-4 text-sm font-medium text-gray-500">
+                Inventory:
+                {productDetail.stock > 0 ? productDetail.stock : "0"}
+              </span>
+            </div>
+
             <form className="mt-10 flex">
               <div className="mr-4 w-1/2">
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-amber-500 px-8 py-3 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
-                  onClick={handleAddToCart}
-                >
-                  Add to bag
-                </button>
+                {productDetail.stock === 0 ? (
+                  <button
+                    className="flex w-full cursor-not-allowed items-center justify-center rounded-md border border-transparent bg-gray-500 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    disabled
+                  >
+                    Add to cart
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-amber-500 px-8 py-3 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    onClick={handleAddToCart}
+                  >
+                    Add to cart
+                  </button>
+                )}
               </div>
               <div className="w-1/2">
-                <button
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
-                  onClick={handleBuyNow}
-                >
-                  Buy Now
-                </button>
+                {productDetail.stock === 0 ? (
+                  <button
+                    className="flex w-full cursor-not-allowed items-center justify-center rounded-md border border-transparent bg-gray-500 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                    disabled
+                  >
+                    Buy Now
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                    onClick={handleBuyNow}
+                  >
+                    Buy Now
+                  </button>
+                )}
               </div>
             </form>
           </div>
@@ -207,6 +214,9 @@ export default function Detail() {
                     </span>
                   </li>
                 </ul>
+              </div>
+              <div className="mt-10">
+                <ShowReview productId={productDetail.id} />
               </div>
             </div>
           </div>
