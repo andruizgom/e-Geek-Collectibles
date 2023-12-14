@@ -38,7 +38,7 @@ const updateProducts = async (req) => {
 
     if (rowsUpdated === 0) return { notFound, isProduct: false };
 
-    if (updatedProduct.stock !== stock) {
+if (updatedProduct.stock !== stock) {
       // Buscar todos los usuarios que tienen este producto en favoritos
       const usersWithFavoriteProduct = await Users.findAll({
         include: {

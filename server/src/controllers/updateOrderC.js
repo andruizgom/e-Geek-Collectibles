@@ -28,7 +28,7 @@ const updateOrderC = async (req) => {
         },
       }
     );
-    if (state === "On the way") {
+if (state === "On the way") {
       try {
         await transporter.sendMail({
           from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
