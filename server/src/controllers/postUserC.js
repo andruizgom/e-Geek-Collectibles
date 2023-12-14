@@ -21,8 +21,8 @@ if (created) {
           to: user.email,
           subject: "Bienvenido e-Geek Collectibles",
           html: user.name
-            ? <h3>Bievenido ${user.name} a e-Geek Collectibles!! Espero encuentres ese anillo único o ese spiderman de edición limitada que buscas!☺</h3>
-            : <h3>Bievenido ${user.email} a e-Geek Collectibles!! Espero encuentres ese anillo único o ese spiderman de edición limitada que buscas!☺</h3>,
+            ? `<h3>Bievenido ${user.name} a e-Geek Collectibles!! Espero encuentres ese anillo único o ese spiderman de edición limitada que buscas!☺</h3>`
+            : `<h3>Bievenido ${user.email} a e-Geek Collectibles!! Espero encuentres ese anillo único o ese spiderman de edición limitada que buscas!☺</h3>`,
         });
       } catch (error) {
         throw new Error(error.message);
