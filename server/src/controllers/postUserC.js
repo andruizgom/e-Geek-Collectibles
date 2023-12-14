@@ -14,7 +14,7 @@ const postUserC = async (req) => {
         email: email,
       },
     });
-    if (created) {
+if (created) {
       try {
         await transporter.sendMail({
           from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
