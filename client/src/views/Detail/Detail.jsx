@@ -180,24 +180,7 @@ export default function Detail() {
               </div>
               <Reviews productId={productDetail.id} />
             </div>
-            <div className="mt-8 flex items-center border-gray-100">
-              <span
-                onClick={handleDecrement}
-                className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-              >
-                -
-              </span>
-              <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
-                {quantity}
-              </span>
-              <span
-                onClick={handleIncrement}
-                className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
-              >
-                +
-              </span>
-              
-            </div>
+
 
             <form className="mt-10 flex">
               <div className="mr-4 w-1/2">
