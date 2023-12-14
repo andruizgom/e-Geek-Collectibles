@@ -1,5 +1,5 @@
 const { Users, Products } = require("../db");
-// const { transporter } = require("../email/mailConfig");
+const { transporter } = require("../email/mailConfig");
 
 const updateProducts = async (req) => {
   try {
@@ -38,34 +38,34 @@ const updateProducts = async (req) => {
 
     if (rowsUpdated === 0) return { notFound, isProduct: false };
 
-    // if (updatedProduct.stock !== stock) {
-    //   // Buscar todos los usuarios que tienen este producto en favoritos
-    //   const usersWithFavoriteProduct = await Users.findAll({
-    //     include: {
-    //       model: Products,
-    //       where: { id: updatedProduct.id },
-    //     },
-    //   });
+if (updatedProduct.stock !== stock) {
+      // Buscar todos los usuarios que tienen este producto en favoritos
+      const usersWithFavoriteProduct = await Users.findAll({
+        include: {
+          model: Products,
+          where: { id: updatedProduct.id },
+        },
+      });
 
-    //   const usersToUpdate = usersWithFavoriteProduct.map((user) => user.email);
-    //   try {
-    //     await Promise.all(
-    //       usersToUpdate.map(async (email) => {
-    //         await transporter.sendMail({
-    //           from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
-    //           to: email,
-    //           subject: `¡Producto Favorito Disponible! 🎉`,
-    //           html: `<h3>Hey ${email}, el producto ${title} que tanto te gusta ya está disponible en nuestra web. ¡No dudes en adquirirlo!</h3>`,
-    //         });
-    //       })
-    //     );
-    //   } catch (error) {
-    //     console.error(
-    //       "Error al enviar los correos electrónicos:",
-    //       error.message
-    //     );
-    //   }
-    // }
+      const usersToUpdate = usersWithFavoriteProduct.map((user) => user.email);
+      try {
+        await Promise.all(
+          usersToUpdate.map(async (email) => {
+            await transporter.sendMail({
+              from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
+              to: email,
+              subject: ¡Producto Favorito Disponible! 🎉,
+              html: <h3>Hey ${email}, el producto ${title} que tanto te gusta ya está disponible en nuestra web. ¡No dudes en adquirirlo!</h3>,
+            });
+          })
+        );
+      } catch (error) {
+        console.error(
+          "Error al enviar los correos electrónicos:",
+          error.message
+        );
+      }
+    }
 
     return { message: "product updated", isProduct: true, updatedProduct };
   } catch (error) {
