@@ -196,10 +196,7 @@ export default function Detail() {
               >
                 +
               </span>
-              <span className="ml-4 text-sm font-medium text-gray-500">
-                Inventory:
-                {productDetail.stock > 0 ? productDetail.stock : "0"}
-              </span>
+              
             </div>
 
             <form className="mt-10 flex">
