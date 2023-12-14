@@ -12,6 +12,7 @@ import axios from "axios";
 import FavButton from "../../components/FavButton/FavButton";
 import ShowReview from "../../components/Review/ShowReview";
 import Reviews from "../../components/Review/Review";
+import { StarIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
