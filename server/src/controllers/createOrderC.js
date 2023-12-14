@@ -25,11 +25,11 @@ const createOrderC = async (req) => {
       await transporter.sendMail({
         from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
         to: email,
-        subject: Compra realizada con éxito!🥳,
+        subject: `Compra realizada con éxito!🥳`,
         html: await order
           .map(
             (item) =>
-              <h3>Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido.</h2> <br><br> <h3>Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}</h3>
+              `<h3>Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido.</h2> <br><br> <h3>Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}</h3>`
           )
           .join("<br>"),
       });
