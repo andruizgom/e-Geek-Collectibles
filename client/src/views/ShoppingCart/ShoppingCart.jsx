@@ -29,6 +29,23 @@ export default function ShoppingCart() {
   const isCart = useSelector((state) => state.cart);
   const [cartUpdated, setCartUpdated] = useState(false);
 
+  console.log(carrito);
+  let cartItems = [];  // Definir cartItems fuera del bloque condicional
+
+if (isAuthenticated && isCart && isCart.Products) {
+  cartItems = isCart.Products;
+  console.log("este es el nuevo carrito v3", cartItems);
+  // Puedes eliminar el return cartItems aquí
+}
+
+const nuevoCarrito = cartItems.map((producto) => {
+  const { Cart, ...restoDelProducto } = producto;
+  return { newCarrito: restoDelProducto, quantity: Cart.quantity };
+});
+
+
+console.log("este es el nuevo carrito v2", nuevoCarrito);
+
   useEffect(() => {
     if (isAuthenticated && user && user.email) {
       const email = user.email;
@@ -74,7 +91,6 @@ export default function ShoppingCart() {
       try {
         const producto = await isCart.find((item) => item.id === id);
         const cantidadActual = producto ? producto.quantity : 0;
-        console.log(cantidadActual);
         const { email } = user;
         const item = {
           email,
