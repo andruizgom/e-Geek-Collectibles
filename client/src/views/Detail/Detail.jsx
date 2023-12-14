@@ -5,6 +5,8 @@ import { getProductById, resetProductDetail } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
+import Navigation from "../../components/Navigation/Navigation";
+
 
 
 function classNames(...classes) {
@@ -58,6 +60,7 @@ export default function Detail() {
 
   return (
     <div className="bg-white">
+      <Navigation/>
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol

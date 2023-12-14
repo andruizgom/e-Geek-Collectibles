@@ -5,7 +5,7 @@ const Loging = () => {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
   
-  const redirectUri = 'http://localhost:5173/home';
+  const redirectUri = 'https://e-geek-collectibles.vercel.app/home';
 
   return (
     <button onClick={() => loginWithRedirect({ redirectUri })}>Login</button>

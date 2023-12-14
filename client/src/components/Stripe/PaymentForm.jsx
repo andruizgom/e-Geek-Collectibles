@@ -15,7 +15,7 @@ const PaymentForm = ({ productId, quantity }) => {
     const getStock = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/products/${productId}`,
+          `https://e-geek-collectibles-production.up.railway.app/products/${productId}`,
         );
         const productData = await response.json();
         setStock(productData.stock);
@@ -40,7 +40,7 @@ const PaymentForm = ({ productId, quantity }) => {
         quantity: item.quantity,
       }));
 
-      const response = await fetch("http://localhost:3001/crear-pago", {
+      const response = await fetch("https://e-geek-collectibles-production.up.railway.app/crear-pago", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
