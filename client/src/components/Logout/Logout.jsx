@@ -15,7 +15,6 @@ const Logout = () => {
 
       if (isAuthenticated) {
         dispatch(createUser(user.email));
-        console.log(user);
       }
     };
 
