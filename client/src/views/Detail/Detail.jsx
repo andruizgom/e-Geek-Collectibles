@@ -138,25 +138,7 @@ export default function Detail() {
               ${productDetail.price}
             </p>
             <FavButton />
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        productDetail.averageRating > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
-                        "h-5 w-5 flex-shrink-0",
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{productDetail.reviews} reviews</p>
-              </div>
+            
               <div className="mt-8 flex items-center border-gray-100">
                 <span
                   onClick={handleDecrement}
