@@ -24,7 +24,6 @@ export default function ShoppingCart() {
     incremento,
     decremento,
     precioFinalIva,
-    setCarrito,
   } = useContext(CartContext);
   const isCart = useSelector((state) => state.cart);
 
@@ -38,13 +37,17 @@ export default function ShoppingCart() {
     const { Cart, ...restoDelProducto } = producto;
     return { productDetail: restoDelProducto, quantity: Cart.quantity };
   });
-  console.log("Este es el nuevo carrito", productDetail);
-  
+
   useEffect(() => {
-    productDetail.forEach((item) => {
-      agregarAlCarrito(item.productDetail, item.quantity);
+    const itemsToAdd = productDetail.filter(
+      (item) =>
+        !carrito.find((product) => product.id === item.productDetail.id),
+    );
+
+    itemsToAdd.forEach((item) => {
+      agregarAlCarrito(item.productDetail, item.quantity, false);
     });
-  }, [productDetail, agregarAlCarrito]);
+  }, [productDetail, agregarAlCarrito, carrito]);
 
   useEffect(() => {
     if (isAuthenticated && user && user.email) {
@@ -85,47 +88,11 @@ export default function ShoppingCart() {
   };
 
   const hanldeIncrementar = async (id) => {
-    if (isAuthenticated && user && user.email) {
-      try {
-        const producto = await isCart.find((item) => item.id === id);
-        const cantidadActual = producto ? producto.quantity : 0;
-        const { email } = user;
-        const item = {
-          email,
-          id,
-          quantity: cantidadActual + 1,
-        };
-        const response = await axios.put("/cart/updateQuantity", item);
-        if (response && response.data) {
-          incremento(id);
-        } else {
-          console.error("La respuesta del servidor no contiene datos.");
-        }
-      } catch (error) {
-        console.error("Error al incrementar la cantidad:", error.response.data);
-      }
-    } else {
-      incremento(id);
-    }
+    incremento(id);
   };
 
   const handleDecrementar = async (id) => {
-    if (isAuthenticated && user && user.email) {
-      try {
-        const { email } = user;
-        const item = {
-          email,
-          id,
-          quantity: -1,
-        };
-        await axios.put("/cart/updateQuantity", item);
-        decremento(id);
-      } catch (error) {
-        console.error("Error al decrementar la cantidad:", error.response.data);
-      }
-    } else {
-      decremento(id);
-    }
+    decremento(id);
   };
 
   const subtotal = precioTotal();
@@ -175,37 +142,21 @@ export default function ShoppingCart() {
       </p>
       <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
         <div className="rounded-lg md:w-2/3">
-          {isAuthenticated && isCart && isCart.Products
-            ? isCart.Products.map((ca) => (
-                <CartItem
-                  key={ca.id}
-                  id={ca.id}
-                  title={ca.title}
-                  category={ca.category}
-                  image={ca.image}
-                  price={ca.price}
-                  stock={ca.stock}
-                  quantity={ca.Cart.quantity}
-                  handleEliminar={handleEliminar}
-                  hanldeIncrementar={hanldeIncrementar}
-                  handleDecrementar={handleDecrementar}
-                />
-              ))
-            : carrito.map((product) => (
-                <CartItem
-                  key={product.id}
-                  id={product.id}
-                  title={product.title}
-                  category={product.category}
-                  image={product.image}
-                  price={product.price}
-                  stock={product.stock}
-                  quantity={product.quantity}
-                  handleEliminar={handleEliminar}
-                  hanldeIncrementar={hanldeIncrementar}
-                  handleDecrementar={handleDecrementar}
-                />
-              ))}
+          {carrito.map((product) => (
+            <CartItem
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              category={product.category}
+              image={product.image}
+              price={product.price}
+              stock={product.stock}
+              quantity={product.quantity}
+              handleEliminar={handleEliminar}
+              hanldeIncrementar={hanldeIncrementar}
+              handleDecrementar={handleDecrementar}
+            />
+          ))}
         </div>
         <CartSummary
           subtotal={subtotal}

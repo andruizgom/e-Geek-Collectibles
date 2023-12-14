@@ -7,7 +7,11 @@ const carritoInicial = JSON.parse(localStorage.getItem("carrito")) || [];
 export const CartProvider = ({ children }) => {
   const [carrito, setCarrito] = useState(carritoInicial);
 
-  const agregarAlCarrito = async (productDetail, quantity) => {
+  const agregarAlCarrito = async (
+    productDetail,
+    quantity,
+    shouldUpdate = true,
+  ) => {
     const itemAgregado = { ...productDetail, quantity };
     const nuevoCarrito = [...carrito];
     const estaEnElCarrito = nuevoCarrito.find(
@@ -18,17 +22,15 @@ export const CartProvider = ({ children }) => {
     } else {
       nuevoCarrito.push(itemAgregado);
     }
-    setCarrito(nuevoCarrito);
+    if (shouldUpdate) {
+      setCarrito(nuevoCarrito);
+    }
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
   };
 
-  const eliminarDelCarrito = async (id) => {
-    try {
-      const nuevoCarrito = carrito.filter((producto) => producto.id !== id);
-      setCarrito(nuevoCarrito);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+  const eliminarDelCarrito = (id) => {
+    const nuevoCarrito = carrito.filter((producto) => producto.id !== id);
+    setCarrito(nuevoCarrito);
   };
 
   const cantidadEnElCarrito = () => {
@@ -75,9 +77,7 @@ export const CartProvider = ({ children }) => {
         ? {
             ...producto,
             quantity:
-              producto.quantity > 1
-                ? producto.quantity - 1
-                : producto.quantity,
+              producto.quantity > 1 ? producto.quantity - 1 : producto.quantity,
           }
         : producto,
     );
