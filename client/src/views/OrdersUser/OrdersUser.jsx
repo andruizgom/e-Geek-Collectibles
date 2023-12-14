@@ -15,8 +15,10 @@ function OrdersUser() {
 
   useEffect(() => {
     const getAllOrders = async () => {
+      const endpoint = "/order?";
       try {
-        const { data } = await axios.get("http://localhost:3001/order", email);
+        const response = await axios.get(endpoint, { params: { email } });
+        const data = response.data;
         if (!data) {
           throw new Error("There was no data");
         }
@@ -28,6 +30,7 @@ function OrdersUser() {
         console.error("Error fetching orders:", error.message);
       }
     };
+
     getAllOrders();
   }, [email]);
 
