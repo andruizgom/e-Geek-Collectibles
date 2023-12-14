@@ -1,5 +1,5 @@
 const { Orders } = require("../db");
-// const { transporter } = require("../email/mailConfig");
+const { transporter } = require("../email/mailConfig");
 
 const updateOrderC = async (req) => {
   try {
@@ -28,18 +28,18 @@ const updateOrderC = async (req) => {
         },
       }
     );
-    // if (state === "On the way") {
-    //   try {
-    //     await transporter.sendMail({
-    //       from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
-    //       to: email,
-    //       subject: "Bienvenido e-Geek Collectibles",
-    //       html: `<h2>Felicitaciones ${email} tu pedido ${product_name} se encuentra en camino!! Espero lo disfrutes y no te olvides de dejarnos tu reseña!☺</h2>`,
-    //     });
-    //   } catch (error) {
-    //     console.error(error.message);
-    //   }
-    // }
+    if (state === "On the way") {
+      try {
+        await transporter.sendMail({
+          from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
+          to: email,
+          subject: "Bienvenido e-Geek Collectibles",
+          html: `<h2>Felicitaciones ${email} tu pedido ${product_name} se encuentra en camino!! Espero lo disfrutes y no te olvides de dejarnos tu reseña!☺</h2>`,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
     return orderUpdated;
   } catch (error) {
     throw new Error(error.message);
