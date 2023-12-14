@@ -1,14 +1,13 @@
+/*
+
 .star {
-    color: gray;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  .selectedStar {
-    color: gold;
-    cursor: pointer;
-    font-size: 15px;
-  }
+  color: gray;
+  cursor: pointer;
+  font-size: 15px;
+}
 
-
-  
+.selectedStar {
+  color: gold;
+  cursor: pointer;
+  font-size: 15px;
+}*/

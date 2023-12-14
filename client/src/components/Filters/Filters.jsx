@@ -19,8 +19,6 @@ export default function Filters({ children }) {
   const dispatch = useDispatch();
 
   const [filters, setFilters] = useState({
-    title: "",
-    price: "",
     category: "",
     manufacturer: "",
     sortOrder: "",
@@ -87,7 +85,7 @@ export default function Filters({ children }) {
         nameOrder: "",
       }));
     }
-  }, [filters.sortOrder, filters.nameOrder]);
+  }, [filters]);
 
   const renderFilterItem = (item, filterType, isMobile) => (
     <div key={item} className="flex items-center">
@@ -279,7 +277,7 @@ export default function Filters({ children }) {
                                 active ? "bg-amber-500" : "",
                                 "block cursor-pointer px-4 py-2 text-sm",
                               )}
-                              onMouseDown={() => {
+                              onClick={() => {
                                 if (
                                   (action === "A-Z" || action === "Z-A") &&
                                   filters.nameOrder !== action

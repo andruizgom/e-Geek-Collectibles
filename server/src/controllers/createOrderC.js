@@ -1,35 +1,48 @@
-const { Orders, Users } = require('../db.js');
+const { Orders } = require("../db.js");
+const { transporter } = require("../email/mailConfig");
 
 const createOrderC = async (req) => {
+  try {
+    const { email, carrito } = req.body;
+
+    if (!email || !carrito) throw new Error("Incomplete data");
+
+    const items = carrito.map((obj) => {
+      const { title, price, quantity, id } = obj;
+
+      return {
+        product_name: title,
+        product_id: id,
+        price,
+        quantity,
+        email,
+      };
+    });
+
+    const order = await Orders.bulkCreate(items);
+
     try {
-        const { email, carrito } = req.body;
-
-        if (!email || !carrito) throw new Error('Incomplete data');
-
-        const items = carrito.map((obj) => {
-            const { title, price, quantity, id } = obj;
-
-            return {
-                product_name: title,
-                product_id: id,
-                price,
-                quantity,
-                email,
-            };
-        });
-
-        const order = await Orders.bulkCreate(items);
-        const user = await Users.findOne({email});
-        console.log('user', user);
-        order.addUser(user);
-
-        return order;
+      await transporter.sendMail({
+        from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
+        to: email,
+        subject: `Compra realizada con éxito!🥳`,
+        html: await order
+          .map(
+            (item) =>
+              `<h3>Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido.</h2> <br><br> <h3>Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}</h3>`
+          )
+          .join("<br>"),
+      });
     } catch (error) {
-        console.log('se cae');
-        throw new Error(error.message);
+      console.error("Error al enviar el correo electrónico:", error.message);
     }
-}
+
+    return order;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 module.exports = {
-    createOrderC
-}
+  createOrderC,
+};

@@ -1,17 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductById, resetProductDetail, getProductReviews, createReview } from "../../redux/actions";
+import { getProductById, resetProductDetail } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
-import PaymentForm from "../../components/Stripe/PaymentForm";
-import { loadStripe } from "@stripe/stripe-js";
-import ShowReview from "../../components/Review/ShowReview";
-import Reviews from "../../components/Review/Review";
-import ReviewForm from "../../components/Review/ReviewForm";
 
-const stripePromise = loadStripe("pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n");
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -22,6 +16,7 @@ export default function Detail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -49,30 +44,8 @@ export default function Detail() {
 
   const handleBuyNow = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:3001/crear-pago', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cartItems: [{ productId: productDetail.id, quantity }] }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error en la solicitud:', errorData.error);
-      } else {
-        const session = await response.json();
-        console.log('Sesión creada:', session);
-        const stripe = await stripePromise;
-        await stripe.redirectToCheckout({
-          sessionId: session.id
-        });
-      }
-      
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
+    agregarAlCarrito(productDetail, quantity);
+    navigate('/cart');
   };
 
   const handleIncrement = () => {
@@ -139,9 +112,25 @@ export default function Detail() {
               ${productDetail.price}
             </p>
             <FavButton />
-            <div>
-          <Reviews productId={productDetail.id} />
-      </div>
+            <div className="mt-6">
+              <h3 className="sr-only">Reviews</h3>
+              <div className="flex items-center">
+                <div className="flex items-center">
+                  {[0, 1, 2, 3, 4].map((rating) => (
+                    <StarIcon
+                      key={rating}
+                      className={classNames(
+                        productDetail.averageRating > rating
+                          ? "text-gray-900"
+                          : "text-gray-200",
+                        "h-5 w-5 flex-shrink-0",
+                      )}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <p className="sr-only">{productDetail.reviews} reviews</p>
+              </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
                   onClick={handleDecrement}
@@ -182,7 +171,7 @@ export default function Detail() {
                 </button>
               </div>
             </form>
-          
+          </div>
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             <div>
               <h3 className="sr-only">Description</h3>
@@ -213,10 +202,6 @@ export default function Detail() {
                     <span className="text-gray-600">
                       Manufacturer: {productDetail.manufacturer}
                     </span>
-                    <div className="mt-10">
-  <ShowReview productId={productDetail.id} />
-</div>
-
                   </li>
                 </ul>
               </div>
