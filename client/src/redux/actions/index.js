@@ -15,6 +15,7 @@ import {
   BUY_PRODUCT,
   CREATE_USER,
   RESET_PRODUCTS_HOME,
+  GET_CART,
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
   SET_ORDERS_PAGE,
@@ -175,6 +176,20 @@ export const createUser = (email) => {
 };
 export const resetHomeProducts = () => {
   return { type: RESET_PRODUCTS_HOME };
+};
+
+export const getCart = (email) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get("/cart", { params: { email } });
+      await dispatch({
+        type: GET_CART,
+        payload: data,
+      });
+    } catch (error) {
+      throw new Error("Error GET cart products:", error);
+    }
+  };
 };
 
 export const createReview = (reviewData) => {

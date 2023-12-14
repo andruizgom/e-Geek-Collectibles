@@ -12,14 +12,15 @@ import {
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   BUY_PRODUCT,
+  CREATE_USER,
+  RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT,
+  GET_CART,
   DELETE_BUY_PRODUCT,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
   GET_PRODUCT_REVIEWS_SUCCESS,
-  CREATE_USER,
-  RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT,
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
   SET_ORDERS_PAGE,
@@ -46,7 +47,8 @@ const initialState = {
   ordersFiltered: [],
   product: {},
   idCarProduct: [], //modifique
-  carrito: [],
+  cart: [],
+  favorites: [],
   user: {},
   product: {},
   updateProductMessage: "",
@@ -181,6 +183,11 @@ const reducer = (state = initialState, { type, payload }) => {
         reviews: null,
         getProductReviewsError: payload,
       };
+    case GET_CART:
+    return{
+      ...state,
+      cart: payload,
+    };
     default:
       return state;
   }

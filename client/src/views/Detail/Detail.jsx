@@ -7,11 +7,11 @@ import {
 } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import Navigation from "../../components/Navigation/Navigation";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 import FavButton from "../../components/FavButton/FavButton";
 import ShowReview from "../../components/Review/ShowReview";
 import Reviews from "../../components/Review/Review";
-
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,6 +23,7 @@ export default function Detail() {
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth0();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -43,15 +44,32 @@ export default function Detail() {
 
   const productDetail = useProducts();
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
-    agregarAlCarrito(productDetail, quantity);
+    if (isAuthenticated && user && user.email) {
+      try {
+        const email = user.email;
+        const { id } = productDetail;
+        const item = {
+          email,
+          id,
+          quantity,
+        };
+        await agregarAlCarrito(productDetail, quantity);
+        await axios.post("/cart", item);
+        console.log(item);
+      } catch (error) {
+        throw new Error("Error en el pedido al back. " + error.message);
+      }
+    } else {
+      await agregarAlCarrito(productDetail, quantity);
+    }
   };
 
   const handleBuyNow = async (e) => {
     e.preventDefault();
     agregarAlCarrito(productDetail, quantity);
-    navigate('/cart');
+    navigate("/cart");
   };
 
   const handleIncrement = () => {
@@ -120,6 +138,45 @@ export default function Detail() {
             </p>
             <FavButton />
             <div className="mt-6">
+              <h3 className="sr-only">Reviews</h3>
+              <div className="flex items-center">
+                <div className="flex items-center">
+                  {[0, 1, 2, 3, 4].map((rating) => (
+                    <StarIcon
+                      key={rating}
+                      className={classNames(
+                        productDetail.averageRating > rating
+                          ? "text-gray-900"
+                          : "text-gray-200",
+                        "h-5 w-5 flex-shrink-0",
+                      )}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <p className="sr-only">{productDetail.reviews} reviews</p>
+              </div>
+              <div className="mt-8 flex items-center border-gray-100">
+                <span
+                  onClick={handleDecrement}
+                  className="cursor-pointer rounded-l bg-gray-100 px-3.5 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+                >
+                  -
+                </span>
+                <span className="text-m h-8 w-8 border bg-white py-1 text-center outline-none">
+                  {quantity}
+                </span>
+                <span
+                  onClick={handleIncrement}
+                  className="cursor-pointer rounded-r bg-gray-100 px-3 py-1 duration-100 hover:bg-amber-500 hover:text-gray-200"
+                >
+                  +
+                </span>
+                <span className="ml-4 text-sm font-medium text-gray-500">
+                  Inventory:{" "}
+                  {productDetail.stock > 0 ? productDetail.stock : "SIN STOCK"}
+                </span>
+              </div>
               <Reviews productId={productDetail.id} />
             </div>
             <div className="mt-8 flex items-center border-gray-100">
@@ -226,4 +283,3 @@ export default function Detail() {
     </div>
   );
 }
-
