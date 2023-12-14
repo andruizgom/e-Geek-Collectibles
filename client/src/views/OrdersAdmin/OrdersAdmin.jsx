@@ -27,7 +27,6 @@ function OrdersAdmin() {
       });
       // const response = await axios.get(endpoint);
       // const data = response.data;
-      console.log("orders", data);
       if (!data) {
         throw new Error("There was no data");
       }
@@ -76,6 +75,7 @@ function OrdersAdmin() {
   };
 
   const updateOrder = async (orderData) => {
+    console.log("orderData", orderData);
     const endpoint = "/order";
 
     try {

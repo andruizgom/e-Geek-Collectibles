@@ -19,10 +19,15 @@ export default function Home() {
 
   const loadMoreProducts = async () => {
     try {
-      dispatch({ type: "LOADING_TRUE" });
       const data = await fetchProducts(currentPage + 1);
-      dispatch({ type: "LOADING_FALSE" });
-      dispatch({ type: "GET_PRODUCTS_SUCCESS", payload: data });
+
+      if (Array.isArray(data)) {
+        dispatch({ type: "LOADING_FALSE" });
+        dispatch({ type: "GET_PRODUCTS_SUCCESS", payload: { data } });
+      } else {
+        console.error("Data is not an array as expected");
+        dispatch({ type: "LOADING_FALSE" });
+      }
     } catch (err) {
       console.error("Error:", err.message);
       dispatch({ type: "LOADING_FALSE" });
