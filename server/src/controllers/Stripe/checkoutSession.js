@@ -103,8 +103,8 @@ async function crearPago(req, res) {
             },
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'http://localhost:5173/successfullpayment',
-            cancel_url: 'http://localhost:5173/failedpayment',
+            success_url: 'https://e-geek-collectibles.vercel.app//successfullpayment',
+            cancel_url: 'https://e-geek-collectibles.vercel.app//failedpayment',
         });
 
         return res.json({ id: session.id, totalPrice: session.amount_total / 100 });

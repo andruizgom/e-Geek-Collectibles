@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Review from '../../components/Review/Review';
 import ReviewForm from "../../components/Review/ReviewForm";
 import { createReview, getProductReviews } from "../../redux/actions";
+import Navigation from "../../components/Navigation/Navigation";
 
 //hasta aqui ok volver seguro
 
@@ -14,6 +15,7 @@ function User() {
 
   return (
     <div>
+      <Navigation/>
       <h2 className="user">Welcome to your dashboard {user.name}</h2>
       <h2 className="cards">These are your favorite products</h2>
       <Favorites />

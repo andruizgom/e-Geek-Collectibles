@@ -44,7 +44,7 @@ export default function ShoppingCart() {
   const handleBuy = async () => {
     console.log("Objeto enviado al backend:", { cartItems: carrito });
     try {
-      const response = await fetch("http://localhost:3001/crear-pago", {
+      const response = await fetch("https://e-geek-collectibles-production.up.railway.app/crear-pago", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
