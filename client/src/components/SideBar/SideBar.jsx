@@ -21,7 +21,7 @@ const SideBar = () => {
         onClick={() => setOpen(!open)}
       />
 
-      <Link to={"/admin1"}>
+      <Link to={"/home"}>
         <div className="mb-5 flex items-center rounded-md text-white hover:bg-light-white">
           <FaStoreAlt className={`text-3xl  ${!open && "text-5xl"} ml-1`} />
           <h1
