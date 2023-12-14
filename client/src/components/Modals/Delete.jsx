@@ -1,46 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { getProductById, updateProduct } from "../../redux/actions/index";
+import { useEffect, useState } from "react";
+import { updateProduct } from "../../redux/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 
-const Delete = ({ idProduct, ModalDelete, productAvailable }) => {
+const Delete = ({ handleOpenModal }) => {
   const dispatch = useDispatch();
   const productsDetail = useSelector(({ productsDetail }) => productsDetail);
-  const [available, setAvailable] = useState(productAvailable);
+  const idProduct = useSelector(({ idProduct }) => idProduct);
+  const updateState = useSelector(({ updateState }) => updateState);
+  const adSearchTerm = useSelector(({ adSearchTerm }) => adSearchTerm);
+  const productAvailable = useSelector(
+    ({ productAvailable }) => productAvailable,
+  );
+  const [available, setAvailable] = useState(null);
 
   const handleAvailable = () => {
     setAvailable(!available);
     const updatedProduct = { ...productsDetail, available: !available };
-    dispatch(updateProduct(updatedProduct, idProduct));
-    ModalDelete();
+    if (adSearchTerm) {
+      dispatch(updateProduct(updatedProduct, idProduct, !updateState, true));
+      handleOpenModal("");
+      return;
+    }
+    dispatch(updateProduct(updatedProduct, idProduct, !updateState, null));
+    handleOpenModal("");
   };
 
   useEffect(() => {
-    dispatch(getProductById(idProduct));
-  }, [idProduct]);
-
+    setAvailable(productAvailable);
+  }, []);
   return (
     <>
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"
-      ></div>
-
+      <div className="fixed left-0 top-0 z-40 h-full w-full bg-black opacity-50"></div>
       <div
         id="deleteModal"
         tabIndex="-1"
         aria-hidden="true"
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 justify-center items-center"
+        className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center"
       >
-        <div className="relative p-4 w-full max-w-md max-h-full">
-          <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+        <div className="relative max-h-full w-full max-w-md p-4">
+          <div className="relative rounded-lg bg-white p-4 text-center shadow dark:bg-gray-800 sm:p-5">
             <button
-              onClick={ModalDelete}
+              onClick={() => handleOpenModal("")}
               type="button"
-              className="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="absolute right-2.5 top-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="deleteModal"
             >
               <svg
                 aria-hidden="true"
-                className="w-5 h-5"
+                className="h-5 w-5"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -51,10 +58,9 @@ const Delete = ({ idProduct, ModalDelete, productAvailable }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="sr-only">Close modal</span>
             </button>
             <svg
-              className="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto"
+              className="mx-auto mb-3.5 h-11 w-11 text-gray-400 dark:text-gray-500"
               aria-hidden="true"
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -67,14 +73,14 @@ const Delete = ({ idProduct, ModalDelete, productAvailable }) => {
               />
             </svg>
             <p className="mb-4 text-gray-500 dark:text-gray-300">
-              Are you sure you want to delete this item?
+              do you want to delete this: {productsDetail.title}
             </p>
-            <div className="flex justify-center items-center space-x-4">
+            <div className="flex items-center justify-center space-x-4">
               <button
-                onClick={ModalDelete}
+                onClick={() => handleOpenModal("")}
                 data-modal-toggle="deleteModal"
                 type="button"
-                className="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
               >
                 No, cancel
               </button>
@@ -82,7 +88,7 @@ const Delete = ({ idProduct, ModalDelete, productAvailable }) => {
               <button
                 onClick={handleAvailable}
                 type="submit"
-                className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                className="rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
               >
                 Yes, I'm sure
               </button>

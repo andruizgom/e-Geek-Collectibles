@@ -5,61 +5,104 @@ import { BiPurchaseTagAlt } from "react-icons/bi";
 import { CiLogout } from "react-icons/ci";
 import { useState } from "react";
 
-const SideBar = ({handleProduct,handleOrder,handleUser}) => {
+const SideBar = () => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="flex bg-slate-100">
-      <div className={`relative duration-400 ease-in-out bg-dark-purple h-screen p-5 pt-8 ${open ? "w-72" : "w-20"}`}>
-        <BiArrowBack className={`bg-white  rounded-full absolute -right-3 top-9 text-dark-purple text-2xl border border-dark-purple cursor-pointer ${!open && "rotate-180"}`} onClick={() => setOpen(!open)} />
+    <div
+      className={`duration-400 relative h-screen bg-dark-purple p-5 pt-8 ease-in-out ${
+        open ? "w-72" : "w-20"
+      }`}
+    >
+      <BiArrowBack
+        className={`absolute  -right-3 top-9 cursor-pointer rounded-full border border-dark-purple bg-white text-2xl text-dark-purple ${
+          !open && "rotate-180"
+        }`}
+        onClick={() => setOpen(!open)}
+      />
 
-          <Link>
-        <div className="flex items-center text-white rounded-md hover:bg-light-white mb-5">
+      <Link to={"/home"}>
+        <div className="mb-5 flex items-center rounded-md text-white hover:bg-light-white">
           <FaStoreAlt className={`text-3xl  ${!open && "text-5xl"} ml-1`} />
-          <h1 className={`origin-left font-medium text-white text-2xl ml-5 ${!open && "hidden"}`}>
+          <h1
+            className={`ml-5 origin-left text-2xl font-medium text-white ${
+              !open && "hidden"
+            }`}
+          >
             e-Geek Store
           </h1>
         </div>
-          </Link>
+      </Link>
 
-        <ul className="pt-2">
-          <Link>
-            <li onClick={handleProduct} className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
-              <span className="block float-left text-3xl text-white">
-                <FaBoxes />
-              </span>
-              <span className={`text-base font-medium flex-1  ${!open && "hidden"}`}>Products</span>
-            </li>
-          </Link>
+      <ul className="pt-2">
+        <Link to={"products"}>
+          <li
+            className={
+              "mb-5 mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white"
+            }
+          >
+            <span className="float-left block text-3xl text-white">
+              <FaBoxes />
+            </span>
+            <span
+              className={`flex-1 text-base font-medium  ${!open && "hidden"}`}
+            >
+              Products
+            </span>
+          </li>
+        </Link>
 
-          <Link>
-            <li onClick={handleOrder} className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
-              <span className="block float-left text-white text-3xl">
-                <BiPurchaseTagAlt />
-              </span>
-              <span className={`text-base font-medium flex-1  ${!open && "hidden"}`}>Orders</span>
-            </li>
-          </Link>
+        <Link to={"orders"}>
+          <li
+            className={
+              "mb-5 mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white"
+            }
+          >
+            <span className="float-left block text-3xl text-white">
+              <BiPurchaseTagAlt />
+            </span>
+            <span
+              className={`flex-1 text-base font-medium  ${!open && "hidden"}`}
+            >
+              Orders
+            </span>
+          </li>
+        </Link>
 
-          <Link>
-            <li onClick={handleUser} className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
-              <span className="block float-left text-3xl text-white">
-                <FaUsers className={""} />
-              </span>
-              <span className={`text-base font-medium flex-1  ${!open && "hidden"}`}>Users</span>
-            </li>
-          </Link>
+        <Link to={"users"}>
+          <li
+            className={
+              "mb-5 mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white"
+            }
+          >
+            <span className="float-left block text-3xl text-white">
+              <FaUsers className={""} />
+            </span>
+            <span
+              className={`flex-1 text-base font-medium  ${!open && "hidden"}`}
+            >
+              Users
+            </span>
+          </li>
+        </Link>
 
-          <Link>
-            <li className={"text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 mb-5"}>
-              <span className="block float-left text-3xl text-white">
-                <CiLogout className={""} />
-              </span>
-              <span className={`text-base font-medium flex-1  ${!open && "hidden"}`}>Log Out</span>
-            </li>
-          </Link>
-        </ul>
-      </div>
+        <Link>
+          <li
+            className={
+              "mb-5 mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white"
+            }
+          >
+            <span className="float-left block text-3xl text-white">
+              <CiLogout className={""} />
+            </span>
+            <span
+              className={`flex-1 text-base font-medium  ${!open && "hidden"}`}
+            >
+              Log Out
+            </span>
+          </li>
+        </Link>
+      </ul>
     </div>
   );
 };
