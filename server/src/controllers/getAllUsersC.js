@@ -1,18 +1,17 @@
 const { Users } = require('../db');
 
 const getAllUsersC = async (req) => {
+  try {
+    const users = await Users.findAll({
+      order: [['email', 'ASC']], 
+    });
 
-	try {
-		
-        const users = await Users.findAll();
-
-		return users;
-		
-	} catch (error) {
-		throw new Error(error.message);
-	}
+    return users;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 module.exports = {
-	getAllUsersC,
+  getAllUsersC,
 };

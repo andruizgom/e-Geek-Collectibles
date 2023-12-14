@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductById,
-  resetProductDetail,
-  buyProduct,
-} from "../../redux/actions";
-import { CartContext } from "../../context/CartContext";
+import { getProductById, resetProductDetail } from "../../redux/actions";
+import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
-import PaymentForm from "../../components/Stripe/paymentForm";
+import Navigation from "../../components/Navigation/Navigation";
 
-const reviews = { href: "#", average: 4 };
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -22,6 +18,7 @@ export default function Detail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -47,6 +44,12 @@ export default function Detail() {
     agregarAlCarrito(productDetail, quantity);
   };
 
+  const handleBuyNow = async (e) => {
+    e.preventDefault();
+    agregarAlCarrito(productDetail, quantity);
+    navigate('/cart');
+  };
+
   const handleIncrement = () => {
     quantity < productDetail.stock && setQuantity(quantity + 1);
   };
@@ -57,6 +60,7 @@ export default function Detail() {
 
   return (
     <div className="bg-white">
+      <Navigation/>
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
@@ -90,7 +94,6 @@ export default function Detail() {
             </li>
           </ol>
         </nav>
-        {/* Image */}
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
@@ -100,21 +103,18 @@ export default function Detail() {
             />
           </div>
         </div>
-        {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {productDetail.title}
             </h1>
           </div>
-          {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
               ${productDetail.price}
             </p>
             <FavButton />
-            {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
@@ -123,7 +123,7 @@ export default function Detail() {
                     <StarIcon
                       key={rating}
                       className={classNames(
-                        reviews.average > rating
+                        productDetail.averageRating > rating
                           ? "text-gray-900"
                           : "text-gray-200",
                         "h-5 w-5 flex-shrink-0",
@@ -132,10 +132,7 @@ export default function Detail() {
                     />
                   ))}
                 </div>
-                <p className="sr-only">
-                  {productDetail?.Reviews?.length} reviews
-                </p>
-                
+                <p className="sr-only">{productDetail.reviews} reviews</p>
               </div>
               <div className="mt-8 flex items-center border-gray-100">
                 <span
@@ -154,7 +151,7 @@ export default function Detail() {
                   +
                 </span>
                 <span className="ml-4 text-sm font-medium text-gray-500">
-                  Inventory: {productDetail.stock}
+                  Inventory: {productDetail.stock > 0 ? productDetail.stock : 'SIN STOCK'}
                 </span>
               </div>
             </div>
@@ -169,12 +166,16 @@ export default function Detail() {
                 </button>
               </div>
               <div className="w-1/2">
-                <PaymentForm productId={id}/>
+                <button
+                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-green-500 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
+                </button>
               </div>
             </form>
           </div>
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-            {/* Description and details */}
             <div>
               <h3 className="sr-only">Description</h3>
               <div className="space-y-6">
@@ -212,6 +213,5 @@ export default function Detail() {
         </div>
       </div>
     </div>
-    
   );
 }

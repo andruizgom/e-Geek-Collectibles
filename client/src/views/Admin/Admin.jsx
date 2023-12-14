@@ -1,13 +1,23 @@
-import React from "react";
-import { NavLink } from 'react-router-dom';
+import { Outlet, useLocation } from "react-router-dom";
+import SideBar from "../../components/SideBar/SideBar";
+import ProductsView from "../Products/Products";
+import UserForm from "../UserForm/UserForm";
+import OrdersAdmin from "../OrdersAdmin/OrdersAdmin";
 
+const Admin = () => {
+  const { pathname } = useLocation();
 
-function Admin() {
-  return <div>
-    <h1>Admin Dashboard</h1>
-    <NavLink to="/create">Create Product</NavLink>
-    <NavLink to="/userform">Update user role and access</NavLink>
-    </div>;
-}
+  return (
+    <div className="flex h-screen bg-slate-100">
+      <SideBar />
+
+      <div className="flex-1 overflow-hidden">
+        {pathname === "/admin/products" && <ProductsView />}
+        {pathname === "/admin/orders" && <OrdersAdmin />}
+        {pathname === "/admin/users" && <UserForm />}
+      </div>
+    </div>
+  );
+};
 
 export default Admin;
