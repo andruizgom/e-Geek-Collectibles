@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getProductById,
@@ -22,6 +22,7 @@ export default function Detail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -225,3 +226,4 @@ export default function Detail() {
     </div>
   );
 }
+
