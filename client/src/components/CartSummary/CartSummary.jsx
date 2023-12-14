@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import React from "react";
-
+import { useAuth0 } from "@auth0/auth0-react";
 export default function CartSummary({
   subtotal,
   total,
   mostrarCheckout,
   handleBuy,
 }) {
+  const { user, isAuthenticated } = useAuth0();
   return (
     <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
       <div className="mb-2 flex justify-between">
@@ -26,7 +27,7 @@ export default function CartSummary({
         </div>
       </div>
 
-      {mostrarCheckout ? (
+      {isAuthenticated && mostrarCheckout ? (
         total !== 0 ? (
           <button
             onClick={handleBuy}
