@@ -34,7 +34,7 @@ if (state === "On the way") {
           from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
           to: email,
           subject: "Bienvenido e-Geek Collectibles",
-          html: <h2>Felicitaciones ${email} tu pedido ${product_name} se encuentra en camino!! Espero lo disfrutes y no te olvides de dejarnos tu reseña!☺</h2>,
+          html: `<h2>Felicitaciones ${email} tu pedido ${product_name} se encuentra en camino!! Espero lo disfrutes y no te olvides de dejarnos tu reseña!☺</h2>`,
         });
       } catch (error) {
         console.error(error.message);
