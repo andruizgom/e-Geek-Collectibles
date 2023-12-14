@@ -1,4 +1,4 @@
-const URL = "https://e-geek-collectibles-production.up.railway.app/collectibles";
+const URL = "https://e-geek-collectibles-production.up.railway.app";
 const axios = require('axios');
 const {Products} = require('../db');
 
