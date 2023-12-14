@@ -29,7 +29,7 @@ const createOrderC = async (req) => {
         html: await order
           .map(
             (item) =>
-              `Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido. <br><br> Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}`
+              `<h3>Felicitaciones por tu compra!! En breve podrás recibir tu producto ☺! No dude en chequear tu cuenta para ver el estado de tu pedido.</h2> <br><br> <h3>Producto: ${item.product_name}, Cantidad: ${item.quantity}, Precio unitario: $ ${item.price}</h3>`
           )
           .join("<br>"),
       });
