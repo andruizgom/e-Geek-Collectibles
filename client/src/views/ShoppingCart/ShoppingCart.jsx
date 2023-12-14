@@ -7,6 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getCart } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import Navigation from "../../components/Navigation/Navigation";
 
 const stripePromise = loadStripe(
   "pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n",
@@ -26,8 +27,9 @@ export default function ShoppingCart() {
     precioFinalIva,
   } = useContext(CartContext);
   const isCart = useSelector((state) => state.cart);
+  
 
-  let cartItems = []; // Definir cartItems fuera del bloque condicional
+  let cartItems = [];
 
   if (isAuthenticated && isCart && isCart.Products) {
     cartItems = isCart.Products;
@@ -64,8 +66,8 @@ export default function ShoppingCart() {
         email,
         all,
       };
+      await vaciarCarrito();
       await axios.put("/cart", emptyCart);
-      vaciarCarrito();
     } else {
       vaciarCarrito();
     }
@@ -80,8 +82,8 @@ export default function ShoppingCart() {
         id,
         all,
       };
-      await axios.put("/cart", deleteItem);
       await eliminarDelCarrito(id);
+      await axios.put("/cart", deleteItem);
     } else {
       eliminarDelCarrito(id);
     }
@@ -101,18 +103,21 @@ export default function ShoppingCart() {
   const handleBuy = async () => {
     console.log("Objeto enviado al backend:", { cartItems: carrito });
     try {
-      const response = await fetch("http://localhost:3001/crear-pago", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://e-geek-collectibles-production.up.railway.app/crear-pago",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cartItems: carrito.map((item) => ({
+              productId: item.id,
+              quantity: item.quantity,
+            })),
+          }),
         },
-        body: JSON.stringify({
-          cartItems: carrito.map((item) => ({
-            productId: item.id,
-            quantity: item.quantity,
-          })),
-        }),
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -132,38 +137,41 @@ export default function ShoppingCart() {
   };
 
   return (
-    <div className="h-auto bg-white pt-10">
-      <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
-      <p
-        className="justify-left mx-auto mb-2 max-w-5xl cursor-pointer px-6 text-xs text-gray-600 hover:text-red-600 md:flex md:space-x-6 xl:px-0"
-        onClick={handleVaciar}
-      >
-        Remove All
-      </p>
-      <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-        <div className="rounded-lg md:w-2/3">
-          {carrito.map((product) => (
-            <CartItem
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              category={product.category}
-              image={product.image}
-              price={product.price}
-              stock={product.stock}
-              quantity={product.quantity}
-              handleEliminar={handleEliminar}
-              hanldeIncrementar={hanldeIncrementar}
-              handleDecrementar={handleDecrementar}
-            />
-          ))}
+    <div>
+      <Navigation />
+      <div className="h-auto bg-white pt-10">
+        <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
+        <p
+          className="justify-left mx-auto mb-2 max-w-5xl cursor-pointer px-6 text-xs text-gray-600 hover:text-red-600 md:flex md:space-x-6 xl:px-0"
+          onClick={handleVaciar}
+        >
+          Remove All
+        </p>
+        <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+          <div className="rounded-lg md:w-2/3">
+            {carrito?.map((product) => (
+              <CartItem
+                key={product.id}
+                id={product.id}
+                title={product.title}
+                category={product.category}
+                image={product.image}
+                price={product.price}
+                stock={product.stock}
+                quantity={product.quantity}
+                handleEliminar={handleEliminar}
+                hanldeIncrementar={hanldeIncrementar}
+                handleDecrementar={handleDecrementar}
+              />
+            ))}
+          </div>
+          <CartSummary
+            subtotal={subtotal}
+            total={total}
+            mostrarCheckout={true}
+            handleBuy={handleBuy}
+          />
         </div>
-        <CartSummary
-          subtotal={subtotal}
-          total={total}
-          mostrarCheckout={true}
-          handleBuy={handleBuy}
-        />
       </div>
     </div>
   );

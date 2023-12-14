@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById, resetProductDetail } from "../../redux/actions";
 import CartContext from "../../context/CartContext";
 import FavButton from "../../components/FavButton/FavButton";
 import { StarIcon } from "@heroicons/react/20/solid";
-import PaymentForm from "../../components/Stripe/PaymentForm";
-import { loadStripe } from "@stripe/stripe-js";
+import Navigation from "../../components/Navigation/Navigation";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-
-const stripePromise = loadStripe(
-  "pk_test_51OHSFxEdGwHq7UR2MSY16IkLw9ATiMPpMbDz4o3pQKINyv0gNmxMnW8YB1me0V7pfzRGrkEgjPfeOvrstgT6jWId00FqILQQ0n",
-);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,7 +18,8 @@ export default function Detail() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { agregarAlCarrito } = useContext(CartContext);
-  const { isAuthenticated, user } = useAuth0();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth0();
 
   const useProducts = () => {
     const productsDetail = useSelector((state) => state.productsDetail);
@@ -55,7 +51,9 @@ export default function Detail() {
           id,
           quantity,
         };
+        await agregarAlCarrito(productDetail, quantity);
         await axios.post("/cart", item);
+        console.log(item);
       } catch (error) {
         throw new Error("Error en el pedido al back. " + error.message);
       }
@@ -66,31 +64,8 @@ export default function Detail() {
 
   const handleBuyNow = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3001/crear-pago", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cartItems: [{ productId: productDetail.id, quantity }],
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error en la solicitud:", errorData.error);
-      } else {
-        const session = await response.json();
-        console.log("Sesión creada:", session);
-        const stripe = await stripePromise;
-        await stripe.redirectToCheckout({
-          sessionId: session.id,
-        });
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
+    agregarAlCarrito(productDetail, quantity);
+    navigate("/cart");
   };
 
   const handleIncrement = () => {
@@ -103,6 +78,7 @@ export default function Detail() {
 
   return (
     <div className="bg-white">
+      <Navigation />
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol

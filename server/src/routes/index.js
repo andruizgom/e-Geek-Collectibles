@@ -4,6 +4,7 @@ const { getProductsByNameH } = require("../handlers/getProductsByNameH");
 const { getProductsByIdH } = require("../handlers/getProductsByIdH");
 const { postCreateProductH } = require("../handlers/postCreateProductH");
 const { postReviewH } = require("../handlers/postReviewH");
+const { getReviewH, getUserReviewsH } = require("../handlers/getReviewH");
 const { postUserH } = require("../handlers/postUserH");
 const { postFavoritesH } = require("../handlers/postFavoritesH");
 const { getFavoritesH } = require("../handlers/getFavoritesH");
@@ -18,6 +19,10 @@ const { deleteCartH } = require("../handlers/deleteCartH");
 const { getCartH } = require("../handlers/getCartH");
 const { updateShippingH } = require("../handlers/updateShippingH");
 const { getShippingH } = require("../handlers/getShippingH");
+const { createOrderH } = require("../handlers/createOrderH");
+const { updateOrderH } = require("../handlers/updateOrderH");
+const { getAllOrdersH } = require("../handlers/getAllOrdersH");
+const { getFilteredOrdersHandler } = require("../handlers/ordersFilterH");
 const { updateQuantityH } = require("../handlers/updateQuantityH");
 
 const router = Router();
@@ -33,6 +38,10 @@ router.get("/products/:id", getProductsByIdH);
 router.post("/products", postCreateProductH);
 
 router.post("/reviews", postReviewH);
+
+router.get("/reviews", getReviewH);
+
+router.get("/reviews/:usersId", getUserReviewsH);
 
 router.get("/users", getAllUsersH);
 
@@ -63,5 +72,13 @@ router.put("/cart/updateQuantity", updateQuantityH);
 router.put("/data-client", updateShippingH);
 
 router.get("/data-client", getShippingH);
+
+router.get("/order", getAllOrdersH);
+
+// router.get("/orders", getFilteredOrdersHandler);
+
+router.post("/order", createOrderH);
+
+router.put("/order", updateOrderH);
 
 module.exports = router;

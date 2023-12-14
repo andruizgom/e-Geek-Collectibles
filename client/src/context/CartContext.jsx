@@ -7,11 +7,7 @@ const carritoInicial = JSON.parse(localStorage.getItem("carrito")) || [];
 export const CartProvider = ({ children }) => {
   const [carrito, setCarrito] = useState(carritoInicial);
 
-  const agregarAlCarrito = async (
-    productDetail,
-    quantity,
-    shouldUpdate = true,
-  ) => {
+  const agregarAlCarrito = async ( productDetail, quantity, shouldUpdate = true) => {
     const itemAgregado = { ...productDetail, quantity };
     const nuevoCarrito = [...carrito];
     const estaEnElCarrito = nuevoCarrito.find(
