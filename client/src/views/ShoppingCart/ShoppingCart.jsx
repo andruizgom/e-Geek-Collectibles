@@ -27,31 +27,31 @@ export default function ShoppingCart() {
     setCarrito,
   } = useContext(CartContext);
   const isCart = useSelector((state) => state.cart);
-  const [cartUpdated, setCartUpdated] = useState(false);
 
-  console.log(carrito);
-  let cartItems = [];  // Definir cartItems fuera del bloque condicional
+  let cartItems = []; // Definir cartItems fuera del bloque condicional
 
-if (isAuthenticated && isCart && isCart.Products) {
-  cartItems = isCart.Products;
-  console.log("este es el nuevo carrito v3", cartItems);
-  // Puedes eliminar el return cartItems aquí
-}
+  if (isAuthenticated && isCart && isCart.Products) {
+    cartItems = isCart.Products;
+  }
 
-const nuevoCarrito = cartItems.map((producto) => {
-  const { Cart, ...restoDelProducto } = producto;
-  return { newCarrito: restoDelProducto, quantity: Cart.quantity };
-});
-
-
-console.log("este es el nuevo carrito v2", nuevoCarrito);
+  const productDetail = cartItems.map((producto) => {
+    const { Cart, ...restoDelProducto } = producto;
+    return { productDetail: restoDelProducto, quantity: Cart.quantity };
+  });
+  console.log("Este es el nuevo carrito", productDetail);
+  
+  useEffect(() => {
+    productDetail.forEach((item) => {
+      agregarAlCarrito(item.productDetail, item.quantity);
+    });
+  }, [productDetail, agregarAlCarrito]);
 
   useEffect(() => {
     if (isAuthenticated && user && user.email) {
       const email = user.email;
       dispatch(getCart(email));
     }
-  }, [dispatch, isAuthenticated, user, cartUpdated]);
+  }, [dispatch, isAuthenticated, user]);
 
   const handleVaciar = async () => {
     if (isAuthenticated && user && user.email) {
@@ -63,7 +63,6 @@ console.log("este es el nuevo carrito v2", nuevoCarrito);
       };
       await axios.put("/cart", emptyCart);
       vaciarCarrito();
-      setCartUpdated(!cartUpdated);
     } else {
       vaciarCarrito();
     }
@@ -80,7 +79,6 @@ console.log("este es el nuevo carrito v2", nuevoCarrito);
       };
       await axios.put("/cart", deleteItem);
       await eliminarDelCarrito(id);
-      setCartUpdated(!cartUpdated);
     } else {
       eliminarDelCarrito(id);
     }
@@ -100,7 +98,6 @@ console.log("este es el nuevo carrito v2", nuevoCarrito);
         const response = await axios.put("/cart/updateQuantity", item);
         if (response && response.data) {
           incremento(id);
-          setCartUpdated(!cartUpdated);
         } else {
           console.error("La respuesta del servidor no contiene datos.");
         }
@@ -123,7 +120,6 @@ console.log("este es el nuevo carrito v2", nuevoCarrito);
         };
         await axios.put("/cart/updateQuantity", item);
         decremento(id);
-        setCartUpdated(!cartUpdated);
       } catch (error) {
         console.error("Error al decrementar la cantidad:", error.response.data);
       }
