@@ -54,8 +54,8 @@ if (updatedProduct.stock !== stock) {
             await transporter.sendMail({
               from: '"e-Geek Collectibles" <pfhenry8@gmail.com>',
               to: email,
-              subject: ¡Producto Favorito Disponible! 🎉,
-              html: <h3>Hey ${email}, el producto ${title} que tanto te gusta ya está disponible en nuestra web. ¡No dudes en adquirirlo!</h3>,
+              subject: `¡Producto Favorito Disponible! 🎉`,
+              html: `<h3>Hey ${email}, el producto ${title} que tanto te gusta ya está disponible en nuestra web. ¡No dudes en adquirirlo!</h3>`,
             });
           })
         );
