@@ -42,12 +42,12 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     category: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
 };

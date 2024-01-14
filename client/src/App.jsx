@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Navigation from "./components/Navigation/Navigation";
 import Landing from "./views/Landing/Landing";
 import Home from "./views/Home/Home";
 import Detail from "./views/Detail/Detail";
@@ -15,10 +14,11 @@ import Admin from "./views/Admin/Admin";
 import { ShippingForm } from "./views/ShippingForm/ShippingForm";
 import FailedPayment from "./views/failedPayment/failedPayment";
 import SuccessfullPayment from "./views/successfulPayment/successfullPayment";
+import NotFound from "./views/NotFound/NotFound";
 
-function App() {
+export default function App() {
   const { isAuthenticated, user } = useAuth0();
-  const [isAdminLocal, setIsAdminLocal] = useState(true);
+  const [isAdminLocal, setIsAdminLocal] = useState(false);
   const [isBanned, setIsBanned] = useState(false);
 
   const checkUser = async (email) => {
@@ -56,9 +56,9 @@ function App() {
 
   return (
     <div className="App">
-      {window.location.pathname !== "/" && <Navigation />}
       <CartProvider>
         <Routes>
+          <Route exact path="/" element={<Landing />} />
           <Route exact path="/" element={<Landing />} />
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/detail/:id" element={<Detail />} />
@@ -67,6 +67,7 @@ function App() {
           <Route exact path="/userform" element={<UserForm />} />
           <Route exact path="/shippingForm" element={<ShippingForm />} />
           <Route exact path="/failedpayment" element={<FailedPayment />} />
+          <Route path="*" element={<NotFound />} />
           {isAuthenticated && (
             <Route
               exact
@@ -89,5 +90,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

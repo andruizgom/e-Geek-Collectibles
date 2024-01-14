@@ -7,7 +7,7 @@ const carritoInicial = JSON.parse(localStorage.getItem("carrito")) || [];
 export const CartProvider = ({ children }) => {
   const [carrito, setCarrito] = useState(carritoInicial);
 
-  const agregarAlCarrito = (productDetail, quantity) => {
+  const agregarAlCarrito = async ( productDetail, quantity, shouldUpdate = true) => {
     const itemAgregado = { ...productDetail, quantity };
     const nuevoCarrito = [...carrito];
     const estaEnElCarrito = nuevoCarrito.find(
@@ -18,13 +18,14 @@ export const CartProvider = ({ children }) => {
     } else {
       nuevoCarrito.push(itemAgregado);
     }
-    setCarrito(nuevoCarrito);
+    if (shouldUpdate) {
+      setCarrito(nuevoCarrito);
+    }
+    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
   };
 
-  const eliminarDelCarrito = (productId) => {
-    const nuevoCarrito = carrito.filter(
-      (producto) => producto.id !== productId,
-    );
+  const eliminarDelCarrito = (id) => {
+    const nuevoCarrito = carrito.filter((producto) => producto.id !== id);
     setCarrito(nuevoCarrito);
   };
 
@@ -48,6 +49,7 @@ export const CartProvider = ({ children }) => {
 
   const vaciarCarrito = () => {
     setCarrito([]);
+    localStorage.removeItem("carrito");
   };
 
   const incremento = (id) => {
@@ -86,6 +88,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         carrito,
+        setCarrito,
         agregarAlCarrito,
         eliminarDelCarrito,
         cantidadEnElCarrito,

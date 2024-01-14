@@ -1,75 +1,46 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setSearchTerm,
-  searchProducts,
-  clearSearch,
-} from "../../redux/actions/index";
-import { Link } from "react-router-dom";
-import styles from "./SearchBar.module.css";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSearchTerm, searchProducts } from "../../redux/actions/index";
 
-const SearchBar = () => {
+export default function SearchBar() {
   const dispatch = useDispatch();
-  const searchTerm = useSelector((state) => state.searchTerm);
-  const products = useSelector((state) => state.products);
-  const loading = useSelector((state) => state.loading);
-  const error = useSelector((state) => state.error);
-  const dropdownRef = useRef(null);
-  const [inputClicked, setInputClicked] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        dispatch(clearSearch());
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dispatch]);
-
-  const onChange = (event) => {
-    const value = event.target.value;
-    setInputClicked(true);
-    dispatch(setSearchTerm(value));
-    if (value.length >= 3) {
-      dispatch(searchProducts(value));
-    } else if (value.length === 0) {
-      dispatch(clearSearch());
-    }
-  };
-
-  const onSelectItem = () => {
-    dispatch(clearSearch());
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setSearchTerm(searchInput));
+    dispatch(searchProducts());
+    setSearchInput("");
   };
 
   return (
-    <div className={styles.searchContainer}>
-    <div className={styles.searchBar}>
-      
-      <input  className={styles.inputField}
-        type="text"
-        placeholder="Buscar..." value={searchTerm} onChange={onChange} onClick={() => setInputClicked(true)} />
-        <button className={styles.searchButton}>Buscar</button>
-    </div> 
-      {inputClicked && error && products.length === 0 && searchTerm.length >= 3 && (
-        <p className={styles.dropdown}>Error: {error}</p>
-      )}
-      {products.length > 0 && (
-        <div ref={dropdownRef} className={styles.dropdown}>
-          {products.map((item) => (
-            <div key={item.title} onClick={() => onSelectItem(item.title)}
-            className={styles.dropdownItem}
-            >
-              <Link to={`/detail/${item.id}`}>{item.title}</Link>
-            </div>
-          ))}
+    <div className="mt-8 flex items-center justify-center sm:mx-4 md:mx-20">
+      <form className="w-full" onSubmit={handleSubmit}>
+        <label
+          htmlFor="default-search"
+          className="sr-only mb-2 text-sm font-medium text-gray-900"
+        >
+          Search
+        </label>
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"></div>
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-red-600 focus:ring-red-600"
+            placeholder="Search for a collectible..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            required
+          />
+          <button
+            type="submit"
+            className="absolute bottom-2.5 end-2.5 rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 "
+          >
+            Search
+          </button>
         </div>
-      )}
-    </div> 
+      </form>
+    </div>
   );
-};
-
-export default SearchBar;
+}

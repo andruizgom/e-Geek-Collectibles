@@ -14,12 +14,16 @@ const { updateUserH } = require("../handlers/updateUserH");
 const { getAllUsersH } = require("../handlers/getAllUsersH");
 const { crearPago } = require("../controllers/Stripe/checkoutSession");
 const { putUpdateProductH } = require("../handlers/putUpdateProductH");
+const { postCartH } = require("../handlers/postCartH");
+const { deleteCartH } = require("../handlers/deleteCartH");
+const { getCartH } = require("../handlers/getCartH");
 const { updateShippingH } = require("../handlers/updateShippingH");
 const { getShippingH } = require("../handlers/getShippingH");
 const { createOrderH } = require("../handlers/createOrderH");
 const { updateOrderH } = require("../handlers/updateOrderH");
 const { getAllOrdersH } = require("../handlers/getAllOrdersH");
 const { getFilteredOrdersHandler } = require("../handlers/ordersFilterH");
+const { updateQuantityH } = require("../handlers/updateQuantityH");
 
 const router = Router();
 
@@ -56,6 +60,14 @@ router.put("/favorites", deleteFavoritesH);
 router.post("/crear-pago", crearPago);
 
 router.put("/products/:id", putUpdateProductH);
+
+router.post("/cart", postCartH);
+
+router.put("/cart", deleteCartH);
+
+router.get("/cart", getCartH);
+
+router.put("/cart/updateQuantity", updateQuantityH);
 
 router.put("/data-client", updateShippingH);
 

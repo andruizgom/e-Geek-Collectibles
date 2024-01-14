@@ -12,14 +12,15 @@ import {
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
   BUY_PRODUCT,
+  CREATE_USER,
+  RESET_PRODUCTS_HOME,
+  CREATE_DATA_CLIENT,
+  GET_CART,
   DELETE_BUY_PRODUCT,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_ERROR,
   GET_PRODUCT_REVIEWS_ERROR,
   GET_PRODUCT_REVIEWS_SUCCESS,
-  CREATE_USER,
-  RESET_PRODUCTS_HOME,
-  CREATE_DATA_CLIENT,
   GET_PRODUCT_DATA,
   ORDERS_FILTERED,
   SET_ORDERS_PAGE,
@@ -45,7 +46,8 @@ const initialState = {
   ordersFiltered: [],
   product: {},
   idCarProduct: [], //modifique
-  carrito: [],
+  cart: [],
+  favorites: [],
   user: {},
   product: {},
   updateProductMessage: "",
@@ -53,6 +55,7 @@ const initialState = {
   createReviewError: null,
   getProductReviewsError: null,
   userReviews: [],
+  error: null,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -73,21 +76,27 @@ const reducer = (state = initialState, { type, payload }) => {
         adSearchTerm: payload.adSearchTerm,
       };
     case FETCH_PRODUCTS_SUCCESS:
-      return { ...state, products: payload };
+      return {
+        ...state,
+        productsFiltered: payload,
+      };
     case FETCH_PRODUCTS_SUCCESS_ADMIN:
       return { ...state, adSearchProducts: payload };
     case FETCH_PRODUCTS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_PRODUCTS_FAILURE:
-      return { ...state, loading: false, error: payload };
-    case CLEAR_SEARCH:
       return {
         ...state,
-        searchTerm: "",
-        products: [],
-        error: null,
-        adSearchProducts: [],
+        productsFiltered: [
+          {
+            id: 0,
+          },
+        ],
+        loading: false,
+        error: payload,
       };
+    case CLEAR_SEARCH:
+      return { ...state, searchTerm: "", productsFiltered: [], error: null };
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -175,9 +184,13 @@ const reducer = (state = initialState, { type, payload }) => {
         reviews: null,
         getProductReviewsError: payload,
       };
+    case GET_CART:
+      return {
+        ...state,
+        cart: payload,
+      };
     default:
       return state;
   }
 };
-
 export default reducer;
